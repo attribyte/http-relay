@@ -1,16 +1,16 @@
-<project name="http-relay" default="dist" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="async-publisher" default="dist" xmlns:ivy="antlib:org.apache.ivy.ant">
 
-    <description>Build the Attribyte, LLC HTTP relay project</description>
+    <description>Build the Attribyte, LLC async-publisher project</description>
 
     <property name="jdkVersion" value="1.8" />
 
     <property name="src" location="src" />
-    <property name="build" location="build" />
-    <property name="dist" location="dist" />
+    <property name="build" location="build_publisher" />
+    <property name="dist" location="dist_publisher" />
 
 
     <property name="groupId" value="org.attribyte" />
-    <property name="artifactId" value="http-relay" />
+    <property name="artifactId" value="attribyte-async-publisher" />
     <property name="version" value="0.5.0" />
 
     <property name="jar" value="${dist}/lib/${artifactId}-${version}.jar" />
@@ -23,7 +23,7 @@
     </path>
 
     <target name="resolve" description="Use ivy to resolve classpaths">
-        <ivy:resolve file="ivy.xml" conf="compile"/>
+        <ivy:resolve file="ivy_publisher.xml" conf="compile"/>
         <ivy:cachefileset setid="ivy.fileset" conf="compile"/>
     </target>
 
@@ -34,19 +34,18 @@
     </target>
 
     <target name="compile" depends="init" description="Compiles the source">
-        <javac includeantruntime="false" srcdir="${src}/main/java" destdir="${build}" debug="on">
-            <compilerarg value="-Xlint"/>
+        <javac includeantruntime="false"
+               source="${jdkVersion}"
+               srcdir="${src}/main/java"
+               includes="org/attribyte/relay/AsyncPublisher.java,
+                         org/attribyte/relay/Publisher.java"
+               destdir="${build}" debug="on">
             <classpath refid="classpath"/>
         </javac>
     </target>
 
     <target name="dist" depends="compile" description="Creates the distribution">
         <jar jarfile="${jar}" basedir="${build}"/>
-    </target>
-
-    <target name="full-dist" depends="dist" description="Creates the distribution with a copy of all dependencies">
-        <ivy:retrieve pattern="${dist}/extlib/[organisation]-[artifact]-[revision].[ext]"
-                      conf="compile"/>
     </target>
 
     <target name="clean" description="Removes all build files">
@@ -64,7 +63,8 @@
                 windowtitle="org.attribyte"
                 >
             <fileset dir="${src}/main/java" defaultexcludes="yes">
-                <include name="**/*.java"/>
+                <include name="org/attribyte/relay/AsyncPublisher.java"/>
+                <include name="org/attribyte/relay/Publisher.java"/>
             </fileset>
         </javadoc>
         <jar jarfile="${javadoc-jar}">
@@ -72,7 +72,8 @@
         </jar>
         <jar jarfile="${sources-jar}">
             <fileset dir="${src}/main/java" defaultexcludes="yes">
-                <include name="**/*.java"/>
+                <include name="org/attribyte/relay/AsyncPublisher.java"/>
+                <include name="org/attribyte/relay/Publisher.java"/>
             </fileset>
         </jar>
     </target>
