@@ -74,7 +74,7 @@ public class AsyncPublisher implements Publisher {
    /**
     * Creates a publisher with a specified notification queue size.
     * @param numProcessors The number of threads processing the notification queue.
-    * @param maxQueueSize The maximum queue size. If < 1, notification queue is unbounded.
+    * @param maxQueueSize The maximum queue size. If &lt; 1, notification queue is unbounded.
     * @param notificationTimeoutSeconds The notification send timeout.
     * @param acceptCodes The set of HTTP response codes that map to 'Accept'.
     * @throws Exception on initialization error.
@@ -88,7 +88,7 @@ public class AsyncPublisher implements Publisher {
    /**
     * Creates a publisher with a specified notification queue size.
     * @param numProcessors The number of threads processing the notification queue.
-    * @param maxQueueSize The maximum queue size. If < 1, notification queue is unbounded.
+    * @param maxQueueSize The maximum queue size. If &lt; 1, notification queue is unbounded.
     * @param notificationTimeoutSeconds The notification send timeout.
     * @param acceptCodes The set of HTTP response codes that map to 'Accept'.
     * @param logger An optional logger.
