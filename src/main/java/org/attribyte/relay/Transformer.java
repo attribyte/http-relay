@@ -15,12 +15,9 @@
 
 package org.attribyte.relay;
 
-import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricSet;
-import com.google.common.collect.ImmutableMap;
 import org.attribyte.api.Logger;
 
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -31,28 +28,7 @@ public interface Transformer extends MetricSet {
    /**
     * A transformer that returns the input message.
     */
-   public static Transformer NOOP = new Transformer() {
-
-      @Override
-      public Message transform(Message message) {
-         return message;
-      }
-
-      @Override
-      public void init(final Supplier supplier,
-                       final Properties props,
-                       final Logger logger) throws Exception {
-      }
-
-      @Override
-      public void shutdown() {
-      }
-
-      @Override
-      public Map<String, Metric> getMetrics() {
-         return ImmutableMap.of();
-      }
-   };
+   public static Transformer NOOP = new NOOPTransformer();
 
    /**
     * Transforms a message from one format to another.
