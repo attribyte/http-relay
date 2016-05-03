@@ -1,0 +1,87 @@
+# The location of the java interpreter may be set explicitly with JAVA_EXE.
+# Otherwise, JAVA_HOME is used.
+# Finally, if JAVA_HOME is undefined, simply use 'java'.
+#JAVA_EXE="/usr/local/jdk8/bin/java"
+
+if [ -z "$JAVA_EXE" ]
+then
+  if [ -z "$JAVA_HOME" ]
+  then
+    JAVA_EXE="java"
+  else
+    JAVA_EXE="$JAVA_HOME/bin/java"
+  fi
+fi
+
+# The installation directory containing configuration and dependencies may be set explicitly with RELAY_INSTALL_DIR.
+# Otherwise, an attempt is made to discover the location of this script.
+#RELAY_INSTALL_DIR=/var/attribyte/relay
+
+if [ -z "$RELAY_INSTALL_DIR" ]
+then
+  DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  RELAY_INSTALL_DIR="$(dirname "$DIR")"
+fi
+
+PIDFILE="relay.pid"
+
+if [ -f "$RELAY_INSTALL_DIR/bin/$PIDFILE" ]
+then
+  echo Relay appears to be running! Aborting.
+  exit 1
+fi
+
+LOCAL_LIB_DIR="$RELAY_INSTALL_DIR/lib"
+LIB_DIR="$RELAY_INSTALL_DIR/dist/lib"
+EXTLIB_DIR="$RELAY_INSTALL_DIR/dist/extlib"
+
+CLASSPATH=""
+
+if [ -d "$LOCAL_LIB_DIR" ]
+then
+  for jar in $(ls $LOCAL_LIB_DIR/*.jar);
+    do
+      CLASSPATH=$CLASSPATH:$jar
+    done
+fi
+
+
+if [ -d "$EXTLIB_DIR" ]
+then
+  for jar in $(ls $EXTLIB_DIR/*.jar);
+    do
+      CLASSPATH=$CLASSPATH:$jar
+    done
+fi
+
+if [ -d "$LIB_DIR" ]
+then
+  for jar in $(ls $LIB_DIR/*.jar);
+    do
+      CLASSPATH=$CLASSPATH:$jar
+    done
+fi
+
+export CLASSPATH
+
+CONSOLE_LOG="$RELAY_INSTALL_DIR/bin/console.log"
+
+SYSTEM_CONFIG="$RELAY_INSTALL_DIR/config/config.properties"
+if [ ! -f "$SYSTEM_CONFIG" ]
+then
+  echo "A 'config.properties' must exist"
+  exit 1
+fi
+
+LOG_CONFIG="$RELAY_INSTALL_DIR/config/log.properties"
+if [ ! -f "$LOG_CONFIG" ]
+then
+  echo "A 'log.properties' must exist"
+  exit 1
+fi
+
+# Command line arguments in the format -[name]=value override properties in config files.
+
+nohup $JAVA_EXE -Dinstall.dir="$RELAY_INSTALL_DIR" org.attribyte.relay.Relay $SYSTEM_CONFIG $@ $LOG_CONFIG 1> $CONSOLE_LOG 2>&1 &
+
+echo $! > $RELAY_INSTALL_DIR/bin/$PIDFILE

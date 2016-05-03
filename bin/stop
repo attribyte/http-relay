@@ -1,0 +1,40 @@
+# The installation directory containing configuration and dependencies may be set explicitly with RELAY_INSTALL_DIR.
+# Otherwise, an attempt is made to discover the location of this start script.
+
+#RELAY_INSTALL_DIR=
+
+if [ -z "$RELAY_INSTALL_DIR" ]
+then
+  DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  RELAY_INSTALL_DIR="$(dirname "$DIR")"
+fi
+
+PIDFILE="relay.pid"
+
+if [ ! -f "$RELAY_INSTALL_DIR/bin/$PIDFILE" ]
+then
+	echo Relay does not seem to be running!
+	exit 0
+fi
+
+PID=$(cat $RELAY_INSTALL_DIR/bin/$PIDFILE)
+echo "Stopping relay $PID"
+
+ATTEMPTS_LEFT=30
+while [ $ATTEMPTS_LEFT -gt 0 ]; do
+    kill $PID 2>/dev/null
+    if [ $? -eq 1 ]; then
+        echo "Stopped relay $PID normally"
+        rm $RELAY_INSTALL_DIR/bin/$PIDFILE
+        break
+    fi
+    ATTEMPTS_LEFT=$(($ATTEMPTS_LEFT - 1))
+    sleep 1
+done
+
+#Kill
+if [ $ATTEMPTS_LEFT -eq 0 ]; then
+    echo "Killed relay $PID!"
+    kill -9 $PID
+    rm $RELAY_INSTALL_DIR/bin/$PIDFILE
+fi
