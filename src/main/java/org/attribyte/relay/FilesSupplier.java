@@ -166,7 +166,7 @@ public class FilesSupplier implements Supplier {
       if(iter.hasNext()) {
          if(state == State.MESSAGE) {
             final File curr = iter.next();
-            final String id = curr.getName();
+            final String id = curr.getAbsolutePath();
             try {
                final byte[] fileBytes = Files.toByteArray(curr);
                messageSize.update(fileBytes.length);
@@ -261,16 +261,17 @@ public class FilesSupplier implements Supplier {
    private boolean moveMessage(final Message message,
                                final String subdirectory,
                                final String errorFormat) {
-      File source = new File(sourceDir, message.id);
+      File source = new File(message.id);
+      File sourceDir = source.getParentFile();
       File destDir = new File(sourceDir, subdirectory);
       if(!destDir.exists()) {
          if(!destDir.mkdir()) {
             filesystemErrors.inc();
-            logger.error("Unable to create lost message directory!");
+            logger.error("Unable to create: " + destDir.getAbsolutePath());
             return false;
          }
       }
-      File dest = new File(destDir, message.id);
+      File dest = new File(destDir, source.getName());
       try {
          Files.move(source, dest);
       } catch(IOException ioe) {
@@ -278,7 +279,6 @@ public class FilesSupplier implements Supplier {
          logger.error(String.format(errorFormat, source.getAbsolutePath(), dest.getAbsolutePath()), ioe);
          return false;
       }
-
       return true;
    }
 
@@ -288,6 +288,7 @@ public class FilesSupplier implements Supplier {
                     final Logger logger) throws Exception {
       if(isInit.compareAndSet(false, true)) {
          rootDir = new File(props.getProperty("sourceDir", "."));
+         this.logger = logger;
 
          if(!rootDir.exists()) {
             throw new Exception(String.format("The directory, '%s' (%s), does not exist", "sourceDir", rootDir.getAbsolutePath()));
@@ -301,26 +302,25 @@ public class FilesSupplier implements Supplier {
             throw new Exception(String.format("The directory, '%s' (%s), is not readable", "sourceDir", rootDir.getAbsolutePath()));
          }
 
-         recurseSourceDirs = StringUtil.parseBoolean(props.getProperty("recurseSourceDirs"), false);
-
-         if(recurseSourceDirs) {
-            recurseSourceDirs();
-         } else {
-            sourceDirs = ImmutableList.of(rootDir).iterator();
-         }
-
          lostMessageDir = props.getProperty("lostMessageDir", "lost").trim();
 
          String completedMessageDir = props.getProperty("completedMessageDir", "").trim();
          this.completedMessageDir = completedMessageDir.isEmpty() ? Optional.absent() : Optional.of(completedMessageDir);
 
          continuous = props.getProperty("continuous", "false").equalsIgnoreCase("true");
-
          saveStateInterval = StringUtil.parseInt(props.getProperty("saveStateInterval"), 0);
 
          continuousReloadPauseMillis = StringUtil.parseInt(props.getProperty("continuousReloadPauseMillis"), DEFAULT_CONTINUOUS_RELOAD_PAUSE);
          if(savedState.isPresent()) {
             deserializeState(savedState.get());
+         }
+
+         recurseSourceDirs = StringUtil.parseBoolean(props.getProperty("recurseSourceDirs"), false);
+
+         if(recurseSourceDirs) {
+            recurseSourceDirs();
+         } else {
+            sourceDirs = ImmutableList.of(rootDir).iterator();
          }
          createIterator();
          state = State.MESSAGE;
@@ -341,7 +341,7 @@ public class FilesSupplier implements Supplier {
     */
    private void createIterator() {
       if(sourceDirs.hasNext()) {
-         sourceDir = sourceDirs.next();
+         File sourceDir = sourceDirs.next();
          processedSet.add(sourceDir.getName());
          File[] files = sourceDir.listFiles(processedSetFilter);
          List<File> fileList = files != null ? ImmutableList.copyOf(files) : ImmutableList.of();
@@ -395,7 +395,7 @@ public class FilesSupplier implements Supplier {
             } else if(completedMessageDir.isPresent() && file.getName().equals(completedMessageDir.get())) {
                return FileVisitResult.CONTINUE;
             } else {
-               processDirs.add(dir.toFile());
+               processDirs.add(file);
                return FileVisitResult.CONTINUE;
             }
          }
@@ -419,11 +419,6 @@ public class FilesSupplier implements Supplier {
     * An iterator over all source directories.
     */
    private Iterator<File> sourceDirs;
-
-   /**
-    * The directory that is currently being processed.
-    */
-   private File sourceDir;
 
    /**
     * The optional subdirectory to which completed files are moved.
