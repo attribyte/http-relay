@@ -142,11 +142,8 @@ public class Relay implements MetricSet {
 
       final Relay relay = new Relay(args);
 
-      Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-         @Override
-         public void run() {
-            relay.shutdown();
-         }
+      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+         relay.shutdown();
       }));
 
       System.out.println("Starting relay...");
@@ -341,7 +338,7 @@ public class Relay implements MetricSet {
    public final void shutdown() {
       if(isInit.compareAndSet(true, false)) {
          logger.info("Stopping metrics reporting...");
-         reporting.stop();;
+         reporting.stop();
 
          logger.info("Stopping relay...");
 
