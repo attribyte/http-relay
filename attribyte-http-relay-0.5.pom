@@ -45,6 +45,11 @@
             <version>0.5.2</version>
         </dependency>
         <dependency>
+            <groupId>org.attribyte</groupId>
+            <artifactId>metrics-reporting</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>[18.0,)</version>
