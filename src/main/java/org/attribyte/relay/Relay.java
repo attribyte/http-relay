@@ -18,6 +18,7 @@ import com.codahale.metrics.Counter;
 import com.codahale.metrics.ExponentiallyDecayingReservoir;
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.Metric;
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.MetricSet;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
@@ -37,6 +38,7 @@ import com.google.protobuf.ByteString;
 import org.attribyte.api.Logger;
 import org.attribyte.api.http.Header;
 import org.attribyte.api.http.impl.BasicAuthScheme;
+import org.attribyte.metrics.Reporting;
 import org.attribyte.util.InitUtil;
 
 import java.io.File;
@@ -136,6 +138,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Relay implements MetricSet {
 
+   public static void main(String[] args) throws Exception {
+
+      final Relay relay = new Relay(args);
+
+      Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+         @Override
+         public void run() {
+            relay.shutdown();
+         }
+      }));
+
+      System.out.println("Starting relay...");
+      relay.start();
+   }
+
    /**
     * Creates a relay from command line arguments.
     * <p>
@@ -147,6 +164,8 @@ public class Relay implements MetricSet {
     * @throws Exception on initialization error.
     */
    public Relay(String[] args) throws Exception {
+
+      this.registry = new MetricRegistry();
 
       CLI cli = new CLI("relay", args);
       this.logger = cli.logger;
@@ -170,6 +189,8 @@ public class Relay implements MetricSet {
               relayProps.getIntProperty("notificationTimeoutSeconds", 30),
               acceptCodeSet
       );
+
+      registry.register("async-publisher", this.publisher);
 
       InitUtil targetProps = new InitUtil("target.", cli.props, false);
 
@@ -205,6 +226,7 @@ public class Relay implements MetricSet {
 
       cli.logInfo("Creating supplier...");
       this.supplier = (Supplier)supplierProps.initClass("class", Supplier.class);
+      registry.register("supplier", this.supplier);
 
       cli.logInfo("Creating transformer...");
       InitUtil transformerProps = new InitUtil("transformer.", cli.props, false);
@@ -212,6 +234,7 @@ public class Relay implements MetricSet {
          this.transformer = Transformer.NOOP;
       } else {
          this.transformer = (Transformer)transformerProps.initClass("class", Transformer.class);
+         registry.register("transformer", this.transformer);
       }
 
       cli.logInfo("Initializing supplier...");
@@ -256,6 +279,9 @@ public class Relay implements MetricSet {
       this.maxRetryAttempts = relayProps.getIntProperty("maxRetryAttempts", 10);
       this.baseBackOffDelayMillis = relayProps.getIntProperty("baseBackOffDelayMillis", 50);
       this.maxShutdownWaitSeconds = relayProps.getIntProperty("maxShutdownWaitSeconds", 30);
+      this.reporting = new Reporting("metrics-reporting.", cli.props, registry, null);
+      registry.register("metrics-reporting", registry);
+      this.reporting.start();
    }
 
    /**
@@ -268,6 +294,9 @@ public class Relay implements MetricSet {
     */
    public void start() throws InterruptedException {
       if(isInit.compareAndSet(false, true)) {
+
+         registry.register("relay", this);
+
          Message originalMessage = supplier.nextMessage();
          Message transformedMessage = transformer.transform(originalMessage);
 
@@ -311,6 +340,9 @@ public class Relay implements MetricSet {
     */
    public final void shutdown() {
       if(isInit.compareAndSet(true, false)) {
+         logger.info("Stopping metrics reporting...");
+         reporting.stop();;
+
          logger.info("Stopping relay...");
 
          logger.info("Stopping supplier...");
@@ -520,6 +552,16 @@ public class Relay implements MetricSet {
     * A file used to store supplier state.
     */
    private final File supplierStateFile;
+
+   /**
+    * The metrics registry.
+    */
+   private final MetricRegistry registry;
+
+   /**
+    * Metrics reporting.
+    */
+   private final Reporting reporting;
 
    /**
     * Is the relay initialized and running?
