@@ -15,14 +15,18 @@
 
 package org.attribyte.relay;
 
+import com.codahale.metrics.Metric;
+import com.codahale.metrics.MetricSet;
+import com.google.common.collect.ImmutableMap;
 import org.attribyte.api.Logger;
 
+import java.util.Map;
 import java.util.Properties;
 
 /**
  * Transforms a replication message from one format to another.
  */
-public interface Transformer {
+public interface Transformer extends MetricSet {
 
    /**
     * A transformer that returns the input message.
@@ -42,6 +46,11 @@ public interface Transformer {
 
       @Override
       public void shutdown() {
+      }
+
+      @Override
+      public Map<String, Metric> getMetrics() {
+         return ImmutableMap.of();
       }
    };
 
