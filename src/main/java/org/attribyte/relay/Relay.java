@@ -35,6 +35,7 @@ import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.protobuf.ByteString;
+import org.attribyte.api.ConsoleLogger;
 import org.attribyte.api.Logger;
 import org.attribyte.api.http.Header;
 import org.attribyte.api.http.impl.BasicAuthScheme;
@@ -165,7 +166,7 @@ public class Relay implements MetricSet {
       this.registry = new MetricRegistry();
 
       CLI cli = new CLI("relay", args);
-      this.logger = cli.logger;
+      this.logger = cli.logger != null ? cli.logger : new ConsoleLogger();
 
       InitUtil relayProps = new InitUtil("relay.", cli.props, false);
 
@@ -289,9 +290,9 @@ public class Relay implements MetricSet {
     * </p>
     * @throws InterruptedException if relay is interrupted.
     */
-   public void start() throws InterruptedException {
+   public void start() throws Exception {
       if(isInit.compareAndSet(false, true)) {
-
+         publisher.start();
          registry.register("relay", this);
 
          Message originalMessage = supplier.nextMessage();
@@ -327,7 +328,8 @@ public class Relay implements MetricSet {
                   logger.error(transformedMessage.toString());
                   break;
             }
-            transformedMessage = transformer.transform(supplier.nextMessage());
+            originalMessage = supplier.nextMessage();
+            transformedMessage = transformer.transform(originalMessage);
          }
       }
    }
