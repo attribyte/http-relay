@@ -107,7 +107,6 @@ public class FilesSupplier implements Supplier {
     */
    public FilesSupplier() {
       this.processedSet = Sets.newConcurrentHashSet();
-      this.processedSetFilter = pathname -> pathname.isFile() && pathname.canRead() && !processedSet.contains(pathname.getName());
    }
 
    /**
@@ -138,15 +137,12 @@ public class FilesSupplier implements Supplier {
       this.continuousReloadPauseMillis = continuousReloadPauseMillis;
       this.saveStateInterval = saveStateInterval;
       this.logger = logger != null ? logger : new ConsoleLogger();
-
       this.processedSet = Sets.newConcurrentHashSet();
-      this.processedSetFilter = pathname -> pathname.isFile() && pathname.canRead() && !processedSet.contains(pathname.getName());
       if(initialState.isPresent()) {
          deserializeState(initialState.get());
       }
-
+      this.processedSetFilter = pathname -> pathname.isFile() && pathname.canRead() && !processedSet.contains(pathname.getAbsolutePath());
       this.recurseSourceDirs = recurseSourceDirs;
-
       if(recurseSourceDirs) {
          recurseSourceDirs();
       } else {
@@ -170,11 +166,11 @@ public class FilesSupplier implements Supplier {
             try {
                final byte[] fileBytes = Files.toByteArray(curr);
                messageSize.update(fileBytes.length);
-               final long publishedMessageCount = publishedMessages.getCount();
+               final long completedMessageCount = completedMessages.getCount();
                if(saveStateInterval == 0) {
                   state = State.SAVE_STATE;
-               } else if(publishedMessageCount % saveStateInterval == 0) {
-                  logger.info(String.format("Saving state (%s messages processed)", publishedMessageCount));
+               } else if(completedMessageCount % saveStateInterval == 0) {
+                  logger.info(String.format("Saving state (%s messages completed)", completedMessageCount));
                   state = State.SAVE_STATE;
                }
 
@@ -208,8 +204,18 @@ public class FilesSupplier implements Supplier {
          }
       } else if(!continuous) {
          if(!sourceDirs.hasNext()) {
-            state = State.STOPPED;
-            return Message.state(serializeState());
+            if(isComplete()) {
+               state = State.STOPPED;
+               return Message.state(serializeState());
+            } else {
+               if(state == State.SAVE_STATE) {
+                  state = State.FINISHING;
+                  return Message.state(serializeState());
+               } else {
+                  state = State.SAVE_STATE;
+                  return Message.pause(continuousReloadPauseMillis);
+               }
+            }
          } else {
             reloads.inc();
             createIterator();
@@ -236,19 +242,19 @@ public class FilesSupplier implements Supplier {
    @Override
    public void completedMessage(Message message) {
       timeToAcknowledge.update(System.currentTimeMillis() - message.createTimeMillis, TimeUnit.MILLISECONDS);
-      completedMessages.mark();
       processedSet.add(message.id);
       if(completedMessageDir.isPresent()) {
          moveMessage(message, completedMessageDir.get(), "Problem moving completed message from '%s' to '%s'");
       }
+      completedMessages.mark();
    }
 
    @Override
    public void lostMessage(Message message) {
       timeToAcknowledge.update(System.currentTimeMillis() - message.createTimeMillis, TimeUnit.MILLISECONDS);
-      lostMessages.inc();
       processedSet.add(message.id);
       moveMessage(message, lostMessageDir, "Problem moving lost message from '%s' to '%s'");
+      lostMessages.inc();
    }
 
    /**
@@ -314,6 +320,7 @@ public class FilesSupplier implements Supplier {
          if(savedState.isPresent()) {
             deserializeState(savedState.get());
          }
+         processedSetFilter = pathname -> pathname.isFile() && pathname.canRead() && !processedSet.contains(pathname.getAbsolutePath());
 
          recurseSourceDirs = StringUtil.parseBoolean(props.getProperty("recurseSourceDirs"), false);
 
@@ -405,10 +412,17 @@ public class FilesSupplier implements Supplier {
    }
 
    /**
+    * Determine if all published messages have been reported either completed or failed.
+    * @return The complete status.
+    */
+   private boolean isComplete() {
+      return publishedMessages.getCount() - completedMessages.getCount() - lostMessages.getCount() == 0;
+   }
+
+   /**
     * The root directory that contains all files/directories to process.
     */
    private File rootDir;
-
 
    /**
     * Should the source directories be searched?
@@ -473,7 +487,7 @@ public class FilesSupplier implements Supplier {
    /**
     * A filter that excludes already processed files.
     */
-   private final FileFilter processedSetFilter;
+   private FileFilter processedSetFilter;
 
    /**
     * Times published messages.
@@ -547,7 +561,12 @@ public class FilesSupplier implements Supplier {
       /**
        * State is stopped.
        */
-      STOPPED
+      STOPPED,
+
+      /**
+       * State is finishing.
+       */
+      FINISHING
    }
 
    /**
