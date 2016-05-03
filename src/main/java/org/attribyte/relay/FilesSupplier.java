@@ -289,16 +289,16 @@ public class FilesSupplier implements Supplier {
       if(isInit.compareAndSet(false, true)) {
          rootDir = new File(props.getProperty("sourceDir", "."));
 
-         if(!rootDir.isDirectory()) {
-            throw new Exception(String.format("The directory, '%s' (%s), is a file", "sourceDir", sourceDir.getAbsolutePath()));
+         if(!rootDir.exists()) {
+            throw new Exception(String.format("The directory, '%s' (%s), does not exist", "sourceDir", rootDir.getAbsolutePath()));
          }
 
-         if(!rootDir.exists()) {
-            throw new Exception(String.format("The directory, '%s' (%s), does not exist", "sourceDir", sourceDir.getAbsolutePath()));
+         if(!rootDir.isDirectory()) {
+            throw new Exception(String.format("The directory, '%s' (%s), is a file", "sourceDir", rootDir.getAbsolutePath()));
          }
 
          if(!rootDir.canRead()) {
-            throw new Exception(String.format("The directory, '%s' (%s), is not readable", "sourceDir", sourceDir.getAbsolutePath()));
+            throw new Exception(String.format("The directory, '%s' (%s), is not readable", "sourceDir", rootDir.getAbsolutePath()));
          }
 
          recurseSourceDirs = StringUtil.parseBoolean(props.getProperty("recurseSourceDirs"), false);
