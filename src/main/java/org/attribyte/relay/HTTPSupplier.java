@@ -77,9 +77,11 @@ public abstract class HTTPSupplier implements Supplier {
             id = request.getURI();
          }
 
+         final Timer.Context ctx = messageRequests.time();
+
          try {
             Response response = httpClient.send(request);
-            if(response.statusCode > 199 && response.statusCode < 300) {
+            if(response.statusCode / 200 == 1) {
                state = State.PAUSE;
                ByteString body = response.getBody();
                responseSize.update(body.size());
@@ -95,6 +97,8 @@ public abstract class HTTPSupplier implements Supplier {
             logger.error("Supplier I/O error", ioe);
             lostMessage(Message.publish(id.toString(), ByteString.EMPTY));
             return Message.pause(nextSleepMillis());
+         } finally {
+            ctx.stop();
          }
       } else {
          state = State.MESSAGE;
@@ -150,6 +154,13 @@ public abstract class HTTPSupplier implements Supplier {
     */
    protected abstract Optional<Request> nextRequest();
 
+   /**
+    * Gets the next (saved) state based on a completed message.
+    * @param completedMessage The completed message.
+    * @return The next state, if any.
+    */
+   public abstract Optional<ByteString> nextState(final Message completedMessage);
+
    @Override
    public void lostMessage(Message message) {
       timeToAcknowledge.update(System.currentTimeMillis() - message.createTimeMillis, TimeUnit.MILLISECONDS);
@@ -159,7 +170,6 @@ public abstract class HTTPSupplier implements Supplier {
    @Override
    public void completedMessage(Message message) {
       timeToAcknowledge.update(System.currentTimeMillis() - message.createTimeMillis, TimeUnit.MILLISECONDS);
-      completedMessages.inc();
       Optional<ByteString> nextState = nextState(message);
       if(nextState.isPresent()) {
          try {
@@ -168,14 +178,13 @@ public abstract class HTTPSupplier implements Supplier {
             Thread.currentThread().interrupt();
          }
       }
+      completedMessages.inc();
    }
 
    /**
-    * Gets the next (saved) state based on a completed message.
-    * @param completedMessage The completed message.
-    * @return The next state, if any.
+    * Times requests to get published messages.
     */
-   public abstract Optional<ByteString> nextState(final Message completedMessage);
+   private final Timer messageRequests = new Timer();
 
    /**
     * Counts completed messages.
@@ -205,6 +214,7 @@ public abstract class HTTPSupplier implements Supplier {
    @Override
    public Map<String, Metric> getMetrics() {
       ImmutableMap.Builder<String, Metric> builder = ImmutableMap.builder();
+      builder.put("message-requests", messageRequests);
       builder.put("response-size", responseSize);
       builder.put("request-errors", requestErrors);
       builder.put("completed-messages", completedMessages);
