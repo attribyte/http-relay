@@ -54,7 +54,34 @@
         <delete dir="${dist}"/>
     </target>
 
-    <target name="mvn-dist" depends="dist">
+    <target name="cleandoc" description="Remove all generated doc files">
+        <delete dir="doc/javadoc"/>
+    </target>
+
+    <target name="javadoc">
+        <javadoc
+                access="public"
+                destdir="doc/javadoc"
+                author="true"
+                version="true"
+                use="true"
+                windowtitle="org.attribyte"
+                >
+            <fileset dir="${src}/main/java" defaultexcludes="yes">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="../shared-base/src/main/java">
+                <include name="org/attribyte/util/CLI.java"/>
+                <include name="org/attribyte/util/StringUtil.java"/>
+                <include name="org/attribyte/util/InitUtil.java"/>
+            </fileset>
+            <fileset dir="../http-model/src/main/java">
+                <include name="**/*.java"/>
+            </fileset>
+        </javadoc>
+    </target>
+
+    <target name="mvn-dist" depends="dist,cleandoc,javadoc">
         <javadoc
                 access="public"
                 destdir="${dist}/doc/javadoc"
