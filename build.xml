@@ -76,7 +76,8 @@
                 <include name="org/attribyte/util/InitUtil.java"/>
             </fileset>
             <fileset dir="../http-model/src/main/java">
-                <include name="**/*.java"/>
+                <include name="org/attribyte/api/http/*.java"/>
+                <include name="org/attribyte/api/http/impl/jetty/*.java"/>
             </fileset>
         </javadoc>
     </target>
