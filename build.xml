@@ -67,6 +67,7 @@
                 use="true"
                 windowtitle="org.attribyte"
                 >
+            <classpath refid="classpath"/>
             <fileset dir="${src}/main/java" defaultexcludes="yes">
                 <include name="**/*.java"/>
             </fileset>
