@@ -25,6 +25,9 @@ import com.google.protobuf.ByteString;
  */
 public class Message {
 
+   /**
+    * Identifies the relay message type (publish, pause, stop, error, state).
+    */
    public enum Type {
 
       /**
