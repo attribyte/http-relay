@@ -55,7 +55,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Asynchronously relays message from a supplier
+ * Asynchronously relays messages from a supplier
  * to an HTTP endpoint with configurable authentication
  * and retry for failed messages.
  *

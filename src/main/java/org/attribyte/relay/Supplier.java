@@ -24,6 +24,14 @@ import java.util.Properties;
 
 /**
  * Supplies messages for relay.
+ * <p>
+ *    A relay loops continuously, sequentially calling <code>nextMessage</code>
+ *    to obtain messages for publication or control messages.
+ *    Control messages cause the relay to pause, record state, record an error,
+ *    or stop. Published messages are <em>asynchronously</em> reported back
+ *    to the supplier with either <code>completedMessage</code> or
+ *    <code>lostMessage</code>.
+ * </p>
  */
 public interface Supplier extends MetricSet {
 
