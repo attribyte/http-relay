@@ -22,6 +22,9 @@ import org.attribyte.api.Logger;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * A transformer that does nothing but return the input message.
+ */
 public class NOOPTransformer implements Transformer {
 
    @Override
