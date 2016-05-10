@@ -23,13 +23,13 @@ import java.io.IOException;
 /**
  * The command line interface.
  */
-public class CLI extends org.attribyte.util.CLI {
+class CLI extends org.attribyte.util.CLI {
 
    /**
     * Creates the command line interface.
     * @param args The command line arguments.
     */
-   public CLI(final String appName, String args[]) throws IOException {
+   CLI(final String appName, String args[]) throws IOException {
       super(appName, DEFAULT_INSTALL_DIR_PROP, args);
    }
 
