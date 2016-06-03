@@ -53,7 +53,7 @@
         <delete dir="${dist}"/>
     </target>
 
-    <target name="mvn-dist" depends="dist">
+    <target name="mvn-dist" depends="clean,dist">
         <javadoc
                 access="public"
                 destdir="${dist}/doc/javadoc"
