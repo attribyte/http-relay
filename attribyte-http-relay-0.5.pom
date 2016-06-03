@@ -37,7 +37,12 @@
         <dependency>
             <groupId>org.attribyte</groupId>
             <artifactId>attribyte-shared-base</artifactId>
-            <version>1.0.2</version>
+            <version>[1.0.2,)</version>
+        </dependency>
+        <dependency>
+            <groupId>org.attribyte</groupId>
+            <artifactId>essem-reporter</artifactId>
+            <version>[1.0.6,)</version>
         </dependency>
         <dependency>
             <groupId>org.attribyte</groupId>
@@ -47,7 +52,7 @@
         <dependency>
             <groupId>org.attribyte</groupId>
             <artifactId>metrics-reporting</artifactId>
-            <version>1.0.2</version>
+            <version>[1.0.3,)</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -55,9 +60,9 @@
             <version>[18.0,)</version>
         </dependency>
         <dependency>
-            <groupId>com.codahale.metrics</groupId>
+            <groupId>io.dropwizard.metricss</groupId>
             <artifactId>metrics-core</artifactId>
-            <version>3.0.2</version>
+            <version>3.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>

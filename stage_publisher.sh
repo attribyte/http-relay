@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSION="0.5.0"
+VERSION="0.5.1"
 cp attribyte-async-publisher-0.5.pom dist_publisher/lib/attribyte-async-publisher-${VERSION}.pom
 cd dist_publisher/lib
 gpg -ab attribyte-async-publisher-${VERSION}.pom

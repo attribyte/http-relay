@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.attribyte</groupId>
     <artifactId>attribyte-async-publisher</artifactId>
-    <version>0.5.0</version>
+    <version>0.5.1</version>
     <packaging>jar</packaging>
     <name>Attribyte Async Publisher</name>
     <description>
@@ -36,7 +36,12 @@
         <dependency>
             <groupId>org.attribyte</groupId>
             <artifactId>attribyte-shared-base</artifactId>
-            <version>1.0.2</version>
+            <version>[1.0.2,)</version>
+        </dependency>
+        <dependency>
+            <groupId>org.attribyte</groupId>
+            <artifactId>essem-reporter</artifactId>
+            <version>[1.0.6,)</version>
         </dependency>
         <dependency>
             <groupId>org.attribyte</groupId>
@@ -49,9 +54,9 @@
             <version>[18.0,)</version>
         </dependency>
         <dependency>
-            <groupId>com.codahale.metrics</groupId>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
-            <version>3.0.2</version>
+            <version>3.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>

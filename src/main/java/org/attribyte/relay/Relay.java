@@ -15,7 +15,6 @@
 package org.attribyte.relay;
 
 import com.codahale.metrics.Counter;
-import com.codahale.metrics.ExponentiallyDecayingReservoir;
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricRegistry;
@@ -39,6 +38,7 @@ import org.attribyte.api.ConsoleLogger;
 import org.attribyte.api.Logger;
 import org.attribyte.api.http.Header;
 import org.attribyte.api.http.impl.BasicAuthScheme;
+import org.attribyte.essem.metrics.HDRReservoir;
 import org.attribyte.metrics.Reporting;
 import org.attribyte.util.InitUtil;
 
@@ -443,7 +443,7 @@ public class Relay implements MetricSet {
    /**
     * Tracks the size of relayed messages.
     */
-   private final Histogram messageSize = new Histogram(new ExponentiallyDecayingReservoir());
+   private final Histogram messageSize = new Histogram(new HDRReservoir(2, HDRReservoir.REPORT_SNAPSHOT_HISTOGRAM));
 
    /**
     * Tracks relay errors.

@@ -16,10 +16,8 @@
 package org.attribyte.relay;
 
 import com.codahale.metrics.Counter;
-import com.codahale.metrics.ExponentiallyDecayingReservoir;
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.Metric;
-import com.codahale.metrics.Timer;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -29,6 +27,8 @@ import org.attribyte.api.http.AsyncClient;
 import org.attribyte.api.http.Request;
 import org.attribyte.api.http.Response;
 import org.attribyte.api.http.impl.jetty.JettyClient;
+import org.attribyte.essem.metrics.HDRReservoir;
+import org.attribyte.essem.metrics.Timer;
 import org.attribyte.util.InitUtil;
 
 import java.io.IOException;
@@ -204,7 +204,7 @@ public abstract class HTTPSupplier implements Supplier {
    /**
     * Records response size.
     */
-   private final Histogram responseSize = new Histogram(new ExponentiallyDecayingReservoir());
+   private final Histogram responseSize = new Histogram(new HDRReservoir(2, HDRReservoir.REPORT_SNAPSHOT_HISTOGRAM));
 
    /**
     * The time elapsed between message create and the (async) response from the target.

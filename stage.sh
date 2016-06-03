@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSION="0.5.0"
+VERSION="0.5.1"
 cp attribyte-http-relay-0.5.pom dist/lib/attribyte-http-relay-${VERSION}.pom
 cd dist/lib
 gpg -ab attribyte-http-relay-${VERSION}.pom
