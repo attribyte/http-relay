@@ -159,7 +159,7 @@ public abstract class HTTPSupplier implements Supplier {
     * @param completedMessage The completed message.
     * @return The next state, if any.
     */
-   public abstract Optional<ByteString> nextState(final Message completedMessage);
+   protected abstract Optional<ByteString> nextState(final Message completedMessage);
 
    @Override
    public void lostMessage(Message message) {
@@ -237,7 +237,11 @@ public abstract class HTTPSupplier implements Supplier {
    protected Logger logger;
 
    private final AtomicBoolean isInit;
-   private final AsyncClient httpClient;
+
+   /**
+    * The HTTP client.
+    */
+   protected final AsyncClient httpClient;
 
    private int sleepMillis;
    private BlockingQueue<ByteString> stateHistory = new LinkedBlockingQueue<>();
