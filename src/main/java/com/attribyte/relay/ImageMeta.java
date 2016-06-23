@@ -21,12 +21,19 @@ package com.attribyte.relay;
 public class ImageMeta {
 
 
+   /**
+    * Creates the metadata.
+    * @param width The width in pixels.
+    * @param height The height in pixels.
+    * @param sourceHash A hash of the source URL.
+    * @param imageHash A hash of the binary image.
+    */
    public ImageMeta(final int width, final int height,
-                    final String sourceHash, final String contentHash) {
+                    final String sourceHash, final String imageHash) {
       this.width = width;
       this.height = height;
       this.sourceHash = sourceHash;
-      this.contentHash = contentHash;
+      this.imageHash = imageHash;
    }
 
    /**
@@ -47,5 +54,5 @@ public class ImageMeta {
    /**
     * A hash of the binary image.
     */
-   public final String contentHash;
+   public final String imageHash;
 }
