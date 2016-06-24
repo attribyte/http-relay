@@ -119,6 +119,7 @@ public class DusterClient implements MetricSet {
                String ext = getExtension(image.getOriginalSrc()).toLowerCase();
                if(meta != null && isExtensionAllowed(ext)) {
                   ClientProtos.WireMessage.Image.Builder builder = ClientProtos.WireMessage.Image.newBuilder(image);
+                  builder.setUrl(transformPath + meta.sourceHash + ext);
                   builder.setWidth(meta.width);
                   builder.setHeight(meta.height);
                   builder.setSize("original");
@@ -139,6 +140,9 @@ public class DusterClient implements MetricSet {
          }
          entry.clearImages();
          entry.addAllImages(replaceImages);
+         if(replaceImages.size() > 0) {
+            entry.setPrimaryImage(replaceImages.get(0));
+         }
       }
    }
 
