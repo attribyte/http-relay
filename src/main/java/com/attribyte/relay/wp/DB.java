@@ -3,6 +3,7 @@ package com.attribyte.relay.wp;
 
 import com.attribyte.client.ClientProtos;
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -97,19 +98,35 @@ class DB {
     */
    private Optional<ClientProtos.WireMessage.Entry.Builder> postFromResultSet(final ResultSet rs) throws SQLException {
 
-      return Optional.of(ClientProtos.WireMessage.Entry.newBuilder()
-              .setUID(buildId(rs.getLong(1)))
-              .setAuthor(ClientProtos.WireMessage.Author.newBuilder()
-                      .setId(rs.getLong(2))
-                      .setSourceUID(this.parentSite.getUID())
-              )
-              .setParentSite(this.parentSite)
-              .setPermanent(true)
-              .setPublishTimeMillis(rs.getTimestamp(3).getTime())
-              .setTitle(rs.getString(4))
-              .setSummary(rs.getString(5))
-              .setContent(rs.getString(6))
-              .setLastModifiedMillis(rs.getTimestamp(8).getTime()));
+      String title = Strings.nullToEmpty(rs.getString(4));
+      String summary = Strings.nullToEmpty(rs.getString(5));
+      String content = Strings.nullToEmpty(rs.getString(6));
+
+      ClientProtos.WireMessage.Entry.Builder builder =
+              ClientProtos.WireMessage.Entry.newBuilder()
+                      .setUID(buildId(rs.getLong(1)))
+                      .setAuthor(ClientProtos.WireMessage.Author.newBuilder()
+                              .setId(rs.getLong(2))
+                              .setSourceUID(this.parentSite.getUID())
+                      )
+                      .setParentSite(ClientProtos.WireMessage.Site.newBuilder().setUID(this.parentSite.getUID()))
+                      .setPermanent(true)
+                      .setPublishTimeMillis(rs.getTimestamp(3).getTime())
+                      .setLastModifiedMillis(rs.getTimestamp(8).getTime());
+
+      if(!title.isEmpty()) {
+         builder.setTitle(title);
+      }
+
+      if(!summary.isEmpty()) {
+         builder.setSummary(summary);
+      }
+
+      if(!content.isEmpty()) {
+         builder.setContent(content);
+      }
+
+      return Optional.of(builder);
    }
 
    /**
