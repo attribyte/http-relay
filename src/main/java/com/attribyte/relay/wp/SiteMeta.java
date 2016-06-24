@@ -17,10 +17,28 @@ package com.attribyte.relay.wp;
 import com.attribyte.client.ClientProtos;
 import org.joda.time.DateTime;
 
+import java.util.Properties;
+
 /**
  * Site metadata.
  */
 public class SiteMeta {
+
+   /**
+    * Creates site metadata from properties.
+    * @param props The properties.
+    */
+   public SiteMeta(final Properties props) {
+      this.id = Long.parseLong(props.getProperty("id", "0"));
+      this.baseURL = props.getProperty("baseURL");
+      this.title = props.getProperty("title");
+      this.description = props.getProperty("description");
+      this.permalinkStructure = props.getProperty("permalinkStructure");
+      long defaultCategoryId = Long.parseLong(props.getProperty("defaultCategoryId", "0"));
+      String defaultCategoryName = props.getProperty("defaultCategoryName");
+      String defaultCategorySlug = props.getProperty("defaultCategorySlug");
+      this.defaultCategory = defaultCategoryId > 0 ? new TermMeta(defaultCategoryId, defaultCategoryName, defaultCategorySlug, 0) : null;
+   }
 
    public SiteMeta(final long id,
                    final String baseURL, final String title,
@@ -33,6 +51,22 @@ public class SiteMeta {
       this.description = description;
       this.permalinkStructure = permalinkStructure;
       this.defaultCategory = defaultCategory;
+   }
+
+   /**
+    * Overrides values in this with those in another, if set.
+    * @param other The other site meta.
+    * @return The site meta with overrides applied.
+    */
+   public SiteMeta overrideWith(final SiteMeta other) {
+      return new SiteMeta(
+              other.id > 0L ? other.id : this.id,
+              other.baseURL != null ? other.baseURL : this.baseURL,
+              other.title != null ? other.title : this.title,
+              other.description != null ? other.description : this.description,
+              other.permalinkStructure != null ? other.permalinkStructure : this.permalinkStructure,
+              other.defaultCategory != null ? other.defaultCategory : this.defaultCategory
+      );
    }
 
    /**
@@ -96,16 +130,18 @@ public class SiteMeta {
     * @see <a href="https://codex.wordpress.org/Using_Permalinks">https://codex.wordpress.org/Using_Permalinks</a>
     */
    public String buildPermalink(final ClientProtos.WireMessage.EntryOrBuilder entry,
-                                final String postSlug, final String authorSlug) {
+                                final String postSlug,
+                                final String authorSlug,
+                                final String category) {
 
       final String post_id = entry.getUID().getId();
       final DateTime publishTime = new DateTime(entry.getPublishTimeMillis());
       final String year = Integer.toString(publishTime.getYear());
-      final String monthnum = String.format("%2d", publishTime.getMonthOfYear());
-      final String day = String.format("%2d", publishTime.getDayOfMonth());
-      final String hour = String.format("%2d", publishTime.getHourOfDay());
-      final String minute = String.format("%2d", publishTime.getMinuteOfHour());
-      final String second = String.format("%2d", publishTime.getSecondOfMinute());
+      final String monthnum = String.format("%02d", publishTime.getMonthOfYear());
+      final String day = String.format("%02d", publishTime.getDayOfMonth());
+      final String hour = String.format("%02d", publishTime.getHourOfDay());
+      final String minute = String.format("%02d", publishTime.getMinuteOfHour());
+      final String second = String.format("%02d", publishTime.getSecondOfMinute());
       final String path = permalinkStructure
               .replace("%year%", year)
               .replace("%monthnum%", monthnum)
@@ -115,11 +151,8 @@ public class SiteMeta {
               .replace("%second%", second)
               .replace("%post_id%", post_id)
               .replace("%postname%", postSlug)
+              .replace("%category%", category)
               .replace("%author%", authorSlug);
       return baseURL + path;
-   }
-
-   protected String getPermalinkCategory(final ClientProtos.WireMessage.EntryOrBuilder entry) {
-      return null;
    }
 }

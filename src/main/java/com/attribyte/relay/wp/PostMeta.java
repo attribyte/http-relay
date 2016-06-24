@@ -28,7 +28,7 @@ public class PostMeta implements Comparable<PostMeta> {
    /**
     * Post metadata that represents zero time.
     */
-   public static final PostMeta ZERO = new PostMeta(0L, 0L, "", "");
+   public static final PostMeta ZERO = new PostMeta(0L, 0L, "", "", 0L, "");
 
    /**
     * Creates post metadata.
@@ -36,12 +36,18 @@ public class PostMeta implements Comparable<PostMeta> {
     * @param lastModifiedMillis The last modified timestamp.
     * @param status The post status string.
     * @param type The post type string.
+    * @param authorId The author id.
+    * @param postName The post name (slug).
     */
-   public PostMeta(final long id, final long lastModifiedMillis, final String status, final String type) {
+   public PostMeta(final long id, final long lastModifiedMillis,
+                   final String status, final String type,
+                   final long authorId, final String postName) {
       this.id = id;
       this.lastModifiedMillis = lastModifiedMillis;
       this.status = status;
       this.type = type;
+      this.authorId = authorId;
+      this.postName = postName;
    }
 
    /**
@@ -64,6 +70,16 @@ public class PostMeta implements Comparable<PostMeta> {
     */
    public final String type;
 
+   /**
+    * The author id.
+    */
+   public final long authorId;
+
+   /**
+    * The post name (slug).
+    */
+   public final String postName;
+
    @Override
    public int compareTo(final PostMeta other) {
       if(this.lastModifiedMillis == other.lastModifiedMillis) {
@@ -79,7 +95,10 @@ public class PostMeta implements Comparable<PostMeta> {
               .add("id", id)
               .add("lastModifiedMillis",lastModifiedMillis)
               .add("status", status)
-              .add("type", type).toString();
+              .add("type", type)
+              .add("authorId", authorId)
+              .add("postName", postName)
+              .toString();
    }
 
    /**
@@ -87,7 +106,7 @@ public class PostMeta implements Comparable<PostMeta> {
     * @return The byte string.
     */
    public ByteString toBytes() {
-      return ByteString.copyFromUtf8(id + "," + lastModifiedMillis + "," + status  + "," + type);
+      return ByteString.copyFromUtf8(id + "," + lastModifiedMillis + "," + status  + "," + type + "," + authorId + "," + postName);
    }
 
    /**
@@ -98,7 +117,7 @@ public class PostMeta implements Comparable<PostMeta> {
     */
    public static PostMeta fromBytes(final ByteString bytes) throws IOException {
       String[] components = bytes.toStringUtf8().split(",");
-      if(components.length < 4) {
+      if(components.length < 6) {
          throw new IOException(String.format("Invalid state: '%s'", bytes.toStringUtf8()));
       }
 
@@ -112,6 +131,11 @@ public class PostMeta implements Comparable<PostMeta> {
          throw new IOException(String.format("Invalid state: '%s'", bytes.toStringUtf8()));
       }
 
-      return new PostMeta(id, lastModifiedMillis, components[2], components[3]);
+      Long authorId = Longs.tryParse(components[4]);
+      if(authorId == null) {
+         throw new IOException(String.format("Invalid state: '%s'", bytes.toStringUtf8()));
+      }
+
+      return new PostMeta(id, lastModifiedMillis, components[2], components[3], authorId, components[5]);
    }
 }

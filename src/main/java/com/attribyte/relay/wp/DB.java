@@ -3,12 +3,10 @@ package com.attribyte.relay.wp;
 
 import com.attribyte.client.ClientProtos;
 import com.google.common.base.Optional;
-import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import org.attribyte.sql.pool.ConnectionPool;
 import org.attribyte.util.SQLUtil;
@@ -19,21 +17,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 class DB {
 
    DB(final ConnectionPool connectionPool,
-      final String namespace,
-      final Set<String> allowedStatus,
-      final Set<String> allowedTypes,
-      final long siteId) throws SQLException {
+      final String postNamespace,
+      final String commentNamespace,
+      final long siteId,
+      final SiteMeta overrideSiteMeta) throws SQLException {
       this.connectionPool = connectionPool;
-      this.namespace = namespace;
-      this.allowedStatus = allowedStatus == null ? DEFAULT_ALLOWED_STATUS : ImmutableSet.copyOf(allowedStatus);
-      this.allowedTypes = allowedTypes == null ? DEFAULT_ALLOWED_TYPES : ImmutableSet.copyOf(allowedTypes);
+      this.postNamespace = postNamespace;
+      this.commentNamespace = commentNamespace;
 
       this.userCache = CacheBuilder.newBuilder()
               .concurrencyLevel(4)
@@ -72,7 +68,22 @@ class DB {
       }
 
       this.selectOptionSQL = "SELECT option_value FROM " + this.optionsTableName + " WHERE option_name=?";
-      this.siteMeta = selectSiteMeta(siteId);
+      this.selectPostByIdSQL = selectPostSQL + this.postsTableName + " WHERE id=?";
+      this.siteMeta = overrideSiteMeta != null ? selectSiteMeta(siteId).overrideWith(overrideSiteMeta) : selectSiteMeta(siteId);
+
+      this.parentSite = ClientProtos.WireMessage.Site.newBuilder()
+              .setUID(buildId(this.siteMeta.id))
+              .setTitle(this.siteMeta.title)
+              .setDescription(this.siteMeta.description)
+              .setUrl(this.siteMeta.baseURL)
+              .build();
+
+      this.parentSource = ClientProtos.WireMessage.Source.newBuilder()
+              .setUID(buildId(this.siteMeta.id))
+              .setTitle(this.siteMeta.title)
+              .setDescription(this.siteMeta.description)
+              .setUrl(this.siteMeta.baseURL)
+              .build();
    }
 
    private static final String selectPostSQL = "SELECT ID, post_author, post_date_gmt, " +
@@ -81,31 +92,45 @@ class DB {
    /**
     * Builds a post from a result set.
     * @param rs The result set.
-    * @param allowedStatus The set of allowed values for status (lower-case).
-    * @param allowedTypes The set of allowed post types (lower-case).
     * @return The post, or {@code absent} if post was not found or not allowed.
     * @throws SQLException on database error.
     */
-   private Optional<ClientProtos.WireMessage.Entry.Builder> postFromResultSet(final ResultSet rs,
-                                                                              final Set<String> allowedStatus,
-                                                                              final Set<String> allowedTypes) throws SQLException {
-
-      if(!allowedStatus.contains(Strings.nullToEmpty(rs.getString(7)).trim().toLowerCase())) {
-         return Optional.absent();
-      }
-
-      if(!allowedTypes.contains(Strings.nullToEmpty(rs.getString(9)).trim().toLowerCase())) {
-         return Optional.absent();
-      }
+   private Optional<ClientProtos.WireMessage.Entry.Builder> postFromResultSet(final ResultSet rs) throws SQLException {
 
       return Optional.of(ClientProtos.WireMessage.Entry.newBuilder()
               .setUID(buildId(rs.getLong(1)))
-              .setAuthor(ClientProtos.WireMessage.Author.newBuilder().setId(rs.getLong(2)))
+              .setAuthor(ClientProtos.WireMessage.Author.newBuilder()
+                      .setId(rs.getLong(2))
+                      .setSourceUID(this.parentSite.getUID())
+              )
+              .setParentSite(this.parentSite)
+              .setPermanent(true)
               .setPublishTimeMillis(rs.getTimestamp(3).getTime())
               .setTitle(rs.getString(4))
               .setSummary(rs.getString(5))
               .setContent(rs.getString(6))
               .setLastModifiedMillis(rs.getTimestamp(8).getTime()));
+   }
+
+   /**
+    * Selects a post by id.
+    * @param id The id.
+    * @return The post or {@code absent} if missing or disallowed status or type.
+    * @throws SQLException on database error.
+    */
+   public Optional<ClientProtos.WireMessage.Entry.Builder> selectPost(final long id) throws SQLException {
+      Connection conn = null;
+      PreparedStatement stmt = null;
+      ResultSet rs = null;
+      try {
+         conn = connectionPool.getConnection();
+         stmt = conn.prepareStatement(selectPostByIdSQL);
+         stmt.setLong(1, id);
+         rs = stmt.executeQuery();
+         return rs.next() ? postFromResultSet(rs) : Optional.absent();
+      } finally {
+         SQLUtil.closeQuietly(conn, stmt, rs);
+      }
    }
 
    /*
@@ -115,7 +140,8 @@ class DB {
       and the last id we've seen.
     */
 
-   private static final String selectModPostsPrefixSQL = "SELECT ID, post_modified_gmt, post_status, post_type FROM ";
+   private static final String selectModPostsPrefixSQL =
+           "SELECT ID, post_modified_gmt, post_status, post_type, post_author, post_name FROM ";
    private static final String selectModPostsSuffixSQL =
            " WHERE post_modified_gmt > ? OR (post_modified_gmt = ? AND ID > ?) ORDER BY post_modified_gmt ASC, ID ASC LIMIT ?";
 
@@ -135,13 +161,13 @@ class DB {
       try {
          conn = connectionPool.getConnection();
          stmt = conn.prepareStatement(selectModPostsPrefixSQL + postsTableName + selectModPostsSuffixSQL);
-         stmt.setTimestamp(0, new Timestamp(start.lastModifiedMillis));
          stmt.setTimestamp(1, new Timestamp(start.lastModifiedMillis));
-         stmt.setLong(2, start.id);
-         stmt.setInt(3, limit);
+         stmt.setTimestamp(2, new Timestamp(start.lastModifiedMillis));
+         stmt.setLong(3, start.id);
+         stmt.setInt(4, limit);
          rs = stmt.executeQuery();
          while(rs.next()) {
-            metaList.add(new PostMeta(rs.getLong(1), rs.getTimestamp(2).getTime(), rs.getString(3), rs.getString(4)));
+            metaList.add(new PostMeta(rs.getLong(1), rs.getTimestamp(2).getTime(), rs.getString(3), rs.getString(4), rs.getLong(5), rs.getString(6)));
          }
       } finally {
          SQLUtil.closeQuietly(conn, stmt, rs);
@@ -259,23 +285,26 @@ class DB {
    private static final String selectUserSQL = "SELECT ID, user_nicename, display_name FROM wp_users";
 
    /**
-    * Builds an id with optional namespace.
+    * Builds an id with optional postNamespace.
     * @param id The numeric id.
     * @return The id.
     */
-   private ClientProtos.WireMessage.Id buildId(final long id) {
-      return namespace == null ? ClientProtos.WireMessage.Id.newBuilder().setId(Long.toString(id)).build() :
-              ClientProtos.WireMessage.Id.newBuilder().setId(Long.toString(id)).setNamespace(namespace).build();
+   ClientProtos.WireMessage.Id buildId(final long id) {
+      return postNamespace == null ? ClientProtos.WireMessage.Id.newBuilder().setId(Long.toString(id)).build() :
+              ClientProtos.WireMessage.Id.newBuilder().setId(Long.toString(id)).setNamespace(postNamespace).build();
    }
 
-
+   /**
+    * Creates a user from a result set.
+    * @param rs The result set.
+    * @return The user.
+    * @throws SQLException on database error.
+    */
    private UserMeta userFromResultSet(final ResultSet rs) throws SQLException {
       return new UserMeta(rs.getLong(1), rs.getString(2), rs.getString(3));
    }
 
-
    private static final String selectUserByIdSQL = selectUserSQL + " WHERE ID=?";
-
 
    /**
     * Resolves a user, possibly with the internal cache.
@@ -344,14 +373,32 @@ class DB {
          stmt = conn.prepareStatement(selectOptionSQL);
          stmt.setString(1, optionName);
          rs = stmt.executeQuery();
-         return rs.next() ? Optional.of(rs.getString(1)) : Optional.absent();
+         if(rs.next()) {
+            String val = rs.getString(1);
+            return val != null ? Optional.of(val.trim()) : Optional.absent();
+         } else {
+            return Optional.absent();
+         }
       } finally {
          SQLUtil.closeQuietly(conn, stmt, rs);
       }
    }
 
+   /**
+    * The connection pool.
+    */
    private final ConnectionPool connectionPool;
-   private final String namespace;
+
+   /**
+    * The id namespace for posts.
+    */
+   private final String postNamespace;
+
+   /**
+    * The id namespace for comments.
+    */
+   private final String commentNamespace;
+
    private final LoadingCache<Long, Optional<UserMeta>> userCache;
    private final LoadingCache<Long, Optional<TermMeta>> termCache;
 
@@ -362,20 +409,22 @@ class DB {
    private final String termsTableName;
    private final String termRelationshipsTableName;
    private final String termTaxonomyTableName;
-   private final Set<String> allowedStatus;
-   private final Set<String> allowedTypes;
+
    private final String selectOptionSQL;
-   private final SiteMeta siteMeta;
+   private final String selectPostByIdSQL;
 
    /**
-    * The default set of allowed post status ('publish' only).
-    * @see <a href="https://codex.wordpress.org/Post_Status">https://codex.wordpress.org/Post_Status</a>
+    * The configured site metadata.
     */
-   public static final ImmutableSet<String> DEFAULT_ALLOWED_STATUS = ImmutableSet.of("publish");
+   final SiteMeta siteMeta;
 
    /**
-    * The default set of allowed post type ('post' only).
-    * @see <a href="https://codex.wordpress.org/Post_Types">https://codex.wordpress.org/Post_Types</a>
+    * The parent site for all posts and comments.
     */
-   public static final ImmutableSet<String> DEFAULT_ALLOWED_TYPES = ImmutableSet.of("post");
+   final ClientProtos.WireMessage.Site parentSite;
+
+   /**
+    * The parent source for all authors.
+    */
+   final ClientProtos.WireMessage.Source parentSource;
 }
