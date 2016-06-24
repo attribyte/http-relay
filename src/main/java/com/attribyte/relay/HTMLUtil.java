@@ -57,6 +57,8 @@ public class HTMLUtil {
                imageBuilder.setTitle(title);
             }
 
+            imageBuilder.setSize("original");
+
             String heightStr = Strings.nullToEmpty(image.attr("height")).trim();
             String widthStr = Strings.nullToEmpty(image.attr("width")).trim();
             if(!heightStr.isEmpty() && !widthStr.isEmpty()) {

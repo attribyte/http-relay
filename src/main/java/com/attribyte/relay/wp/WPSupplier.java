@@ -15,6 +15,7 @@
 package com.attribyte.relay.wp;
 
 import com.attribyte.client.ClientProtos;
+import com.attribyte.relay.DusterClient;
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Metric;
 import com.google.common.base.Optional;
@@ -27,6 +28,8 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.TextFormat;
 import org.attribyte.api.ConsoleLogger;
 import org.attribyte.api.Logger;
+import org.attribyte.api.http.AsyncClient;
+import org.attribyte.api.http.impl.jetty.JettyClient;
 import org.attribyte.essem.metrics.Timer;
 import org.attribyte.relay.Message;
 import org.attribyte.relay.RDBSupplier;
@@ -54,8 +57,8 @@ import static com.attribyte.relay.HTMLUtil.extractLinks;
  *    <dt>siteId</dt>
  *    <dd>The wordpress site id.</dd>
  *
- *    <dt>postNamespace</dt>
- *    <dd>The namespace string added to post ids.</dd>
+ *    <dt>namespace</dt>
+ *    <dd>The namespace string added to post, author, etc. ids</dd>
  *
  *    <dt>commentNamespace</dt>
  *    <dd>The namespace string added to comment ids.</dd>
@@ -78,6 +81,18 @@ import static com.attribyte.relay.HTMLUtil.extractLinks;
  */
 public class WPSupplier extends RDBSupplier {
 
+   public static void main(String[] args) throws Exception {
+      Properties props = new Properties();
+      props.load(new ByteArrayInputStream(Files.toByteArray(new File("/home/matt/devel/attribyte/git/http-relay/config/wp/config.properties"))));
+      props = new InitUtil("supplier.", props, false).getProperties();
+      WPSupplier supplier = new WPSupplier();
+      supplier.init(props, Optional.absent(), new ConsoleLogger());
+      Message message = supplier.nextMessage();
+      Thread.sleep(5000L);
+      supplier.shutdown();
+   }
+
+
    @Override
    public void init(final Properties props,
                     final Optional<ByteString> savedState,
@@ -87,7 +102,7 @@ public class WPSupplier extends RDBSupplier {
 
          this.logger = logger;
 
-         String postNamespace = props.getProperty("postNamespace");
+         String namespace = props.getProperty("namespace");
          String commentNamespace = props.getProperty("commentNamespace", "comment");
 
          long siteId = Long.parseLong(props.getProperty("siteId", "0"));
@@ -99,7 +114,7 @@ public class WPSupplier extends RDBSupplier {
          SiteMeta overrideSiteMeta = new SiteMeta(siteProps);
 
          initPools(props, logger);
-         this.db = new DB(defaultConnectionPool, postNamespace, commentNamespace, siteId, overrideSiteMeta);
+         this.db = new DB(defaultConnectionPool, namespace, commentNamespace, siteId, overrideSiteMeta);
 
          if(savedState.isPresent()) {
             startMeta = PostMeta.fromBytes(savedState.get());
@@ -125,6 +140,14 @@ public class WPSupplier extends RDBSupplier {
          }
 
          this.stopOnLostMessage = props.getProperty("stopOnLostMessage", "false").equalsIgnoreCase("true");
+
+         Properties dusterProps = new InitUtil("duster.", props, false).getProperties();
+         if(dusterProps.size() > 0) {
+            InitUtil httpProps = new InitUtil("http.", props);
+            this.httpClient = new JettyClient();
+            this.httpClient.init("http.", props, logger);
+            this.dusterClient = new DusterClient(dusterProps, httpClient, logger);
+         }
       }
    }
 
@@ -159,6 +182,13 @@ public class WPSupplier extends RDBSupplier {
    public Optional<ByteString> shutdown() {
       if(isInit.compareAndSet(true, false)) {
          shutdownPools();
+         if(httpClient != null) {
+            try {
+               httpClient.shutdown();
+            } catch(Exception e) {
+               logger.error("Problem shutting down HTTP client", e);
+            }
+         }
       }
       return Optional.of(this.startMeta.toBytes());
    }
@@ -205,7 +235,6 @@ public class WPSupplier extends RDBSupplier {
                      allAuthors.add(meta.authorId);
                      replicationMessage.addAuthors(author);
                   }
-                  entry.setAuthor(author);
 
                   List<TermMeta> tags = db.resolvePostTerms(meta.id, "tag");
                   for(TermMeta tag : tags) {
@@ -225,6 +254,11 @@ public class WPSupplier extends RDBSupplier {
 
                //Extracts links (to citations) and images.
                extractLinks(entry, db.siteMeta.baseURL);
+
+               //Enable duster images and transforms, if configured
+               if(dusterClient != null) {
+                  dusterClient.enableImages(entry);
+               }
 
                replicationMessage.addEntries(entry.build());
 
@@ -300,6 +334,16 @@ public class WPSupplier extends RDBSupplier {
     * Should replication be stopped if any lost message is detected?
     */
    private boolean stopOnLostMessage;
+
+   /**
+    * The duster client, if configured.
+    */
+   private DusterClient dusterClient;
+
+   /**
+    * The HTTP client, if required.
+    */
+   private AsyncClient httpClient;
 
    /**
     * Internal state.
