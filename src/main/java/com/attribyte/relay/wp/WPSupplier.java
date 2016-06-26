@@ -81,18 +81,6 @@ import static com.attribyte.relay.HTMLUtil.extractLinks;
  */
 public class WPSupplier extends RDBSupplier {
 
-   public static void main(String[] args) throws Exception {
-      Properties props = new Properties();
-      props.load(new ByteArrayInputStream(Files.toByteArray(new File("/home/matt/devel/attribyte/git/http-relay/config/wp/config.properties"))));
-      props = new InitUtil("supplier.", props, false).getProperties();
-      WPSupplier supplier = new WPSupplier();
-      supplier.init(props, Optional.absent(), new ConsoleLogger());
-      Message message = supplier.nextMessage();
-      Thread.sleep(5000L);
-      supplier.shutdown();
-   }
-
-
    @Override
    public void init(final Properties props,
                     final Optional<ByteString> savedState,
