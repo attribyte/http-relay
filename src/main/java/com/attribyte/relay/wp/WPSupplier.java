@@ -250,14 +250,14 @@ public class WPSupplier extends RDBSupplier {
                   entry.setCanonicalLink(
                           db.siteMeta.buildPermalink(entry, meta.postName, user.niceName, firstTag != null ? firstTag.slug : "unclassified")
                   );
-               }
 
-               //Extracts links (to citations) and images.
-               extractLinks(entry, db.siteMeta.baseURL);
+                  //Extracts links (to citations) and images.
+                  extractLinks(entry, db.siteMeta.baseURL);
 
-               //Enable duster images and transforms, if configured
-               if(dusterClient != null) {
-                  dusterClient.enableImages(entry);
+                  //Enable duster images and transforms, if configured
+                  if(dusterClient != null) {
+                     dusterClient.enableImages(entry);
+                  }
                }
 
                replicationMessage.addEntries(entry.build());
@@ -406,11 +406,10 @@ public class WPSupplier extends RDBSupplier {
     */
    static final ImmutableSet<String> DEFAULT_ALLOWED_TYPES = ImmutableSet.of("post");
 
-
    @Override
    public Map<String, Metric> getMetrics() {
       ImmutableMap.Builder<String, Metric> builder = ImmutableMap.builder();
-      builder.putAll(super.getMetrics());
+      builder.put("db", defaultConnectionPool.getMetrics());
       builder.put("message-builds", messageBuilds);
       builder.put("completed-messages", completedMessages);
       builder.put("lost-messages", lostMessages);
