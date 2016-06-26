@@ -224,7 +224,6 @@ public class Relay implements MetricSet {
 
       cli.logInfo("Creating supplier...");
       this.supplier = (Supplier)supplierProps.initClass("class", Supplier.class);
-      registry.register("supplier", this.supplier);
 
       cli.logInfo("Creating transformer...");
       InitUtil transformerProps = new InitUtil("transformer.", cli.props, false);
@@ -232,7 +231,6 @@ public class Relay implements MetricSet {
          this.transformer = Transformer.NOOP;
       } else {
          this.transformer = (Transformer)transformerProps.initClass("class", Transformer.class);
-         registry.register("transformer", this.transformer);
       }
 
       cli.logInfo("Initializing supplier...");
@@ -255,10 +253,11 @@ public class Relay implements MetricSet {
       }
 
       this.supplier.init(supplierProps.getProperties(), savedState, logger);
+      registry.register("supplier", this.supplier);
 
       cli.logInfo("Initializing transformer...");
       this.transformer.init(this.supplier, transformerProps.getProperties(), logger);
-
+      registry.register("transformer", this.transformer);
 
       int finishExecutorPoolSize = relayProps.getIntProperty("finishExecutorPoolSize", 2);
       this.finishExecutor = Executors.newFixedThreadPool(finishExecutorPoolSize,
