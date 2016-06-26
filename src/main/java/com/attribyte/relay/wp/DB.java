@@ -70,6 +70,8 @@ class DB {
 
       this.selectOptionSQL = "SELECT option_value FROM " + this.optionsTableName + " WHERE option_name=?";
       this.selectPostByIdSQL = selectPostSQL + this.postsTableName + " WHERE id=?";
+      this.selectModPostsSQL = selectModPostsPrefixSQL + this.postsTableName + selectModPostsSuffixSQL;
+
       this.siteMeta = overrideSiteMeta != null ? selectSiteMeta(siteId).overrideWith(overrideSiteMeta) : selectSiteMeta(siteId);
 
       this.parentSite = ClientProtos.WireMessage.Site.newBuilder()
@@ -162,6 +164,8 @@ class DB {
    private static final String selectModPostsSuffixSQL =
            " WHERE post_modified_gmt > ? OR (post_modified_gmt = ? AND ID > ?) ORDER BY post_modified_gmt ASC, ID ASC LIMIT ?";
 
+   private final String selectModPostsSQL;
+
    /**
     * Gets metadata for posts.
     * @param maybeStart If specified, metadata changed after this will be returned.
@@ -177,7 +181,7 @@ class DB {
       List<PostMeta> metaList = Lists.newArrayListWithExpectedSize(limit < 1024 ? limit : 1024);
       try {
          conn = connectionPool.getConnection();
-         stmt = conn.prepareStatement(selectModPostsPrefixSQL + postsTableName + selectModPostsSuffixSQL);
+         stmt = conn.prepareStatement(selectModPostsSQL);
          stmt.setTimestamp(1, new Timestamp(start.lastModifiedMillis));
          stmt.setTimestamp(2, new Timestamp(start.lastModifiedMillis));
          stmt.setLong(3, start.id);
