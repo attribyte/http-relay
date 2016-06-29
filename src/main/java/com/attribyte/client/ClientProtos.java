@@ -348,6 +348,26 @@ public final class ClientProtos {
       // optional bool deleted = 24;
       boolean hasDeleted();
       boolean getDeleted();
+      
+      // repeated .com.attribyte.client.WireMessage.Meta meta = 25;
+      java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> 
+          getMetaList();
+      com.attribyte.client.ClientProtos.WireMessage.Meta getMeta(int index);
+      int getMetaCount();
+      java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+          getMetaOrBuilderList();
+      com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getMetaOrBuilder(
+          int index);
+      
+      // repeated .com.attribyte.client.WireMessage.GeoPoint geo = 26;
+      java.util.List<com.attribyte.client.ClientProtos.WireMessage.GeoPoint> 
+          getGeoList();
+      com.attribyte.client.ClientProtos.WireMessage.GeoPoint getGeo(int index);
+      int getGeoCount();
+      java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder> 
+          getGeoOrBuilderList();
+      com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder getGeoOrBuilder(
+          int index);
     }
     public static final class Entry extends
         com.google.protobuf.GeneratedMessage
@@ -851,6 +871,48 @@ public final class ClientProtos {
         return deleted_;
       }
       
+      // repeated .com.attribyte.client.WireMessage.Meta meta = 25;
+      public static final int META_FIELD_NUMBER = 25;
+      private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> meta_;
+      public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> getMetaList() {
+        return meta_;
+      }
+      public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+          getMetaOrBuilderList() {
+        return meta_;
+      }
+      public int getMetaCount() {
+        return meta_.size();
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.Meta getMeta(int index) {
+        return meta_.get(index);
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getMetaOrBuilder(
+          int index) {
+        return meta_.get(index);
+      }
+      
+      // repeated .com.attribyte.client.WireMessage.GeoPoint geo = 26;
+      public static final int GEO_FIELD_NUMBER = 26;
+      private java.util.List<com.attribyte.client.ClientProtos.WireMessage.GeoPoint> geo_;
+      public java.util.List<com.attribyte.client.ClientProtos.WireMessage.GeoPoint> getGeoList() {
+        return geo_;
+      }
+      public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder> 
+          getGeoOrBuilderList() {
+        return geo_;
+      }
+      public int getGeoCount() {
+        return geo_.size();
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.GeoPoint getGeo(int index) {
+        return geo_.get(index);
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder getGeoOrBuilder(
+          int index) {
+        return geo_.get(index);
+      }
+      
       private void initFields() {
         id_ = 0L;
         title_ = "";
@@ -876,6 +938,8 @@ public final class ClientProtos {
         images_ = java.util.Collections.emptyList();
         uID_ = com.attribyte.client.ClientProtos.WireMessage.Id.getDefaultInstance();
         deleted_ = false;
+        meta_ = java.util.Collections.emptyList();
+        geo_ = java.util.Collections.emptyList();
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -972,6 +1036,12 @@ public final class ClientProtos {
         }
         if (((bitField0_ & 0x00020000) == 0x00020000)) {
           output.writeBool(24, deleted_);
+        }
+        for (int i = 0; i < meta_.size(); i++) {
+          output.writeMessage(25, meta_.get(i));
+        }
+        for (int i = 0; i < geo_.size(); i++) {
+          output.writeMessage(26, geo_.get(i));
         }
         getUnknownFields().writeTo(output);
       }
@@ -1092,6 +1162,14 @@ public final class ClientProtos {
         if (((bitField0_ & 0x00020000) == 0x00020000)) {
           size += com.google.protobuf.CodedOutputStream
             .computeBoolSize(24, deleted_);
+        }
+        for (int i = 0; i < meta_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(25, meta_.get(i));
+        }
+        for (int i = 0; i < geo_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(26, geo_.get(i));
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -1216,6 +1294,8 @@ public final class ClientProtos {
             getSimilarEntriesFieldBuilder();
             getImagesFieldBuilder();
             getUIDFieldBuilder();
+            getMetaFieldBuilder();
+            getGeoFieldBuilder();
           }
         }
         private static Builder create() {
@@ -1300,6 +1380,18 @@ public final class ClientProtos {
           bitField0_ = (bitField0_ & ~0x00400000);
           deleted_ = false;
           bitField0_ = (bitField0_ & ~0x00800000);
+          if (metaBuilder_ == null) {
+            meta_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x01000000);
+          } else {
+            metaBuilder_.clear();
+          }
+          if (geoBuilder_ == null) {
+            geo_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x02000000);
+          } else {
+            geoBuilder_.clear();
+          }
           return this;
         }
         
@@ -1471,6 +1563,24 @@ public final class ClientProtos {
             to_bitField0_ |= 0x00020000;
           }
           result.deleted_ = deleted_;
+          if (metaBuilder_ == null) {
+            if (((bitField0_ & 0x01000000) == 0x01000000)) {
+              meta_ = java.util.Collections.unmodifiableList(meta_);
+              bitField0_ = (bitField0_ & ~0x01000000);
+            }
+            result.meta_ = meta_;
+          } else {
+            result.meta_ = metaBuilder_.build();
+          }
+          if (geoBuilder_ == null) {
+            if (((bitField0_ & 0x02000000) == 0x02000000)) {
+              geo_ = java.util.Collections.unmodifiableList(geo_);
+              bitField0_ = (bitField0_ & ~0x02000000);
+            }
+            result.geo_ = geo_;
+          } else {
+            result.geo_ = geoBuilder_.build();
+          }
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -1648,6 +1758,58 @@ public final class ClientProtos {
           }
           if (other.hasDeleted()) {
             setDeleted(other.getDeleted());
+          }
+          if (metaBuilder_ == null) {
+            if (!other.meta_.isEmpty()) {
+              if (meta_.isEmpty()) {
+                meta_ = other.meta_;
+                bitField0_ = (bitField0_ & ~0x01000000);
+              } else {
+                ensureMetaIsMutable();
+                meta_.addAll(other.meta_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.meta_.isEmpty()) {
+              if (metaBuilder_.isEmpty()) {
+                metaBuilder_.dispose();
+                metaBuilder_ = null;
+                meta_ = other.meta_;
+                bitField0_ = (bitField0_ & ~0x01000000);
+                metaBuilder_ = 
+                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                     getMetaFieldBuilder() : null;
+              } else {
+                metaBuilder_.addAllMessages(other.meta_);
+              }
+            }
+          }
+          if (geoBuilder_ == null) {
+            if (!other.geo_.isEmpty()) {
+              if (geo_.isEmpty()) {
+                geo_ = other.geo_;
+                bitField0_ = (bitField0_ & ~0x02000000);
+              } else {
+                ensureGeoIsMutable();
+                geo_.addAll(other.geo_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.geo_.isEmpty()) {
+              if (geoBuilder_.isEmpty()) {
+                geoBuilder_.dispose();
+                geoBuilder_ = null;
+                geo_ = other.geo_;
+                bitField0_ = (bitField0_ & ~0x02000000);
+                geoBuilder_ = 
+                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                     getGeoFieldBuilder() : null;
+              } else {
+                geoBuilder_.addAllMessages(other.geo_);
+              }
+            }
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -1829,6 +1991,18 @@ public final class ClientProtos {
               case 192: {
                 bitField0_ |= 0x00800000;
                 deleted_ = input.readBool();
+                break;
+              }
+              case 202: {
+                com.attribyte.client.ClientProtos.WireMessage.Meta.Builder subBuilder = com.attribyte.client.ClientProtos.WireMessage.Meta.newBuilder();
+                input.readMessage(subBuilder, extensionRegistry);
+                addMeta(subBuilder.buildPartial());
+                break;
+              }
+              case 210: {
+                com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder subBuilder = com.attribyte.client.ClientProtos.WireMessage.GeoPoint.newBuilder();
+                input.readMessage(subBuilder, extensionRegistry);
+                addGeo(subBuilder.buildPartial());
                 break;
               }
             }
@@ -3335,6 +3509,378 @@ public final class ClientProtos {
           deleted_ = false;
           onChanged();
           return this;
+        }
+        
+        // repeated .com.attribyte.client.WireMessage.Meta meta = 25;
+        private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> meta_ =
+          java.util.Collections.emptyList();
+        private void ensureMetaIsMutable() {
+          if (!((bitField0_ & 0x01000000) == 0x01000000)) {
+            meta_ = new java.util.ArrayList<com.attribyte.client.ClientProtos.WireMessage.Meta>(meta_);
+            bitField0_ |= 0x01000000;
+           }
+        }
+        
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> metaBuilder_;
+        
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> getMetaList() {
+          if (metaBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(meta_);
+          } else {
+            return metaBuilder_.getMessageList();
+          }
+        }
+        public int getMetaCount() {
+          if (metaBuilder_ == null) {
+            return meta_.size();
+          } else {
+            return metaBuilder_.getCount();
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta getMeta(int index) {
+          if (metaBuilder_ == null) {
+            return meta_.get(index);
+          } else {
+            return metaBuilder_.getMessage(index);
+          }
+        }
+        public Builder setMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (metaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureMetaIsMutable();
+            meta_.set(index, value);
+            onChanged();
+          } else {
+            metaBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        public Builder setMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (metaBuilder_ == null) {
+            ensureMetaIsMutable();
+            meta_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            metaBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addMeta(com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (metaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureMetaIsMutable();
+            meta_.add(value);
+            onChanged();
+          } else {
+            metaBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        public Builder addMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (metaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureMetaIsMutable();
+            meta_.add(index, value);
+            onChanged();
+          } else {
+            metaBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        public Builder addMeta(
+            com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (metaBuilder_ == null) {
+            ensureMetaIsMutable();
+            meta_.add(builderForValue.build());
+            onChanged();
+          } else {
+            metaBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (metaBuilder_ == null) {
+            ensureMetaIsMutable();
+            meta_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            metaBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addAllMeta(
+            java.lang.Iterable<? extends com.attribyte.client.ClientProtos.WireMessage.Meta> values) {
+          if (metaBuilder_ == null) {
+            ensureMetaIsMutable();
+            super.addAll(values, meta_);
+            onChanged();
+          } else {
+            metaBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        public Builder clearMeta() {
+          if (metaBuilder_ == null) {
+            meta_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x01000000);
+            onChanged();
+          } else {
+            metaBuilder_.clear();
+          }
+          return this;
+        }
+        public Builder removeMeta(int index) {
+          if (metaBuilder_ == null) {
+            ensureMetaIsMutable();
+            meta_.remove(index);
+            onChanged();
+          } else {
+            metaBuilder_.remove(index);
+          }
+          return this;
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder getMetaBuilder(
+            int index) {
+          return getMetaFieldBuilder().getBuilder(index);
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getMetaOrBuilder(
+            int index) {
+          if (metaBuilder_ == null) {
+            return meta_.get(index);  } else {
+            return metaBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+             getMetaOrBuilderList() {
+          if (metaBuilder_ != null) {
+            return metaBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(meta_);
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder addMetaBuilder() {
+          return getMetaFieldBuilder().addBuilder(
+              com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance());
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder addMetaBuilder(
+            int index) {
+          return getMetaFieldBuilder().addBuilder(
+              index, com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance());
+        }
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta.Builder> 
+             getMetaBuilderList() {
+          return getMetaFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+            getMetaFieldBuilder() {
+          if (metaBuilder_ == null) {
+            metaBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder>(
+                    meta_,
+                    ((bitField0_ & 0x01000000) == 0x01000000),
+                    getParentForChildren(),
+                    isClean());
+            meta_ = null;
+          }
+          return metaBuilder_;
+        }
+        
+        // repeated .com.attribyte.client.WireMessage.GeoPoint geo = 26;
+        private java.util.List<com.attribyte.client.ClientProtos.WireMessage.GeoPoint> geo_ =
+          java.util.Collections.emptyList();
+        private void ensureGeoIsMutable() {
+          if (!((bitField0_ & 0x02000000) == 0x02000000)) {
+            geo_ = new java.util.ArrayList<com.attribyte.client.ClientProtos.WireMessage.GeoPoint>(geo_);
+            bitField0_ |= 0x02000000;
+           }
+        }
+        
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.GeoPoint, com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder, com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder> geoBuilder_;
+        
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.GeoPoint> getGeoList() {
+          if (geoBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(geo_);
+          } else {
+            return geoBuilder_.getMessageList();
+          }
+        }
+        public int getGeoCount() {
+          if (geoBuilder_ == null) {
+            return geo_.size();
+          } else {
+            return geoBuilder_.getCount();
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.GeoPoint getGeo(int index) {
+          if (geoBuilder_ == null) {
+            return geo_.get(index);
+          } else {
+            return geoBuilder_.getMessage(index);
+          }
+        }
+        public Builder setGeo(
+            int index, com.attribyte.client.ClientProtos.WireMessage.GeoPoint value) {
+          if (geoBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureGeoIsMutable();
+            geo_.set(index, value);
+            onChanged();
+          } else {
+            geoBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        public Builder setGeo(
+            int index, com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder builderForValue) {
+          if (geoBuilder_ == null) {
+            ensureGeoIsMutable();
+            geo_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            geoBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addGeo(com.attribyte.client.ClientProtos.WireMessage.GeoPoint value) {
+          if (geoBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureGeoIsMutable();
+            geo_.add(value);
+            onChanged();
+          } else {
+            geoBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        public Builder addGeo(
+            int index, com.attribyte.client.ClientProtos.WireMessage.GeoPoint value) {
+          if (geoBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureGeoIsMutable();
+            geo_.add(index, value);
+            onChanged();
+          } else {
+            geoBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        public Builder addGeo(
+            com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder builderForValue) {
+          if (geoBuilder_ == null) {
+            ensureGeoIsMutable();
+            geo_.add(builderForValue.build());
+            onChanged();
+          } else {
+            geoBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addGeo(
+            int index, com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder builderForValue) {
+          if (geoBuilder_ == null) {
+            ensureGeoIsMutable();
+            geo_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            geoBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addAllGeo(
+            java.lang.Iterable<? extends com.attribyte.client.ClientProtos.WireMessage.GeoPoint> values) {
+          if (geoBuilder_ == null) {
+            ensureGeoIsMutable();
+            super.addAll(values, geo_);
+            onChanged();
+          } else {
+            geoBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        public Builder clearGeo() {
+          if (geoBuilder_ == null) {
+            geo_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x02000000);
+            onChanged();
+          } else {
+            geoBuilder_.clear();
+          }
+          return this;
+        }
+        public Builder removeGeo(int index) {
+          if (geoBuilder_ == null) {
+            ensureGeoIsMutable();
+            geo_.remove(index);
+            onChanged();
+          } else {
+            geoBuilder_.remove(index);
+          }
+          return this;
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder getGeoBuilder(
+            int index) {
+          return getGeoFieldBuilder().getBuilder(index);
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder getGeoOrBuilder(
+            int index) {
+          if (geoBuilder_ == null) {
+            return geo_.get(index);  } else {
+            return geoBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder> 
+             getGeoOrBuilderList() {
+          if (geoBuilder_ != null) {
+            return geoBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(geo_);
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder addGeoBuilder() {
+          return getGeoFieldBuilder().addBuilder(
+              com.attribyte.client.ClientProtos.WireMessage.GeoPoint.getDefaultInstance());
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder addGeoBuilder(
+            int index) {
+          return getGeoFieldBuilder().addBuilder(
+              index, com.attribyte.client.ClientProtos.WireMessage.GeoPoint.getDefaultInstance());
+        }
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder> 
+             getGeoBuilderList() {
+          return getGeoFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.GeoPoint, com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder, com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder> 
+            getGeoFieldBuilder() {
+          if (geoBuilder_ == null) {
+            geoBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                com.attribyte.client.ClientProtos.WireMessage.GeoPoint, com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder, com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder>(
+                    geo_,
+                    ((bitField0_ & 0x02000000) == 0x02000000),
+                    getParentForChildren(),
+                    isClean());
+            geo_ = null;
+          }
+          return geoBuilder_;
         }
         
         // @@protoc_insertion_point(builder_scope:com.attribyte.client.WireMessage.Entry)
@@ -10858,6 +11404,36 @@ public final class ClientProtos {
       boolean hasTimestampRange();
       com.attribyte.client.ClientProtos.WireMessage.TimestampRange getTimestampRange();
       com.attribyte.client.ClientProtos.WireMessage.TimestampRangeOrBuilder getTimestampRangeOrBuilder();
+      
+      // repeated .com.attribyte.client.WireMessage.Meta anyMeta = 23;
+      java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> 
+          getAnyMetaList();
+      com.attribyte.client.ClientProtos.WireMessage.Meta getAnyMeta(int index);
+      int getAnyMetaCount();
+      java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+          getAnyMetaOrBuilderList();
+      com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getAnyMetaOrBuilder(
+          int index);
+      
+      // repeated .com.attribyte.client.WireMessage.Meta allMeta = 24;
+      java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> 
+          getAllMetaList();
+      com.attribyte.client.ClientProtos.WireMessage.Meta getAllMeta(int index);
+      int getAllMetaCount();
+      java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+          getAllMetaOrBuilderList();
+      com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getAllMetaOrBuilder(
+          int index);
+      
+      // repeated .com.attribyte.client.WireMessage.Meta excludeMeta = 25;
+      java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> 
+          getExcludeMetaList();
+      com.attribyte.client.ClientProtos.WireMessage.Meta getExcludeMeta(int index);
+      int getExcludeMetaCount();
+      java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+          getExcludeMetaOrBuilderList();
+      com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getExcludeMetaOrBuilder(
+          int index);
     }
     public static final class Query extends
         com.google.protobuf.GeneratedMessage
@@ -11336,6 +11912,69 @@ public final class ClientProtos {
         return timestampRange_;
       }
       
+      // repeated .com.attribyte.client.WireMessage.Meta anyMeta = 23;
+      public static final int ANYMETA_FIELD_NUMBER = 23;
+      private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> anyMeta_;
+      public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> getAnyMetaList() {
+        return anyMeta_;
+      }
+      public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+          getAnyMetaOrBuilderList() {
+        return anyMeta_;
+      }
+      public int getAnyMetaCount() {
+        return anyMeta_.size();
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.Meta getAnyMeta(int index) {
+        return anyMeta_.get(index);
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getAnyMetaOrBuilder(
+          int index) {
+        return anyMeta_.get(index);
+      }
+      
+      // repeated .com.attribyte.client.WireMessage.Meta allMeta = 24;
+      public static final int ALLMETA_FIELD_NUMBER = 24;
+      private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> allMeta_;
+      public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> getAllMetaList() {
+        return allMeta_;
+      }
+      public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+          getAllMetaOrBuilderList() {
+        return allMeta_;
+      }
+      public int getAllMetaCount() {
+        return allMeta_.size();
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.Meta getAllMeta(int index) {
+        return allMeta_.get(index);
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getAllMetaOrBuilder(
+          int index) {
+        return allMeta_.get(index);
+      }
+      
+      // repeated .com.attribyte.client.WireMessage.Meta excludeMeta = 25;
+      public static final int EXCLUDEMETA_FIELD_NUMBER = 25;
+      private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> excludeMeta_;
+      public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> getExcludeMetaList() {
+        return excludeMeta_;
+      }
+      public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+          getExcludeMetaOrBuilderList() {
+        return excludeMeta_;
+      }
+      public int getExcludeMetaCount() {
+        return excludeMeta_.size();
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.Meta getExcludeMeta(int index) {
+        return excludeMeta_.get(index);
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getExcludeMetaOrBuilder(
+          int index) {
+        return excludeMeta_.get(index);
+      }
+      
       private void initFields() {
         queryString_ = "";
         range_ = com.attribyte.client.ClientProtos.WireMessage.Query.Range.NONE;
@@ -11359,6 +11998,9 @@ public final class ClientProtos {
         authorUIDs_ = java.util.Collections.emptyList();
         entryUIDs_ = java.util.Collections.emptyList();
         timestampRange_ = com.attribyte.client.ClientProtos.WireMessage.TimestampRange.getDefaultInstance();
+        anyMeta_ = java.util.Collections.emptyList();
+        allMeta_ = java.util.Collections.emptyList();
+        excludeMeta_ = java.util.Collections.emptyList();
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -11437,6 +12079,15 @@ public final class ClientProtos {
         }
         if (((bitField0_ & 0x00000040) == 0x00000040)) {
           output.writeMessage(22, timestampRange_);
+        }
+        for (int i = 0; i < anyMeta_.size(); i++) {
+          output.writeMessage(23, anyMeta_.get(i));
+        }
+        for (int i = 0; i < allMeta_.size(); i++) {
+          output.writeMessage(24, allMeta_.get(i));
+        }
+        for (int i = 0; i < excludeMeta_.size(); i++) {
+          output.writeMessage(25, excludeMeta_.get(i));
         }
         getUnknownFields().writeTo(output);
       }
@@ -11595,6 +12246,18 @@ public final class ClientProtos {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(22, timestampRange_);
         }
+        for (int i = 0; i < anyMeta_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(23, anyMeta_.get(i));
+        }
+        for (int i = 0; i < allMeta_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(24, allMeta_.get(i));
+        }
+        for (int i = 0; i < excludeMeta_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(25, excludeMeta_.get(i));
+        }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
         return size;
@@ -11715,6 +12378,9 @@ public final class ClientProtos {
             getAuthorUIDsFieldBuilder();
             getEntryUIDsFieldBuilder();
             getTimestampRangeFieldBuilder();
+            getAnyMetaFieldBuilder();
+            getAllMetaFieldBuilder();
+            getExcludeMetaFieldBuilder();
           }
         }
         private static Builder create() {
@@ -11783,6 +12449,24 @@ public final class ClientProtos {
             timestampRangeBuilder_.clear();
           }
           bitField0_ = (bitField0_ & ~0x00200000);
+          if (anyMetaBuilder_ == null) {
+            anyMeta_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00400000);
+          } else {
+            anyMetaBuilder_.clear();
+          }
+          if (allMetaBuilder_ == null) {
+            allMeta_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00800000);
+          } else {
+            allMetaBuilder_.clear();
+          }
+          if (excludeMetaBuilder_ == null) {
+            excludeMeta_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x01000000);
+          } else {
+            excludeMetaBuilder_.clear();
+          }
           return this;
         }
         
@@ -11949,6 +12633,33 @@ public final class ClientProtos {
             result.timestampRange_ = timestampRange_;
           } else {
             result.timestampRange_ = timestampRangeBuilder_.build();
+          }
+          if (anyMetaBuilder_ == null) {
+            if (((bitField0_ & 0x00400000) == 0x00400000)) {
+              anyMeta_ = java.util.Collections.unmodifiableList(anyMeta_);
+              bitField0_ = (bitField0_ & ~0x00400000);
+            }
+            result.anyMeta_ = anyMeta_;
+          } else {
+            result.anyMeta_ = anyMetaBuilder_.build();
+          }
+          if (allMetaBuilder_ == null) {
+            if (((bitField0_ & 0x00800000) == 0x00800000)) {
+              allMeta_ = java.util.Collections.unmodifiableList(allMeta_);
+              bitField0_ = (bitField0_ & ~0x00800000);
+            }
+            result.allMeta_ = allMeta_;
+          } else {
+            result.allMeta_ = allMetaBuilder_.build();
+          }
+          if (excludeMetaBuilder_ == null) {
+            if (((bitField0_ & 0x01000000) == 0x01000000)) {
+              excludeMeta_ = java.util.Collections.unmodifiableList(excludeMeta_);
+              bitField0_ = (bitField0_ & ~0x01000000);
+            }
+            result.excludeMeta_ = excludeMeta_;
+          } else {
+            result.excludeMeta_ = excludeMetaBuilder_.build();
           }
           result.bitField0_ = to_bitField0_;
           onBuilt();
@@ -12185,6 +12896,84 @@ public final class ClientProtos {
           if (other.hasTimestampRange()) {
             mergeTimestampRange(other.getTimestampRange());
           }
+          if (anyMetaBuilder_ == null) {
+            if (!other.anyMeta_.isEmpty()) {
+              if (anyMeta_.isEmpty()) {
+                anyMeta_ = other.anyMeta_;
+                bitField0_ = (bitField0_ & ~0x00400000);
+              } else {
+                ensureAnyMetaIsMutable();
+                anyMeta_.addAll(other.anyMeta_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.anyMeta_.isEmpty()) {
+              if (anyMetaBuilder_.isEmpty()) {
+                anyMetaBuilder_.dispose();
+                anyMetaBuilder_ = null;
+                anyMeta_ = other.anyMeta_;
+                bitField0_ = (bitField0_ & ~0x00400000);
+                anyMetaBuilder_ = 
+                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                     getAnyMetaFieldBuilder() : null;
+              } else {
+                anyMetaBuilder_.addAllMessages(other.anyMeta_);
+              }
+            }
+          }
+          if (allMetaBuilder_ == null) {
+            if (!other.allMeta_.isEmpty()) {
+              if (allMeta_.isEmpty()) {
+                allMeta_ = other.allMeta_;
+                bitField0_ = (bitField0_ & ~0x00800000);
+              } else {
+                ensureAllMetaIsMutable();
+                allMeta_.addAll(other.allMeta_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.allMeta_.isEmpty()) {
+              if (allMetaBuilder_.isEmpty()) {
+                allMetaBuilder_.dispose();
+                allMetaBuilder_ = null;
+                allMeta_ = other.allMeta_;
+                bitField0_ = (bitField0_ & ~0x00800000);
+                allMetaBuilder_ = 
+                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                     getAllMetaFieldBuilder() : null;
+              } else {
+                allMetaBuilder_.addAllMessages(other.allMeta_);
+              }
+            }
+          }
+          if (excludeMetaBuilder_ == null) {
+            if (!other.excludeMeta_.isEmpty()) {
+              if (excludeMeta_.isEmpty()) {
+                excludeMeta_ = other.excludeMeta_;
+                bitField0_ = (bitField0_ & ~0x01000000);
+              } else {
+                ensureExcludeMetaIsMutable();
+                excludeMeta_.addAll(other.excludeMeta_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.excludeMeta_.isEmpty()) {
+              if (excludeMetaBuilder_.isEmpty()) {
+                excludeMetaBuilder_.dispose();
+                excludeMetaBuilder_ = null;
+                excludeMeta_ = other.excludeMeta_;
+                bitField0_ = (bitField0_ & ~0x01000000);
+                excludeMetaBuilder_ = 
+                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                     getExcludeMetaFieldBuilder() : null;
+              } else {
+                excludeMetaBuilder_.addAllMessages(other.excludeMeta_);
+              }
+            }
+          }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
         }
@@ -12355,6 +13144,24 @@ public final class ClientProtos {
                 }
                 input.readMessage(subBuilder, extensionRegistry);
                 setTimestampRange(subBuilder.buildPartial());
+                break;
+              }
+              case 186: {
+                com.attribyte.client.ClientProtos.WireMessage.Meta.Builder subBuilder = com.attribyte.client.ClientProtos.WireMessage.Meta.newBuilder();
+                input.readMessage(subBuilder, extensionRegistry);
+                addAnyMeta(subBuilder.buildPartial());
+                break;
+              }
+              case 194: {
+                com.attribyte.client.ClientProtos.WireMessage.Meta.Builder subBuilder = com.attribyte.client.ClientProtos.WireMessage.Meta.newBuilder();
+                input.readMessage(subBuilder, extensionRegistry);
+                addAllMeta(subBuilder.buildPartial());
+                break;
+              }
+              case 202: {
+                com.attribyte.client.ClientProtos.WireMessage.Meta.Builder subBuilder = com.attribyte.client.ClientProtos.WireMessage.Meta.newBuilder();
+                input.readMessage(subBuilder, extensionRegistry);
+                addExcludeMeta(subBuilder.buildPartial());
                 break;
               }
             }
@@ -13833,6 +14640,564 @@ public final class ClientProtos {
             timestampRange_ = null;
           }
           return timestampRangeBuilder_;
+        }
+        
+        // repeated .com.attribyte.client.WireMessage.Meta anyMeta = 23;
+        private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> anyMeta_ =
+          java.util.Collections.emptyList();
+        private void ensureAnyMetaIsMutable() {
+          if (!((bitField0_ & 0x00400000) == 0x00400000)) {
+            anyMeta_ = new java.util.ArrayList<com.attribyte.client.ClientProtos.WireMessage.Meta>(anyMeta_);
+            bitField0_ |= 0x00400000;
+           }
+        }
+        
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> anyMetaBuilder_;
+        
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> getAnyMetaList() {
+          if (anyMetaBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(anyMeta_);
+          } else {
+            return anyMetaBuilder_.getMessageList();
+          }
+        }
+        public int getAnyMetaCount() {
+          if (anyMetaBuilder_ == null) {
+            return anyMeta_.size();
+          } else {
+            return anyMetaBuilder_.getCount();
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta getAnyMeta(int index) {
+          if (anyMetaBuilder_ == null) {
+            return anyMeta_.get(index);
+          } else {
+            return anyMetaBuilder_.getMessage(index);
+          }
+        }
+        public Builder setAnyMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (anyMetaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAnyMetaIsMutable();
+            anyMeta_.set(index, value);
+            onChanged();
+          } else {
+            anyMetaBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        public Builder setAnyMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (anyMetaBuilder_ == null) {
+            ensureAnyMetaIsMutable();
+            anyMeta_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            anyMetaBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addAnyMeta(com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (anyMetaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAnyMetaIsMutable();
+            anyMeta_.add(value);
+            onChanged();
+          } else {
+            anyMetaBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        public Builder addAnyMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (anyMetaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAnyMetaIsMutable();
+            anyMeta_.add(index, value);
+            onChanged();
+          } else {
+            anyMetaBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        public Builder addAnyMeta(
+            com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (anyMetaBuilder_ == null) {
+            ensureAnyMetaIsMutable();
+            anyMeta_.add(builderForValue.build());
+            onChanged();
+          } else {
+            anyMetaBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addAnyMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (anyMetaBuilder_ == null) {
+            ensureAnyMetaIsMutable();
+            anyMeta_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            anyMetaBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addAllAnyMeta(
+            java.lang.Iterable<? extends com.attribyte.client.ClientProtos.WireMessage.Meta> values) {
+          if (anyMetaBuilder_ == null) {
+            ensureAnyMetaIsMutable();
+            super.addAll(values, anyMeta_);
+            onChanged();
+          } else {
+            anyMetaBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        public Builder clearAnyMeta() {
+          if (anyMetaBuilder_ == null) {
+            anyMeta_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00400000);
+            onChanged();
+          } else {
+            anyMetaBuilder_.clear();
+          }
+          return this;
+        }
+        public Builder removeAnyMeta(int index) {
+          if (anyMetaBuilder_ == null) {
+            ensureAnyMetaIsMutable();
+            anyMeta_.remove(index);
+            onChanged();
+          } else {
+            anyMetaBuilder_.remove(index);
+          }
+          return this;
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder getAnyMetaBuilder(
+            int index) {
+          return getAnyMetaFieldBuilder().getBuilder(index);
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getAnyMetaOrBuilder(
+            int index) {
+          if (anyMetaBuilder_ == null) {
+            return anyMeta_.get(index);  } else {
+            return anyMetaBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+             getAnyMetaOrBuilderList() {
+          if (anyMetaBuilder_ != null) {
+            return anyMetaBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(anyMeta_);
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder addAnyMetaBuilder() {
+          return getAnyMetaFieldBuilder().addBuilder(
+              com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance());
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder addAnyMetaBuilder(
+            int index) {
+          return getAnyMetaFieldBuilder().addBuilder(
+              index, com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance());
+        }
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta.Builder> 
+             getAnyMetaBuilderList() {
+          return getAnyMetaFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+            getAnyMetaFieldBuilder() {
+          if (anyMetaBuilder_ == null) {
+            anyMetaBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder>(
+                    anyMeta_,
+                    ((bitField0_ & 0x00400000) == 0x00400000),
+                    getParentForChildren(),
+                    isClean());
+            anyMeta_ = null;
+          }
+          return anyMetaBuilder_;
+        }
+        
+        // repeated .com.attribyte.client.WireMessage.Meta allMeta = 24;
+        private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> allMeta_ =
+          java.util.Collections.emptyList();
+        private void ensureAllMetaIsMutable() {
+          if (!((bitField0_ & 0x00800000) == 0x00800000)) {
+            allMeta_ = new java.util.ArrayList<com.attribyte.client.ClientProtos.WireMessage.Meta>(allMeta_);
+            bitField0_ |= 0x00800000;
+           }
+        }
+        
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> allMetaBuilder_;
+        
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> getAllMetaList() {
+          if (allMetaBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(allMeta_);
+          } else {
+            return allMetaBuilder_.getMessageList();
+          }
+        }
+        public int getAllMetaCount() {
+          if (allMetaBuilder_ == null) {
+            return allMeta_.size();
+          } else {
+            return allMetaBuilder_.getCount();
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta getAllMeta(int index) {
+          if (allMetaBuilder_ == null) {
+            return allMeta_.get(index);
+          } else {
+            return allMetaBuilder_.getMessage(index);
+          }
+        }
+        public Builder setAllMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (allMetaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAllMetaIsMutable();
+            allMeta_.set(index, value);
+            onChanged();
+          } else {
+            allMetaBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        public Builder setAllMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (allMetaBuilder_ == null) {
+            ensureAllMetaIsMutable();
+            allMeta_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            allMetaBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addAllMeta(com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (allMetaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAllMetaIsMutable();
+            allMeta_.add(value);
+            onChanged();
+          } else {
+            allMetaBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        public Builder addAllMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (allMetaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAllMetaIsMutable();
+            allMeta_.add(index, value);
+            onChanged();
+          } else {
+            allMetaBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        public Builder addAllMeta(
+            com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (allMetaBuilder_ == null) {
+            ensureAllMetaIsMutable();
+            allMeta_.add(builderForValue.build());
+            onChanged();
+          } else {
+            allMetaBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addAllMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (allMetaBuilder_ == null) {
+            ensureAllMetaIsMutable();
+            allMeta_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            allMetaBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addAllAllMeta(
+            java.lang.Iterable<? extends com.attribyte.client.ClientProtos.WireMessage.Meta> values) {
+          if (allMetaBuilder_ == null) {
+            ensureAllMetaIsMutable();
+            super.addAll(values, allMeta_);
+            onChanged();
+          } else {
+            allMetaBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        public Builder clearAllMeta() {
+          if (allMetaBuilder_ == null) {
+            allMeta_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00800000);
+            onChanged();
+          } else {
+            allMetaBuilder_.clear();
+          }
+          return this;
+        }
+        public Builder removeAllMeta(int index) {
+          if (allMetaBuilder_ == null) {
+            ensureAllMetaIsMutable();
+            allMeta_.remove(index);
+            onChanged();
+          } else {
+            allMetaBuilder_.remove(index);
+          }
+          return this;
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder getAllMetaBuilder(
+            int index) {
+          return getAllMetaFieldBuilder().getBuilder(index);
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getAllMetaOrBuilder(
+            int index) {
+          if (allMetaBuilder_ == null) {
+            return allMeta_.get(index);  } else {
+            return allMetaBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+             getAllMetaOrBuilderList() {
+          if (allMetaBuilder_ != null) {
+            return allMetaBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(allMeta_);
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder addAllMetaBuilder() {
+          return getAllMetaFieldBuilder().addBuilder(
+              com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance());
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder addAllMetaBuilder(
+            int index) {
+          return getAllMetaFieldBuilder().addBuilder(
+              index, com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance());
+        }
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta.Builder> 
+             getAllMetaBuilderList() {
+          return getAllMetaFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+            getAllMetaFieldBuilder() {
+          if (allMetaBuilder_ == null) {
+            allMetaBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder>(
+                    allMeta_,
+                    ((bitField0_ & 0x00800000) == 0x00800000),
+                    getParentForChildren(),
+                    isClean());
+            allMeta_ = null;
+          }
+          return allMetaBuilder_;
+        }
+        
+        // repeated .com.attribyte.client.WireMessage.Meta excludeMeta = 25;
+        private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> excludeMeta_ =
+          java.util.Collections.emptyList();
+        private void ensureExcludeMetaIsMutable() {
+          if (!((bitField0_ & 0x01000000) == 0x01000000)) {
+            excludeMeta_ = new java.util.ArrayList<com.attribyte.client.ClientProtos.WireMessage.Meta>(excludeMeta_);
+            bitField0_ |= 0x01000000;
+           }
+        }
+        
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> excludeMetaBuilder_;
+        
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta> getExcludeMetaList() {
+          if (excludeMetaBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(excludeMeta_);
+          } else {
+            return excludeMetaBuilder_.getMessageList();
+          }
+        }
+        public int getExcludeMetaCount() {
+          if (excludeMetaBuilder_ == null) {
+            return excludeMeta_.size();
+          } else {
+            return excludeMetaBuilder_.getCount();
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta getExcludeMeta(int index) {
+          if (excludeMetaBuilder_ == null) {
+            return excludeMeta_.get(index);
+          } else {
+            return excludeMetaBuilder_.getMessage(index);
+          }
+        }
+        public Builder setExcludeMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (excludeMetaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureExcludeMetaIsMutable();
+            excludeMeta_.set(index, value);
+            onChanged();
+          } else {
+            excludeMetaBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        public Builder setExcludeMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (excludeMetaBuilder_ == null) {
+            ensureExcludeMetaIsMutable();
+            excludeMeta_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            excludeMetaBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addExcludeMeta(com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (excludeMetaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureExcludeMetaIsMutable();
+            excludeMeta_.add(value);
+            onChanged();
+          } else {
+            excludeMetaBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        public Builder addExcludeMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (excludeMetaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureExcludeMetaIsMutable();
+            excludeMeta_.add(index, value);
+            onChanged();
+          } else {
+            excludeMetaBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        public Builder addExcludeMeta(
+            com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (excludeMetaBuilder_ == null) {
+            ensureExcludeMetaIsMutable();
+            excludeMeta_.add(builderForValue.build());
+            onChanged();
+          } else {
+            excludeMetaBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addExcludeMeta(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (excludeMetaBuilder_ == null) {
+            ensureExcludeMetaIsMutable();
+            excludeMeta_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            excludeMetaBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        public Builder addAllExcludeMeta(
+            java.lang.Iterable<? extends com.attribyte.client.ClientProtos.WireMessage.Meta> values) {
+          if (excludeMetaBuilder_ == null) {
+            ensureExcludeMetaIsMutable();
+            super.addAll(values, excludeMeta_);
+            onChanged();
+          } else {
+            excludeMetaBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        public Builder clearExcludeMeta() {
+          if (excludeMetaBuilder_ == null) {
+            excludeMeta_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x01000000);
+            onChanged();
+          } else {
+            excludeMetaBuilder_.clear();
+          }
+          return this;
+        }
+        public Builder removeExcludeMeta(int index) {
+          if (excludeMetaBuilder_ == null) {
+            ensureExcludeMetaIsMutable();
+            excludeMeta_.remove(index);
+            onChanged();
+          } else {
+            excludeMetaBuilder_.remove(index);
+          }
+          return this;
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder getExcludeMetaBuilder(
+            int index) {
+          return getExcludeMetaFieldBuilder().getBuilder(index);
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getExcludeMetaOrBuilder(
+            int index) {
+          if (excludeMetaBuilder_ == null) {
+            return excludeMeta_.get(index);  } else {
+            return excludeMetaBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+             getExcludeMetaOrBuilderList() {
+          if (excludeMetaBuilder_ != null) {
+            return excludeMetaBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(excludeMeta_);
+          }
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder addExcludeMetaBuilder() {
+          return getExcludeMetaFieldBuilder().addBuilder(
+              com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance());
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder addExcludeMetaBuilder(
+            int index) {
+          return getExcludeMetaFieldBuilder().addBuilder(
+              index, com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance());
+        }
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Meta.Builder> 
+             getExcludeMetaBuilderList() {
+          return getExcludeMetaFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+            getExcludeMetaFieldBuilder() {
+          if (excludeMetaBuilder_ == null) {
+            excludeMetaBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder>(
+                    excludeMeta_,
+                    ((bitField0_ & 0x01000000) == 0x01000000),
+                    getParentForChildren(),
+                    isClean());
+            excludeMeta_ = null;
+          }
+          return excludeMetaBuilder_;
         }
         
         // @@protoc_insertion_point(builder_scope:com.attribyte.client.WireMessage.Query)
@@ -26030,6 +27395,1107 @@ public final class ClientProtos {
       // @@protoc_insertion_point(class_scope:com.attribyte.client.WireMessage.TimestampRange)
     }
     
+    public interface MetaOrBuilder
+        extends com.google.protobuf.MessageOrBuilder {
+      
+      // optional string name = 1;
+      boolean hasName();
+      String getName();
+      
+      // optional string value = 2;
+      boolean hasValue();
+      String getValue();
+      
+      // optional string displayName = 3;
+      boolean hasDisplayName();
+      String getDisplayName();
+    }
+    public static final class Meta extends
+        com.google.protobuf.GeneratedMessage
+        implements MetaOrBuilder {
+      // Use Meta.newBuilder() to construct.
+      private Meta(Builder builder) {
+        super(builder);
+      }
+      private Meta(boolean noInit) {}
+      
+      private static final Meta defaultInstance;
+      public static Meta getDefaultInstance() {
+        return defaultInstance;
+      }
+      
+      public Meta getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+      
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_Meta_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_Meta_fieldAccessorTable;
+      }
+      
+      private int bitField0_;
+      // optional string name = 1;
+      public static final int NAME_FIELD_NUMBER = 1;
+      private java.lang.Object name_;
+      public boolean hasName() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public String getName() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          return (String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+            name_ = s;
+          }
+          return s;
+        }
+      }
+      private com.google.protobuf.ByteString getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      
+      // optional string value = 2;
+      public static final int VALUE_FIELD_NUMBER = 2;
+      private java.lang.Object value_;
+      public boolean hasValue() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public String getValue() {
+        java.lang.Object ref = value_;
+        if (ref instanceof String) {
+          return (String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+            value_ = s;
+          }
+          return s;
+        }
+      }
+      private com.google.protobuf.ByteString getValueBytes() {
+        java.lang.Object ref = value_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+          value_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      
+      // optional string displayName = 3;
+      public static final int DISPLAYNAME_FIELD_NUMBER = 3;
+      private java.lang.Object displayName_;
+      public boolean hasDisplayName() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public String getDisplayName() {
+        java.lang.Object ref = displayName_;
+        if (ref instanceof String) {
+          return (String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+            displayName_ = s;
+          }
+          return s;
+        }
+      }
+      private com.google.protobuf.ByteString getDisplayNameBytes() {
+        java.lang.Object ref = displayName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+          displayName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      
+      private void initFields() {
+        name_ = "";
+        value_ = "";
+        displayName_ = "";
+      }
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized != -1) return isInitialized == 1;
+        
+        memoizedIsInitialized = 1;
+        return true;
+      }
+      
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeBytes(1, getNameBytes());
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeBytes(2, getValueBytes());
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          output.writeBytes(3, getDisplayNameBytes());
+        }
+        getUnknownFields().writeTo(output);
+      }
+      
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+      
+        size = 0;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(1, getNameBytes());
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, getValueBytes());
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(3, getDisplayNameBytes());
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSerializedSize = size;
+        return size;
+      }
+      
+      private static final long serialVersionUID = 0L;
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
+          throws java.io.ObjectStreamException {
+        return super.writeReplace();
+      }
+      
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.Meta parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.attribyte.client.ClientProtos.WireMessage.Meta prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+      
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessage.Builder<Builder>
+         implements com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_Meta_descriptor;
+        }
+        
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_Meta_fieldAccessorTable;
+        }
+        
+        // Construct using com.attribyte.client.ClientProtos.WireMessage.Meta.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+        
+        private Builder(BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          }
+        }
+        private static Builder create() {
+          return new Builder();
+        }
+        
+        public Builder clear() {
+          super.clear();
+          name_ = "";
+          bitField0_ = (bitField0_ & ~0x00000001);
+          value_ = "";
+          bitField0_ = (bitField0_ & ~0x00000002);
+          displayName_ = "";
+          bitField0_ = (bitField0_ & ~0x00000004);
+          return this;
+        }
+        
+        public Builder clone() {
+          return create().mergeFrom(buildPartial());
+        }
+        
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.attribyte.client.ClientProtos.WireMessage.Meta.getDescriptor();
+        }
+        
+        public com.attribyte.client.ClientProtos.WireMessage.Meta getDefaultInstanceForType() {
+          return com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance();
+        }
+        
+        public com.attribyte.client.ClientProtos.WireMessage.Meta build() {
+          com.attribyte.client.ClientProtos.WireMessage.Meta result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+        
+        private com.attribyte.client.ClientProtos.WireMessage.Meta buildParsed()
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          com.attribyte.client.ClientProtos.WireMessage.Meta result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(
+              result).asInvalidProtocolBufferException();
+          }
+          return result;
+        }
+        
+        public com.attribyte.client.ClientProtos.WireMessage.Meta buildPartial() {
+          com.attribyte.client.ClientProtos.WireMessage.Meta result = new com.attribyte.client.ClientProtos.WireMessage.Meta(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          result.name_ = name_;
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
+          }
+          result.value_ = value_;
+          if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+            to_bitField0_ |= 0x00000004;
+          }
+          result.displayName_ = displayName_;
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+        
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.attribyte.client.ClientProtos.WireMessage.Meta) {
+            return mergeFrom((com.attribyte.client.ClientProtos.WireMessage.Meta)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+        
+        public Builder mergeFrom(com.attribyte.client.ClientProtos.WireMessage.Meta other) {
+          if (other == com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance()) return this;
+          if (other.hasName()) {
+            setName(other.getName());
+          }
+          if (other.hasValue()) {
+            setValue(other.getValue());
+          }
+          if (other.hasDisplayName()) {
+            setDisplayName(other.getDisplayName());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          return this;
+        }
+        
+        public final boolean isInitialized() {
+          return true;
+        }
+        
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder(
+              this.getUnknownFields());
+          while (true) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              default: {
+                if (!parseUnknownField(input, unknownFields,
+                                       extensionRegistry, tag)) {
+                  this.setUnknownFields(unknownFields.build());
+                  onChanged();
+                  return this;
+                }
+                break;
+              }
+              case 10: {
+                bitField0_ |= 0x00000001;
+                name_ = input.readBytes();
+                break;
+              }
+              case 18: {
+                bitField0_ |= 0x00000002;
+                value_ = input.readBytes();
+                break;
+              }
+              case 26: {
+                bitField0_ |= 0x00000004;
+                displayName_ = input.readBytes();
+                break;
+              }
+            }
+          }
+        }
+        
+        private int bitField0_;
+        
+        // optional string name = 1;
+        private java.lang.Object name_ = "";
+        public boolean hasName() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        public String getName() {
+          java.lang.Object ref = name_;
+          if (!(ref instanceof String)) {
+            String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+            name_ = s;
+            return s;
+          } else {
+            return (String) ref;
+          }
+        }
+        public Builder setName(String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          name_ = value;
+          onChanged();
+          return this;
+        }
+        public Builder clearName() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          name_ = getDefaultInstance().getName();
+          onChanged();
+          return this;
+        }
+        void setName(com.google.protobuf.ByteString value) {
+          bitField0_ |= 0x00000001;
+          name_ = value;
+          onChanged();
+        }
+        
+        // optional string value = 2;
+        private java.lang.Object value_ = "";
+        public boolean hasValue() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        public String getValue() {
+          java.lang.Object ref = value_;
+          if (!(ref instanceof String)) {
+            String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+            value_ = s;
+            return s;
+          } else {
+            return (String) ref;
+          }
+        }
+        public Builder setValue(String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+          value_ = value;
+          onChanged();
+          return this;
+        }
+        public Builder clearValue() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          value_ = getDefaultInstance().getValue();
+          onChanged();
+          return this;
+        }
+        void setValue(com.google.protobuf.ByteString value) {
+          bitField0_ |= 0x00000002;
+          value_ = value;
+          onChanged();
+        }
+        
+        // optional string displayName = 3;
+        private java.lang.Object displayName_ = "";
+        public boolean hasDisplayName() {
+          return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+        public String getDisplayName() {
+          java.lang.Object ref = displayName_;
+          if (!(ref instanceof String)) {
+            String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+            displayName_ = s;
+            return s;
+          } else {
+            return (String) ref;
+          }
+        }
+        public Builder setDisplayName(String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+          displayName_ = value;
+          onChanged();
+          return this;
+        }
+        public Builder clearDisplayName() {
+          bitField0_ = (bitField0_ & ~0x00000004);
+          displayName_ = getDefaultInstance().getDisplayName();
+          onChanged();
+          return this;
+        }
+        void setDisplayName(com.google.protobuf.ByteString value) {
+          bitField0_ |= 0x00000004;
+          displayName_ = value;
+          onChanged();
+        }
+        
+        // @@protoc_insertion_point(builder_scope:com.attribyte.client.WireMessage.Meta)
+      }
+      
+      static {
+        defaultInstance = new Meta(true);
+        defaultInstance.initFields();
+      }
+      
+      // @@protoc_insertion_point(class_scope:com.attribyte.client.WireMessage.Meta)
+    }
+    
+    public interface GeoPointOrBuilder
+        extends com.google.protobuf.MessageOrBuilder {
+      
+      // optional float lon = 1;
+      boolean hasLon();
+      float getLon();
+      
+      // optional float lat = 2;
+      boolean hasLat();
+      float getLat();
+      
+      // optional .com.attribyte.client.WireMessage.Meta meta = 3;
+      boolean hasMeta();
+      com.attribyte.client.ClientProtos.WireMessage.Meta getMeta();
+      com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getMetaOrBuilder();
+    }
+    public static final class GeoPoint extends
+        com.google.protobuf.GeneratedMessage
+        implements GeoPointOrBuilder {
+      // Use GeoPoint.newBuilder() to construct.
+      private GeoPoint(Builder builder) {
+        super(builder);
+      }
+      private GeoPoint(boolean noInit) {}
+      
+      private static final GeoPoint defaultInstance;
+      public static GeoPoint getDefaultInstance() {
+        return defaultInstance;
+      }
+      
+      public GeoPoint getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+      
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_GeoPoint_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_GeoPoint_fieldAccessorTable;
+      }
+      
+      private int bitField0_;
+      // optional float lon = 1;
+      public static final int LON_FIELD_NUMBER = 1;
+      private float lon_;
+      public boolean hasLon() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public float getLon() {
+        return lon_;
+      }
+      
+      // optional float lat = 2;
+      public static final int LAT_FIELD_NUMBER = 2;
+      private float lat_;
+      public boolean hasLat() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public float getLat() {
+        return lat_;
+      }
+      
+      // optional .com.attribyte.client.WireMessage.Meta meta = 3;
+      public static final int META_FIELD_NUMBER = 3;
+      private com.attribyte.client.ClientProtos.WireMessage.Meta meta_;
+      public boolean hasMeta() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.Meta getMeta() {
+        return meta_;
+      }
+      public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getMetaOrBuilder() {
+        return meta_;
+      }
+      
+      private void initFields() {
+        lon_ = 0F;
+        lat_ = 0F;
+        meta_ = com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance();
+      }
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized != -1) return isInitialized == 1;
+        
+        memoizedIsInitialized = 1;
+        return true;
+      }
+      
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeFloat(1, lon_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeFloat(2, lat_);
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          output.writeMessage(3, meta_);
+        }
+        getUnknownFields().writeTo(output);
+      }
+      
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+      
+        size = 0;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(1, lon_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(2, lat_);
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(3, meta_);
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSerializedSize = size;
+        return size;
+      }
+      
+      private static final long serialVersionUID = 0L;
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
+          throws java.io.ObjectStreamException {
+        return super.writeReplace();
+      }
+      
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.attribyte.client.ClientProtos.WireMessage.GeoPoint parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.attribyte.client.ClientProtos.WireMessage.GeoPoint prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+      
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessage.Builder<Builder>
+         implements com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_GeoPoint_descriptor;
+        }
+        
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_GeoPoint_fieldAccessorTable;
+        }
+        
+        // Construct using com.attribyte.client.ClientProtos.WireMessage.GeoPoint.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+        
+        private Builder(BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            getMetaFieldBuilder();
+          }
+        }
+        private static Builder create() {
+          return new Builder();
+        }
+        
+        public Builder clear() {
+          super.clear();
+          lon_ = 0F;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          lat_ = 0F;
+          bitField0_ = (bitField0_ & ~0x00000002);
+          if (metaBuilder_ == null) {
+            meta_ = com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance();
+          } else {
+            metaBuilder_.clear();
+          }
+          bitField0_ = (bitField0_ & ~0x00000004);
+          return this;
+        }
+        
+        public Builder clone() {
+          return create().mergeFrom(buildPartial());
+        }
+        
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.attribyte.client.ClientProtos.WireMessage.GeoPoint.getDescriptor();
+        }
+        
+        public com.attribyte.client.ClientProtos.WireMessage.GeoPoint getDefaultInstanceForType() {
+          return com.attribyte.client.ClientProtos.WireMessage.GeoPoint.getDefaultInstance();
+        }
+        
+        public com.attribyte.client.ClientProtos.WireMessage.GeoPoint build() {
+          com.attribyte.client.ClientProtos.WireMessage.GeoPoint result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+        
+        private com.attribyte.client.ClientProtos.WireMessage.GeoPoint buildParsed()
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          com.attribyte.client.ClientProtos.WireMessage.GeoPoint result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(
+              result).asInvalidProtocolBufferException();
+          }
+          return result;
+        }
+        
+        public com.attribyte.client.ClientProtos.WireMessage.GeoPoint buildPartial() {
+          com.attribyte.client.ClientProtos.WireMessage.GeoPoint result = new com.attribyte.client.ClientProtos.WireMessage.GeoPoint(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          result.lon_ = lon_;
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
+          }
+          result.lat_ = lat_;
+          if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+            to_bitField0_ |= 0x00000004;
+          }
+          if (metaBuilder_ == null) {
+            result.meta_ = meta_;
+          } else {
+            result.meta_ = metaBuilder_.build();
+          }
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+        
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.attribyte.client.ClientProtos.WireMessage.GeoPoint) {
+            return mergeFrom((com.attribyte.client.ClientProtos.WireMessage.GeoPoint)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+        
+        public Builder mergeFrom(com.attribyte.client.ClientProtos.WireMessage.GeoPoint other) {
+          if (other == com.attribyte.client.ClientProtos.WireMessage.GeoPoint.getDefaultInstance()) return this;
+          if (other.hasLon()) {
+            setLon(other.getLon());
+          }
+          if (other.hasLat()) {
+            setLat(other.getLat());
+          }
+          if (other.hasMeta()) {
+            mergeMeta(other.getMeta());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          return this;
+        }
+        
+        public final boolean isInitialized() {
+          return true;
+        }
+        
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder(
+              this.getUnknownFields());
+          while (true) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              default: {
+                if (!parseUnknownField(input, unknownFields,
+                                       extensionRegistry, tag)) {
+                  this.setUnknownFields(unknownFields.build());
+                  onChanged();
+                  return this;
+                }
+                break;
+              }
+              case 13: {
+                bitField0_ |= 0x00000001;
+                lon_ = input.readFloat();
+                break;
+              }
+              case 21: {
+                bitField0_ |= 0x00000002;
+                lat_ = input.readFloat();
+                break;
+              }
+              case 26: {
+                com.attribyte.client.ClientProtos.WireMessage.Meta.Builder subBuilder = com.attribyte.client.ClientProtos.WireMessage.Meta.newBuilder();
+                if (hasMeta()) {
+                  subBuilder.mergeFrom(getMeta());
+                }
+                input.readMessage(subBuilder, extensionRegistry);
+                setMeta(subBuilder.buildPartial());
+                break;
+              }
+            }
+          }
+        }
+        
+        private int bitField0_;
+        
+        // optional float lon = 1;
+        private float lon_ ;
+        public boolean hasLon() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        public float getLon() {
+          return lon_;
+        }
+        public Builder setLon(float value) {
+          bitField0_ |= 0x00000001;
+          lon_ = value;
+          onChanged();
+          return this;
+        }
+        public Builder clearLon() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          lon_ = 0F;
+          onChanged();
+          return this;
+        }
+        
+        // optional float lat = 2;
+        private float lat_ ;
+        public boolean hasLat() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        public float getLat() {
+          return lat_;
+        }
+        public Builder setLat(float value) {
+          bitField0_ |= 0x00000002;
+          lat_ = value;
+          onChanged();
+          return this;
+        }
+        public Builder clearLat() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          lat_ = 0F;
+          onChanged();
+          return this;
+        }
+        
+        // optional .com.attribyte.client.WireMessage.Meta meta = 3;
+        private com.attribyte.client.ClientProtos.WireMessage.Meta meta_ = com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance();
+        private com.google.protobuf.SingleFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> metaBuilder_;
+        public boolean hasMeta() {
+          return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta getMeta() {
+          if (metaBuilder_ == null) {
+            return meta_;
+          } else {
+            return metaBuilder_.getMessage();
+          }
+        }
+        public Builder setMeta(com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (metaBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            meta_ = value;
+            onChanged();
+          } else {
+            metaBuilder_.setMessage(value);
+          }
+          bitField0_ |= 0x00000004;
+          return this;
+        }
+        public Builder setMeta(
+            com.attribyte.client.ClientProtos.WireMessage.Meta.Builder builderForValue) {
+          if (metaBuilder_ == null) {
+            meta_ = builderForValue.build();
+            onChanged();
+          } else {
+            metaBuilder_.setMessage(builderForValue.build());
+          }
+          bitField0_ |= 0x00000004;
+          return this;
+        }
+        public Builder mergeMeta(com.attribyte.client.ClientProtos.WireMessage.Meta value) {
+          if (metaBuilder_ == null) {
+            if (((bitField0_ & 0x00000004) == 0x00000004) &&
+                meta_ != com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance()) {
+              meta_ =
+                com.attribyte.client.ClientProtos.WireMessage.Meta.newBuilder(meta_).mergeFrom(value).buildPartial();
+            } else {
+              meta_ = value;
+            }
+            onChanged();
+          } else {
+            metaBuilder_.mergeFrom(value);
+          }
+          bitField0_ |= 0x00000004;
+          return this;
+        }
+        public Builder clearMeta() {
+          if (metaBuilder_ == null) {
+            meta_ = com.attribyte.client.ClientProtos.WireMessage.Meta.getDefaultInstance();
+            onChanged();
+          } else {
+            metaBuilder_.clear();
+          }
+          bitField0_ = (bitField0_ & ~0x00000004);
+          return this;
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.Meta.Builder getMetaBuilder() {
+          bitField0_ |= 0x00000004;
+          onChanged();
+          return getMetaFieldBuilder().getBuilder();
+        }
+        public com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getMetaOrBuilder() {
+          if (metaBuilder_ != null) {
+            return metaBuilder_.getMessageOrBuilder();
+          } else {
+            return meta_;
+          }
+        }
+        private com.google.protobuf.SingleFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder> 
+            getMetaFieldBuilder() {
+          if (metaBuilder_ == null) {
+            metaBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                com.attribyte.client.ClientProtos.WireMessage.Meta, com.attribyte.client.ClientProtos.WireMessage.Meta.Builder, com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder>(
+                    meta_,
+                    getParentForChildren(),
+                    isClean());
+            meta_ = null;
+          }
+          return metaBuilder_;
+        }
+        
+        // @@protoc_insertion_point(builder_scope:com.attribyte.client.WireMessage.GeoPoint)
+      }
+      
+      static {
+        defaultInstance = new GeoPoint(true);
+        defaultInstance.initFields();
+      }
+      
+      // @@protoc_insertion_point(class_scope:com.attribyte.client.WireMessage.GeoPoint)
+    }
+    
     private int bitField0_;
     // optional .com.attribyte.client.WireMessage.Paging paging = 1;
     public static final int PAGING_FIELD_NUMBER = 1;
@@ -29297,6 +31763,16 @@ public final class ClientProtos {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_attribyte_client_WireMessage_TimestampRange_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_attribyte_client_WireMessage_Meta_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_attribyte_client_WireMessage_Meta_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_attribyte_client_WireMessage_GeoPoint_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_attribyte_client_WireMessage_GeoPoint_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -29306,7 +31782,7 @@ public final class ClientProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014Client.proto\022\024com.attribyte.client\"\3673\n" +
+      "\n\014Client.proto\022\024com.attribyte.client\"\2537\n" +
       "\013WireMessage\0228\n\006paging\030\001 \001(\0132(.com.attri" +
       "byte.client.WireMessage.Paging\0224\n\004sort\030\002" +
       " \001(\0132&.com.attribyte.client.WireMessage." +
@@ -29333,7 +31809,7 @@ public final class ClientProtos {
       "ueryUnion\030\021 \001(\0132,.com.attribyte.client.W" +
       "ireMessage.QueryUnion\022F\n\rtermFrequency\030\022" +
       " \001(\0132/.com.attribyte.client.WireMessage." +
-      "TermFrequency\032\366\005\n\005Entry\022\n\n\002id\030\001 \001(\004\022\r\n\005t" +
+      "TermFrequency\032\345\006\n\005Entry\022\n\n\002id\030\001 \001(\004\022\r\n\005t" +
       "itle\030\002 \001(\t\022\017\n\007summary\030\003 \001(\t\022\017\n\007content\030\004" +
       " \001(\t\022\027\n\017extendedContent\030\005 \001(\t\022\032\n\022lastMod",
       "ifiedMillis\030\006 \001(\004\022\031\n\021publishTimeMillis\030\007" +
@@ -29352,128 +31828,139 @@ public final class ClientProtos {
       "ink\030\025 \003(\t\0227\n\006images\030\026 \003(\0132\'.com.attribyt" +
       "e.client.WireMessage.Image\0221\n\003UID\030\027 \001(\0132" +
       "$.com.attribyte.client.WireMessage.Id\022\017\n" +
-      "\007deleted\030\030 \001(\010\032W\n\014SimilarEntry\0226\n\005entry\030" +
-      "\001 \002(\0132\'.com.attribyte.client.WireMessage" +
-      ".Entry\022\017\n\007explain\030\002 \001(\t\032\265\001\n\004Site\022\013\n\003url\030" +
-      "\001 \001(\t\022\n\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013desc",
-      "ription\030\004 \001(\t\022\020\n\010iconPath\030\005 \001(\t\022\017\n\007block" +
-      "ed\030\006 \001(\010\022\r\n\005liked\030\007 \001(\010\022\013\n\003tag\030\010 \003(\t\0221\n\003" +
-      "UID\030\t \001(\0132$.com.attribyte.client.WireMes" +
-      "sage.Id\032\323\001\n\006Author\022\n\n\002id\030\001 \001(\004\022\014\n\004name\030\002" +
-      " \001(\t\022\020\n\010sourceId\030\003 \001(\004\022\021\n\timagePath\030\004 \001(" +
-      "\t\022\017\n\007blocked\030\005 \001(\010\022\r\n\005liked\030\006 \001(\010\0221\n\003UID" +
-      "\030\007 \001(\0132$.com.attribyte.client.WireMessag" +
-      "e.Id\0227\n\tsourceUID\030\010 \001(\0132$.com.attribyte." +
-      "client.WireMessage.Id\032\207\002\n\005Image\022\r\n\005title" +
-      "\030\001 \001(\t\022\017\n\007altText\030\002 \001(\t\022\013\n\003url\030\003 \001(\t\022\023\n\013",
-      "originalSrc\030\004 \001(\t\022\r\n\005width\030\005 \001(\r\022\016\n\006heig" +
-      "ht\030\006 \001(\r\022\014\n\004size\030\007 \001(\t\022D\n\ntransforms\030\010 \003" +
-      "(\01320.com.attribyte.client.WireMessage.Im" +
-      "ageTransform\022\016\n\006binary\030\t \001(\014\0229\n\004type\030\n \001" +
-      "(\0162+.com.attribyte.client.WireMessage.Im" +
-      "ageType\032\225\001\n\016ImageTransform\022\013\n\003url\030\001 \001(\t\022" +
-      "\r\n\005width\030\002 \001(\r\022\016\n\006height\030\003 \001(\r\022\014\n\004size\030\004" +
-      " \001(\t\022\016\n\006binary\030\005 \001(\014\0229\n\004type\030\006 \001(\0162+.com" +
-      ".attribyte.client.WireMessage.ImageType\032" +
-      "\276\004\n\010Citation\022\n\n\002id\030\001 \001(\004\0228\n\006author\030\002 \001(\013",
-      "2(.com.attribyte.client.WireMessage.Auth" +
-      "or\022\r\n\005title\030\003 \001(\t\022\014\n\004link\030\004 \001(\t\022G\n\tdirec" +
-      "tion\030\006 \001(\01624.com.attribyte.client.WireMe" +
-      "ssage.Citation.Direction\022\020\n\010strength\030\007 \001" +
-      "(\002\0226\n\005image\030\010 \001(\0132\'.com.attribyte.client" +
-      ".WireMessage.Image\022=\n\004type\030\t \001(\0162/.com.a" +
-      "ttribyte.client.WireMessage.Citation.Typ" +
-      "e\0226\n\005entry\030\n \001(\0132\'.com.attribyte.client." +
-      "WireMessage.Entry\0221\n\003UID\030\013 \001(\0132$.com.att" +
-      "ribyte.client.WireMessage.Id\022\017\n\007deleted\030",
-      "\014 \001(\010\"G\n\tDirection\022\006\n\002IN\020\001\022\007\n\003OUT\020\002\022\010\n\004B" +
-      "OTH\020\003\022\010\n\004USER\020\004\022\025\n\021UNKNOWN_DIRECTION\020 \"8" +
-      "\n\004Type\022\t\n\005ENTRY\020\001\022\t\n\005TWEET\020\002\022\010\n\004HOST\020\003\022\020" +
-      "\n\014UNKNOWN_TYPE\020\004\032t\n\004Sort\022C\n\tdirection\030\001 " +
-      "\002(\01620.com.attribyte.client.WireMessage.S" +
-      "ort.Direction\"\'\n\tDirection\022\010\n\004DESC\020\000\022\007\n\003" +
-      "ASC\020\001\022\007\n\003TOP\020\002\032\206\001\n\rExcludeFilter\022\021\n\tauth" +
-      "orIds\030\001 \003(\004\022\023\n\013sourceHosts\030\002 \003(\t\022\023\n\013auth" +
-      "orNames\030\003 \003(\t\0228\n\nauthorUIDs\030\004 \003(\0132$.com." +
-      "attribyte.client.WireMessage.Id\032\301\005\n\005Quer",
-      "y\022\023\n\013queryString\030\001 \001(\t\022B\n\005range\030\002 \001(\0162-." +
-      "com.attribyte.client.WireMessage.Query.R" +
-      "ange:\004NONE\022\021\n\tsourceIds\030\003 \003(\004\022\021\n\tauthorI" +
-      "ds\030\004 \003(\004\022\023\n\013authorNames\030\005 \003(\t\022\020\n\010entryId" +
-      "s\030\006 \003(\t\022\033\n\023rangeStartTimestamp\030\007 \001(\004\022\024\n\014" +
-      "defaultField\030\010 \001(\t\022\020\n\010anyTerms\030\t \003(\t\022\020\n\010" +
-      "allTerms\030\n \003(\t\022\024\n\014excludeTerms\030\013 \003(\t\022\014\n\004" +
-      "name\030\014 \001(\t\022\016\n\006active\030\r \001(\010\022\017\n\007anyTags\030\016 " +
-      "\003(\t\022\017\n\007allTags\030\017 \003(\t\022\023\n\013excludeTags\030\020 \003(" +
-      "\t\022\r\n\005hosts\030\021 \003(\t\022\017\n\007domains\030\022 \003(\t\0228\n\nsou",
-      "rceUIDs\030\023 \003(\0132$.com.attribyte.client.Wir" +
-      "eMessage.Id\0228\n\nauthorUIDs\030\024 \003(\0132$.com.at" +
-      "tribyte.client.WireMessage.Id\0227\n\tentryUI" +
-      "Ds\030\025 \003(\0132$.com.attribyte.client.WireMess" +
-      "age.Id\022H\n\016timestampRange\030\026 \001(\01320.com.att" +
-      "ribyte.client.WireMessage.TimestampRange" +
-      "\"9\n\005Range\022\007\n\003DAY\020\000\022\010\n\004WEEK\020\001\022\t\n\005MONTH\020\002\022" +
-      "\010\n\004YEAR\020\003\022\010\n\004NONE\020\004\032F\n\nQueryUnion\0228\n\007que" +
-      "ries\030\001 \003(\0132\'.com.attribyte.client.WireMe" +
-      "ssage.Query\032\246\001\n\006Paging\022\020\n\010currPage\030\001 \002(\r",
-      "\022\017\n\007perPage\030\002 \002(\r\022\022\n\ntotalItems\030\003 \001(\r\022\022\n" +
-      "\ntotalPages\030\004 \001(\r\022\026\n\016startTimestamp\030\005 \001(" +
-      "\004\022\017\n\007baseURL\030\006 \001(\t\022\023\n\013hasPrevPage\030\007 \001(\010\022" +
-      "\023\n\013hasNextPage\030\010 \001(\010\032\317\001\n\006Origin\022\030\n\020curre" +
-      "ntTimestamp\030\001 \001(\004\022\020\n\010timezone\030\002 \001(\t\022\022\n\nd" +
-      "ateFormat\030\003 \001(\t\022\022\n\ntimeFormat\030\004 \001(\t\022\026\n\016d" +
-      "ateTimeFormat\030\005 \001(\t\022\016\n\006locale\030\006 \001(\t\022\014\n\004l" +
-      "ang\030\007 \001(\t\022\020\n\010serverId\030\010 \001(\t\022\024\n\014imageBase" +
-      "URL\030\t \001(\t\022\023\n\013iconBaseURL\030\n \001(\t\032C\n\nStatic" +
-      "Page\022\023\n\013contentType\030\001 \001(\t\022\017\n\007content\030\002 \001",
-      "(\t\022\017\n\007version\030\003 \001(\t\032V\n\005Error\022\014\n\004code\030\001 \001" +
-      "(\r\022\025\n\rpublicMessage\030\002 \001(\t\022\027\n\017internalMes" +
-      "sage\030\003 \001(\t\022\017\n\007errorId\030\004 \001(\t\0324\n\014TokenRequ" +
-      "est\022\020\n\010username\030\001 \001(\t\022\022\n\npassphrase\030\002 \001(" +
-      "\t\032G\n\rTokenResponse\022\016\n\006userId\030\001 \001(\004\022\r\n\005to" +
-      "ken\030\002 \001(\t\022\027\n\017expireTimestamp\030\003 \001(\004\032*\n\tTo" +
-      "kenPing\022\016\n\006userId\030\001 \001(\004\022\r\n\005token\030\002 \001(\t\032\273" +
-      "\002\n\014Subscription\022\013\n\003url\030\001 \001(\t\022\n\n\002id\030\002 \001(\004" +
-      "\022\r\n\005title\030\003 \001(\t\022\023\n\013description\030\004 \001(\t\022\020\n\010" +
-      "iconPath\030\005 \001(\t\022A\n\004type\030\006 \001(\01623.com.attri",
-      "byte.client.WireMessage.Subscription.Typ" +
-      "e\022\016\n\006altUrl\030\007 \003(\t\0221\n\003UID\030\010 \001(\0132$.com.att" +
-      "ribyte.client.WireMessage.Id\"V\n\004Type\022\010\n\004" +
-      "FEED\020\001\022\n\n\006SEARCH\020\002\022\013\n\007TWITTER\020\003\022\014\n\010FACEB" +
-      "OOK\020\004\022\035\n\031UNKNOWN_SUBSCRIPTION_TYPE\020\005\032\235\002\n" +
-      "\006Source\022\013\n\003url\030\001 \001(\t\022\n\n\002id\030\002 \001(\004\022\r\n\005titl" +
-      "e\030\003 \001(\t\022\023\n\013description\030\004 \001(\t\022\016\n\006altUrl\030\005" +
-      " \003(\t\022:\n\nparentSite\030\006 \001(\0132&.com.attribyte" +
-      ".client.WireMessage.Site\022J\n\022parentSubscr" +
-      "iption\030\007 \001(\0132..com.attribyte.client.Wire",
-      "Message.Subscription\022\013\n\003tag\030\010 \003(\t\0221\n\003UID" +
-      "\030\t \001(\0132$.com.attribyte.client.WireMessag" +
-      "e.Id\032\255\003\n\013Replication\0229\n\007authors\030\001 \003(\0132(." +
-      "com.attribyte.client.WireMessage.Author\022" +
-      "5\n\005sites\030\002 \003(\0132&.com.attribyte.client.Wi" +
-      "reMessage.Site\022E\n\rsubscriptions\030\003 \003(\0132.." +
-      "com.attribyte.client.WireMessage.Subscri" +
-      "ption\0229\n\007sources\030\004 \003(\0132(.com.attribyte.c" +
-      "lient.WireMessage.Source\0228\n\007entries\030\005 \003(" +
-      "\0132\'.com.attribyte.client.WireMessage.Ent",
-      "ry\0228\n\006origin\030\006 \001(\0132(.com.attribyte.clien" +
-      "t.WireMessage.Origin\0226\n\005error\030\007 \001(\0132\'.co" +
-      "m.attribyte.client.WireMessage.Error\032#\n\002" +
-      "Id\022\n\n\002id\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\032\253\001\n\tTe" +
-      "rmStats\022\014\n\004term\030\001 \001(\t\022\021\n\twordCount\030\002 \001(\004" +
-      "\022\025\n\rwordFrequency\030\003 \001(\001\022\020\n\010docCount\030\004 \001(" +
-      "\004\022\024\n\014docFrequency\030\005 \001(\001\022\013\n\003idf\030\006 \001(\001\022\030\n\020" +
-      "wordFrequencyIDF\030\007 \001(\001\022\027\n\017docFrequencyID" +
-      "F\030\010 \001(\001\032\252\001\n\rTermFrequency\022\r\n\005field\030\001 \001(\t" +
-      "\022\017\n\007explain\030\002 \001(\t\022\026\n\016totalIndexDocs\030\003 \001(",
-      "\004\022\021\n\ttotalDocs\030\004 \001(\004\022\022\n\ntotalWords\030\005 \001(\004" +
-      "\022:\n\005stats\030\006 \003(\0132+.com.attribyte.client.W" +
-      "ireMessage.TermStats\032y\n\016TimestampRange\022\026" +
-      "\n\016startTimestamp\030\001 \001(\004\022\024\n\014endTimestamp\030\002" +
-      " \001(\004\022\025\n\rincludesStart\030\003 \001(\010\022\023\n\013includesE" +
-      "nd\030\004 \001(\010\022\r\n\005field\030\005 \001(\t\"=\n\tImageType\022\007\n\003" +
-      "PNG\020\001\022\007\n\003JPG\020\002\022\007\n\003GIF\020\003\022\007\n\003BMP\020\004\022\014\n\007UNKN" +
-      "OWN\020\200\001B\016B\014ClientProtos"
+      "\007deleted\030\030 \001(\010\0224\n\004meta\030\031 \003(\0132&.com.attri" +
+      "byte.client.WireMessage.Meta\0227\n\003geo\030\032 \003(" +
+      "\0132*.com.attribyte.client.WireMessage.Geo" +
+      "Point\032W\n\014SimilarEntry\0226\n\005entry\030\001 \002(\0132\'.c",
+      "om.attribyte.client.WireMessage.Entry\022\017\n" +
+      "\007explain\030\002 \001(\t\032\265\001\n\004Site\022\013\n\003url\030\001 \001(\t\022\n\n\002" +
+      "id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013description\030\004" +
+      " \001(\t\022\020\n\010iconPath\030\005 \001(\t\022\017\n\007blocked\030\006 \001(\010\022" +
+      "\r\n\005liked\030\007 \001(\010\022\013\n\003tag\030\010 \003(\t\0221\n\003UID\030\t \001(\013" +
+      "2$.com.attribyte.client.WireMessage.Id\032\323" +
+      "\001\n\006Author\022\n\n\002id\030\001 \001(\004\022\014\n\004name\030\002 \001(\t\022\020\n\010s" +
+      "ourceId\030\003 \001(\004\022\021\n\timagePath\030\004 \001(\t\022\017\n\007bloc" +
+      "ked\030\005 \001(\010\022\r\n\005liked\030\006 \001(\010\0221\n\003UID\030\007 \001(\0132$." +
+      "com.attribyte.client.WireMessage.Id\0227\n\ts",
+      "ourceUID\030\010 \001(\0132$.com.attribyte.client.Wi" +
+      "reMessage.Id\032\207\002\n\005Image\022\r\n\005title\030\001 \001(\t\022\017\n" +
+      "\007altText\030\002 \001(\t\022\013\n\003url\030\003 \001(\t\022\023\n\013originalS" +
+      "rc\030\004 \001(\t\022\r\n\005width\030\005 \001(\r\022\016\n\006height\030\006 \001(\r\022" +
+      "\014\n\004size\030\007 \001(\t\022D\n\ntransforms\030\010 \003(\01320.com." +
+      "attribyte.client.WireMessage.ImageTransf" +
+      "orm\022\016\n\006binary\030\t \001(\014\0229\n\004type\030\n \001(\0162+.com." +
+      "attribyte.client.WireMessage.ImageType\032\225" +
+      "\001\n\016ImageTransform\022\013\n\003url\030\001 \001(\t\022\r\n\005width\030" +
+      "\002 \001(\r\022\016\n\006height\030\003 \001(\r\022\014\n\004size\030\004 \001(\t\022\016\n\006b",
+      "inary\030\005 \001(\014\0229\n\004type\030\006 \001(\0162+.com.attribyt" +
+      "e.client.WireMessage.ImageType\032\276\004\n\010Citat" +
+      "ion\022\n\n\002id\030\001 \001(\004\0228\n\006author\030\002 \001(\0132(.com.at" +
+      "tribyte.client.WireMessage.Author\022\r\n\005tit" +
+      "le\030\003 \001(\t\022\014\n\004link\030\004 \001(\t\022G\n\tdirection\030\006 \001(" +
+      "\01624.com.attribyte.client.WireMessage.Cit" +
+      "ation.Direction\022\020\n\010strength\030\007 \001(\002\0226\n\005ima" +
+      "ge\030\010 \001(\0132\'.com.attribyte.client.WireMess" +
+      "age.Image\022=\n\004type\030\t \001(\0162/.com.attribyte." +
+      "client.WireMessage.Citation.Type\0226\n\005entr",
+      "y\030\n \001(\0132\'.com.attribyte.client.WireMessa" +
+      "ge.Entry\0221\n\003UID\030\013 \001(\0132$.com.attribyte.cl" +
+      "ient.WireMessage.Id\022\017\n\007deleted\030\014 \001(\010\"G\n\t" +
+      "Direction\022\006\n\002IN\020\001\022\007\n\003OUT\020\002\022\010\n\004BOTH\020\003\022\010\n\004" +
+      "USER\020\004\022\025\n\021UNKNOWN_DIRECTION\020 \"8\n\004Type\022\t\n" +
+      "\005ENTRY\020\001\022\t\n\005TWEET\020\002\022\010\n\004HOST\020\003\022\020\n\014UNKNOWN" +
+      "_TYPE\020\004\032t\n\004Sort\022C\n\tdirection\030\001 \002(\01620.com" +
+      ".attribyte.client.WireMessage.Sort.Direc" +
+      "tion\"\'\n\tDirection\022\010\n\004DESC\020\000\022\007\n\003ASC\020\001\022\007\n\003" +
+      "TOP\020\002\032\206\001\n\rExcludeFilter\022\021\n\tauthorIds\030\001 \003",
+      "(\004\022\023\n\013sourceHosts\030\002 \003(\t\022\023\n\013authorNames\030\003" +
+      " \003(\t\0228\n\nauthorUIDs\030\004 \003(\0132$.com.attribyte" +
+      ".client.WireMessage.Id\032\360\006\n\005Query\022\023\n\013quer" +
+      "yString\030\001 \001(\t\022B\n\005range\030\002 \001(\0162-.com.attri" +
+      "byte.client.WireMessage.Query.Range:\004NON" +
+      "E\022\021\n\tsourceIds\030\003 \003(\004\022\021\n\tauthorIds\030\004 \003(\004\022" +
+      "\023\n\013authorNames\030\005 \003(\t\022\020\n\010entryIds\030\006 \003(\t\022\033" +
+      "\n\023rangeStartTimestamp\030\007 \001(\004\022\024\n\014defaultFi" +
+      "eld\030\010 \001(\t\022\020\n\010anyTerms\030\t \003(\t\022\020\n\010allTerms\030" +
+      "\n \003(\t\022\024\n\014excludeTerms\030\013 \003(\t\022\014\n\004name\030\014 \001(",
+      "\t\022\016\n\006active\030\r \001(\010\022\017\n\007anyTags\030\016 \003(\t\022\017\n\007al" +
+      "lTags\030\017 \003(\t\022\023\n\013excludeTags\030\020 \003(\t\022\r\n\005host" +
+      "s\030\021 \003(\t\022\017\n\007domains\030\022 \003(\t\0228\n\nsourceUIDs\030\023" +
+      " \003(\0132$.com.attribyte.client.WireMessage." +
+      "Id\0228\n\nauthorUIDs\030\024 \003(\0132$.com.attribyte.c" +
+      "lient.WireMessage.Id\0227\n\tentryUIDs\030\025 \003(\0132" +
+      "$.com.attribyte.client.WireMessage.Id\022H\n" +
+      "\016timestampRange\030\026 \001(\01320.com.attribyte.cl" +
+      "ient.WireMessage.TimestampRange\0227\n\007anyMe" +
+      "ta\030\027 \003(\0132&.com.attribyte.client.WireMess",
+      "age.Meta\0227\n\007allMeta\030\030 \003(\0132&.com.attribyt" +
+      "e.client.WireMessage.Meta\022;\n\013excludeMeta" +
+      "\030\031 \003(\0132&.com.attribyte.client.WireMessag" +
+      "e.Meta\"9\n\005Range\022\007\n\003DAY\020\000\022\010\n\004WEEK\020\001\022\t\n\005MO" +
+      "NTH\020\002\022\010\n\004YEAR\020\003\022\010\n\004NONE\020\004\032F\n\nQueryUnion\022" +
+      "8\n\007queries\030\001 \003(\0132\'.com.attribyte.client." +
+      "WireMessage.Query\032\246\001\n\006Paging\022\020\n\010currPage" +
+      "\030\001 \002(\r\022\017\n\007perPage\030\002 \002(\r\022\022\n\ntotalItems\030\003 " +
+      "\001(\r\022\022\n\ntotalPages\030\004 \001(\r\022\026\n\016startTimestam" +
+      "p\030\005 \001(\004\022\017\n\007baseURL\030\006 \001(\t\022\023\n\013hasPrevPage\030",
+      "\007 \001(\010\022\023\n\013hasNextPage\030\010 \001(\010\032\317\001\n\006Origin\022\030\n" +
+      "\020currentTimestamp\030\001 \001(\004\022\020\n\010timezone\030\002 \001(" +
+      "\t\022\022\n\ndateFormat\030\003 \001(\t\022\022\n\ntimeFormat\030\004 \001(" +
+      "\t\022\026\n\016dateTimeFormat\030\005 \001(\t\022\016\n\006locale\030\006 \001(" +
+      "\t\022\014\n\004lang\030\007 \001(\t\022\020\n\010serverId\030\010 \001(\t\022\024\n\014ima" +
+      "geBaseURL\030\t \001(\t\022\023\n\013iconBaseURL\030\n \001(\t\032C\n\n" +
+      "StaticPage\022\023\n\013contentType\030\001 \001(\t\022\017\n\007conte" +
+      "nt\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\032V\n\005Error\022\014\n\004co" +
+      "de\030\001 \001(\r\022\025\n\rpublicMessage\030\002 \001(\t\022\027\n\017inter" +
+      "nalMessage\030\003 \001(\t\022\017\n\007errorId\030\004 \001(\t\0324\n\014Tok",
+      "enRequest\022\020\n\010username\030\001 \001(\t\022\022\n\npassphras" +
+      "e\030\002 \001(\t\032G\n\rTokenResponse\022\016\n\006userId\030\001 \001(\004" +
+      "\022\r\n\005token\030\002 \001(\t\022\027\n\017expireTimestamp\030\003 \001(\004" +
+      "\032*\n\tTokenPing\022\016\n\006userId\030\001 \001(\004\022\r\n\005token\030\002" +
+      " \001(\t\032\273\002\n\014Subscription\022\013\n\003url\030\001 \001(\t\022\n\n\002id" +
+      "\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013description\030\004 \001" +
+      "(\t\022\020\n\010iconPath\030\005 \001(\t\022A\n\004type\030\006 \001(\01623.com" +
+      ".attribyte.client.WireMessage.Subscripti" +
+      "on.Type\022\016\n\006altUrl\030\007 \003(\t\0221\n\003UID\030\010 \001(\0132$.c" +
+      "om.attribyte.client.WireMessage.Id\"V\n\004Ty",
+      "pe\022\010\n\004FEED\020\001\022\n\n\006SEARCH\020\002\022\013\n\007TWITTER\020\003\022\014\n" +
+      "\010FACEBOOK\020\004\022\035\n\031UNKNOWN_SUBSCRIPTION_TYPE" +
+      "\020\005\032\235\002\n\006Source\022\013\n\003url\030\001 \001(\t\022\n\n\002id\030\002 \001(\004\022\r" +
+      "\n\005title\030\003 \001(\t\022\023\n\013description\030\004 \001(\t\022\016\n\006al" +
+      "tUrl\030\005 \003(\t\022:\n\nparentSite\030\006 \001(\0132&.com.att" +
+      "ribyte.client.WireMessage.Site\022J\n\022parent" +
+      "Subscription\030\007 \001(\0132..com.attribyte.clien" +
+      "t.WireMessage.Subscription\022\013\n\003tag\030\010 \003(\t\022" +
+      "1\n\003UID\030\t \001(\0132$.com.attribyte.client.Wire" +
+      "Message.Id\032\255\003\n\013Replication\0229\n\007authors\030\001 ",
+      "\003(\0132(.com.attribyte.client.WireMessage.A" +
+      "uthor\0225\n\005sites\030\002 \003(\0132&.com.attribyte.cli" +
+      "ent.WireMessage.Site\022E\n\rsubscriptions\030\003 " +
+      "\003(\0132..com.attribyte.client.WireMessage.S" +
+      "ubscription\0229\n\007sources\030\004 \003(\0132(.com.attri" +
+      "byte.client.WireMessage.Source\0228\n\007entrie" +
+      "s\030\005 \003(\0132\'.com.attribyte.client.WireMessa" +
+      "ge.Entry\0228\n\006origin\030\006 \001(\0132(.com.attribyte" +
+      ".client.WireMessage.Origin\0226\n\005error\030\007 \001(" +
+      "\0132\'.com.attribyte.client.WireMessage.Err",
+      "or\032#\n\002Id\022\n\n\002id\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\032" +
+      "\253\001\n\tTermStats\022\014\n\004term\030\001 \001(\t\022\021\n\twordCount" +
+      "\030\002 \001(\004\022\025\n\rwordFrequency\030\003 \001(\001\022\020\n\010docCoun" +
+      "t\030\004 \001(\004\022\024\n\014docFrequency\030\005 \001(\001\022\013\n\003idf\030\006 \001" +
+      "(\001\022\030\n\020wordFrequencyIDF\030\007 \001(\001\022\027\n\017docFrequ" +
+      "encyIDF\030\010 \001(\001\032\252\001\n\rTermFrequency\022\r\n\005field" +
+      "\030\001 \001(\t\022\017\n\007explain\030\002 \001(\t\022\026\n\016totalIndexDoc" +
+      "s\030\003 \001(\004\022\021\n\ttotalDocs\030\004 \001(\004\022\022\n\ntotalWords" +
+      "\030\005 \001(\004\022:\n\005stats\030\006 \003(\0132+.com.attribyte.cl" +
+      "ient.WireMessage.TermStats\032y\n\016TimestampR",
+      "ange\022\026\n\016startTimestamp\030\001 \001(\004\022\024\n\014endTimes" +
+      "tamp\030\002 \001(\004\022\025\n\rincludesStart\030\003 \001(\010\022\023\n\013inc" +
+      "ludesEnd\030\004 \001(\010\022\r\n\005field\030\005 \001(\t\0328\n\004Meta\022\014\n" +
+      "\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\022\023\n\013displayNam" +
+      "e\030\003 \001(\t\032Z\n\010GeoPoint\022\013\n\003lon\030\001 \001(\002\022\013\n\003lat\030" +
+      "\002 \001(\002\0224\n\004meta\030\003 \001(\0132&.com.attribyte.clie" +
+      "nt.WireMessage.Meta\"=\n\tImageType\022\007\n\003PNG\020" +
+      "\001\022\007\n\003JPG\020\002\022\007\n\003GIF\020\003\022\007\n\003BMP\020\004\022\014\n\007UNKNOWN\020" +
+      "\200\001B\016B\014ClientProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -29493,7 +31980,7 @@ public final class ClientProtos {
           internal_static_com_attribyte_client_WireMessage_Entry_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_attribyte_client_WireMessage_Entry_descriptor,
-              new java.lang.String[] { "Id", "Title", "Summary", "Content", "ExtendedContent", "LastModifiedMillis", "PublishTimeMillis", "CanonicalLink", "ParentSite", "Author", "PrimaryImage", "LastModifiedHuman", "PublishTimeHuman", "Citations", "SimilarEntries", "Score", "Tag", "Topic", "Lang", "Permanent", "AltLink", "Images", "UID", "Deleted", },
+              new java.lang.String[] { "Id", "Title", "Summary", "Content", "ExtendedContent", "LastModifiedMillis", "PublishTimeMillis", "CanonicalLink", "ParentSite", "Author", "PrimaryImage", "LastModifiedHuman", "PublishTimeHuman", "Citations", "SimilarEntries", "Score", "Tag", "Topic", "Lang", "Permanent", "AltLink", "Images", "UID", "Deleted", "Meta", "Geo", },
               com.attribyte.client.ClientProtos.WireMessage.Entry.class,
               com.attribyte.client.ClientProtos.WireMessage.Entry.Builder.class);
           internal_static_com_attribyte_client_WireMessage_SimilarEntry_descriptor =
@@ -29565,7 +32052,7 @@ public final class ClientProtos {
           internal_static_com_attribyte_client_WireMessage_Query_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_attribyte_client_WireMessage_Query_descriptor,
-              new java.lang.String[] { "QueryString", "Range", "SourceIds", "AuthorIds", "AuthorNames", "EntryIds", "RangeStartTimestamp", "DefaultField", "AnyTerms", "AllTerms", "ExcludeTerms", "Name", "Active", "AnyTags", "AllTags", "ExcludeTags", "Hosts", "Domains", "SourceUIDs", "AuthorUIDs", "EntryUIDs", "TimestampRange", },
+              new java.lang.String[] { "QueryString", "Range", "SourceIds", "AuthorIds", "AuthorNames", "EntryIds", "RangeStartTimestamp", "DefaultField", "AnyTerms", "AllTerms", "ExcludeTerms", "Name", "Active", "AnyTags", "AllTags", "ExcludeTags", "Hosts", "Domains", "SourceUIDs", "AuthorUIDs", "EntryUIDs", "TimestampRange", "AnyMeta", "AllMeta", "ExcludeMeta", },
               com.attribyte.client.ClientProtos.WireMessage.Query.class,
               com.attribyte.client.ClientProtos.WireMessage.Query.Builder.class);
           internal_static_com_attribyte_client_WireMessage_QueryUnion_descriptor =
@@ -29688,6 +32175,22 @@ public final class ClientProtos {
               new java.lang.String[] { "StartTimestamp", "EndTimestamp", "IncludesStart", "IncludesEnd", "Field", },
               com.attribyte.client.ClientProtos.WireMessage.TimestampRange.class,
               com.attribyte.client.ClientProtos.WireMessage.TimestampRange.Builder.class);
+          internal_static_com_attribyte_client_WireMessage_Meta_descriptor =
+            internal_static_com_attribyte_client_WireMessage_descriptor.getNestedTypes().get(25);
+          internal_static_com_attribyte_client_WireMessage_Meta_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_attribyte_client_WireMessage_Meta_descriptor,
+              new java.lang.String[] { "Name", "Value", "DisplayName", },
+              com.attribyte.client.ClientProtos.WireMessage.Meta.class,
+              com.attribyte.client.ClientProtos.WireMessage.Meta.Builder.class);
+          internal_static_com_attribyte_client_WireMessage_GeoPoint_descriptor =
+            internal_static_com_attribyte_client_WireMessage_descriptor.getNestedTypes().get(26);
+          internal_static_com_attribyte_client_WireMessage_GeoPoint_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_attribyte_client_WireMessage_GeoPoint_descriptor,
+              new java.lang.String[] { "Lon", "Lat", "Meta", },
+              com.attribyte.client.ClientProtos.WireMessage.GeoPoint.class,
+              com.attribyte.client.ClientProtos.WireMessage.GeoPoint.Builder.class);
           return null;
         }
       };

@@ -8,6 +8,7 @@ import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Interner;
 import com.google.common.collect.Lists;
 import org.attribyte.sql.pool.ConnectionPool;
 import org.attribyte.util.SQLUtil;
@@ -90,7 +91,8 @@ class DB {
    }
 
    private static final String selectPostSQL = "SELECT ID, post_author, post_date_gmt, " +
-           "post_title, post_excerpt, post_content, post_status, post_modified_gmt, post_type FROM ";
+           "post_title, post_excerpt, post_content, post_status, post_modified_gmt, post_type, " +
+           "comment_status, post_name, guid, post_parent, comment_count FROM ";
 
    /**
     * Builds a post from a result set.
@@ -127,6 +129,24 @@ class DB {
       if(!content.isEmpty()) {
          builder.setContent(content);
       }
+
+      String commentStatus = Strings.nullToEmpty(rs.getString(10));
+      if(!commentStatus.isEmpty()) {
+         builder.addMeta(ClientProtos.WireMessage.Meta.newBuilder().setName("comment_status").setValue(commentStatus));
+      }
+
+      String postName = Strings.nullToEmpty(rs.getString(11));
+      if(!postName.isEmpty()) {
+         builder.addMeta(ClientProtos.WireMessage.Meta.newBuilder().setName("post_name").setValue(postName));
+      }
+
+      String guid = Strings.nullToEmpty(rs.getString(12));
+      if(!guid.isEmpty()) {
+         builder.addMeta(ClientProtos.WireMessage.Meta.newBuilder().setName("guid").setValue(guid));
+      }
+
+      builder.addMeta(ClientProtos.WireMessage.Meta.newBuilder().setName("comment_count").setValue(Integer.toString(rs.getInt(13))));
+      builder.addMeta(ClientProtos.WireMessage.Meta.newBuilder().setName("post_parent").setValue(Long.toString(rs.getLong(14))));
 
       return Optional.of(builder);
    }

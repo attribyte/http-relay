@@ -131,6 +131,12 @@ message WireMessage {
 
       /* The entry is deleted. */
       optional bool deleted = 24;
+
+      /* Arbitrary metadata associated with the entry. */
+      repeated Meta meta = 25;
+
+      /* Geographic data associated with the entry. */
+      repeated GeoPoint geo = 26;
    }
 
    message SimilarEntry {
@@ -457,6 +463,15 @@ message WireMessage {
 
       /* An optional constraint for a timestamp field. */
       optional TimestampRange timestampRange = 22;
+
+      /* A list of custom metadata, any of which may match. */
+      repeated Meta anyMeta = 23;
+
+      /* A list of custom metadata, all of which must be present. */
+      repeated Meta allMeta = 24;
+
+      /* A list of custom metadata which must not be present. */
+      repeated Meta excludeMeta = 25;
    }
 
    message QueryUnion {
@@ -743,5 +758,29 @@ message WireMessage {
 
       /* The timestamp field name. */
       optional string field = 5;
+   }
+
+   message Meta {
+
+      /* The metadata name. */
+      optional string name = 1;
+
+      /* The metadata value. */
+      optional string value = 2;
+
+      /* The name for display. */
+      optional string displayName = 3;
+   }
+
+   message GeoPoint {
+
+      /* The longitude. */
+      optional float lon = 1;
+
+      /* The latitude. */
+      optional float lat = 2;
+
+      /* Associated metadata. */
+      optional Meta meta = 3;
    }
 }
