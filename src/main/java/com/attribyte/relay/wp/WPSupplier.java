@@ -243,6 +243,8 @@ public class WPSupplier extends RDBSupplier {
                   }
 
                   ClientProtos.WireMessage.Entry.Builder entry = ClientProtos.WireMessage.Entry.newBuilder();
+                  entry.setId(post.id);
+                  entry.setPermanent(true);
                   entry.setAuthor(author);
                   entry.setParentSite(parentSite);
 
