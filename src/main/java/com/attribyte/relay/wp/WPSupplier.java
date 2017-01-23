@@ -20,13 +20,12 @@ import com.codahale.metrics.Counter;
 import com.codahale.metrics.Metric;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.common.io.Files;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.TextFormat;
-import org.attribyte.api.ConsoleLogger;
 import org.attribyte.api.Logger;
 import org.attribyte.api.http.AsyncClient;
 import org.attribyte.api.http.impl.jetty.JettyClient;
@@ -35,19 +34,29 @@ import org.attribyte.relay.Message;
 import org.attribyte.relay.RDBSupplier;
 import org.attribyte.relay.util.MessageUtil;
 import org.attribyte.util.InitUtil;
+import org.attribyte.wp.db.DB;
+import org.attribyte.wp.model.ImageAttachment;
+import org.attribyte.wp.model.Meta;
+import org.attribyte.wp.model.Post;
+import org.attribyte.wp.model.Site;
+import org.attribyte.wp.model.TaxonomyTerm;
+import org.attribyte.wp.model.User;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import static com.attribyte.relay.HTMLUtil.extractLinks;
+import static org.attribyte.wp.Util.TAG_TAXONOMY;
+import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
 
 /**
  * Extracts posts from a Wordpress database as Attribyte
@@ -90,19 +99,20 @@ public class WPSupplier extends RDBSupplier {
 
          this.logger = logger;
 
-         String namespace = props.getProperty("namespace");
-         String commentNamespace = props.getProperty("commentNamespace", "comment");
-
-         long siteId = Long.parseLong(props.getProperty("siteId", "0"));
+         final long siteId = Long.parseLong(props.getProperty("siteId", "0"));
          if(siteId < 1L) {
             throw new Exception("A 'siteId' must be specified");
          }
 
          Properties siteProps = new InitUtil("site.", props, false).getProperties();
-         SiteMeta overrideSiteMeta = new SiteMeta(siteProps);
+         Site overrideSite = new Site(siteProps);
+         this.site = db.selectSite().overrideWith(overrideSite);
 
+         final Set<String> cachedTaxonomies = ImmutableSet.of(TAG_TAXONOMY, CATEGORY_TAXONOMY);
+         final Duration taxonomyCacheTimeout = Duration.ofMinutes(30); //TODO: Configure
+         final Duration userCacheTimeout = Duration.ofMinutes(30); //TODO: Configure
          initPools(props, logger);
-         this.db = new DB(defaultConnectionPool, namespace, commentNamespace, siteId, overrideSiteMeta);
+         this.db = new DB(defaultConnectionPool, siteId, cachedTaxonomies, taxonomyCacheTimeout, userCacheTimeout);
 
          if(savedState.isPresent()) {
             startMeta = PostMeta.fromBytes(savedState.get());
@@ -115,23 +125,24 @@ public class WPSupplier extends RDBSupplier {
 
          String allowedStatusStr = props.getProperty("allowedStatus", "").trim();
          if(!allowedStatusStr.isEmpty()) {
-            this.allowedStatus = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedStatusStr));
+            this.allowedStatus = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedStatusStr)
+                    .stream().map(str -> Post.Status.fromString(str)).collect(Collectors.toSet()));
          } else {
             this.allowedStatus = DEFAULT_ALLOWED_STATUS;
          }
 
          String allowedTypesStr = props.getProperty("allowedTypes", "").trim();
          if(!allowedStatusStr.isEmpty()) {
-            this.allowedTypes = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedTypesStr));
+            this.allowedTypes = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedTypesStr))
+                    .stream().map(str -> Post.Type.fromString(str)).collect(Collectors.toSet());
          } else {
-            this.allowedStatus = DEFAULT_ALLOWED_TYPES;
+            this.allowedTypes = DEFAULT_ALLOWED_TYPES;
          }
 
          this.stopOnLostMessage = props.getProperty("stopOnLostMessage", "false").equalsIgnoreCase("true");
 
          Properties dusterProps = new InitUtil("duster.", props, false).getProperties();
          if(dusterProps.size() > 0) {
-            InitUtil httpProps = new InitUtil("http.", props);
             this.httpClient = new JettyClient();
             this.httpClient.init("http.", props, logger);
             this.dusterClient = new DusterClient(dusterProps, httpClient, logger);
@@ -188,81 +199,119 @@ public class WPSupplier extends RDBSupplier {
     */
    protected Optional<Message> buildMessage() throws SQLException {
 
-      List<PostMeta> nextMeta = db.selectModifiedPosts(Optional.of(startMeta), maxSelected);
-      logger.info(String.format("Selected %d modified posts", nextMeta.size()));
+      List<Post> nextPosts = Lists.newArrayListWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
+      for(Post.Type type : allowedTypes) {
+         nextPosts.addAll(db.selectModifiedPosts(type, startMeta.lastModifiedMillis, startMeta.id, maxSelected, true));
+      }
+      Collections.sort(nextPosts, ascendingPostComparator);
 
-      if(nextMeta.isEmpty()) {
+      logger.info(String.format("Selected %d modified posts", nextPosts.size()));
+
+      if(nextPosts.isEmpty()) {
          return Optional.absent();
       }
-
-      Collections.sort(nextMeta); //Ensure the correct ascending order...
 
       Set<Long> allEntries = Sets.newHashSetWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
       Set<Long> allAuthors = Sets.newHashSetWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
 
       ClientProtos.WireMessage.Replication.Builder replicationMessage = ClientProtos.WireMessage.Replication.newBuilder();
-      replicationMessage.addSites(db.parentSite);
-      replicationMessage.addSources(db.parentSource);
+
+      ClientProtos.WireMessage.Site parentSite =
+              ClientProtos.WireMessage.Site.newBuilder()
+                      .setTitle(site.title)
+                      .setDescription(site.description)
+                      .setUrl(site.baseURL).build();
+
+      replicationMessage.addSites(parentSite);
+
       replicationMessage.setOrigin(MessageUtil.buildServerOrigin());
 
-      for(PostMeta meta : nextMeta) {
-         if(!allEntries.contains(meta.id)) {
-            allEntries.add(meta.id);
-            if(allowedStatus.contains(meta.status) && allowedTypes.contains(meta.type)) {
-               ClientProtos.WireMessage.Entry.Builder entry =
-                       db.selectPost(meta.id).or(
-                               ClientProtos.WireMessage.Entry.newBuilder()
-                                       .setUID(db.buildId(meta.id))
-                                       .setDeleted(true)
-                       );
-               if(!entry.getDeleted()) {
-                  UserMeta user = db.resolveUser(meta.authorId).or(new UserMeta(meta.authorId, "Author_" + meta.authorId, "author_" + meta.authorId));
-                  ClientProtos.WireMessage.Author author =
-                          ClientProtos.WireMessage.Author.newBuilder(entry.getAuthor()).setName(user.displayName).build();
-                  if(!allAuthors.contains(meta.authorId)) {
-                     allAuthors.add(meta.authorId);
+      for(Post post : nextPosts) {
+         if(!allEntries.contains(post.id)) {
+            allEntries.add(post.id);
+            if(allowedStatus.contains(post.status)) {
+               if(post.status == Post.Status.PUBLISH) {
+                  if(post.author == null) {
+                     logger.error(String.format("Skipping post with missing author (%d)", post.id));
+                     continue;
+                  }
+
+                  ClientProtos.WireMessage.Author author = fromUser(post.author);
+                  if(!allAuthors.contains(author.getId())) {
+                     allAuthors.add(author.getId());
                      replicationMessage.addAuthors(author);
                   }
 
-                  List<TermMeta> tags = db.resolvePostTerms(meta.id, "tag");
-                  for(TermMeta tag : tags) {
-                     entry.addTag(tag.name);
+                  ClientProtos.WireMessage.Entry.Builder entry = ClientProtos.WireMessage.Entry.newBuilder();
+                  entry.setAuthor(author);
+                  entry.setParentSite(parentSite);
+
+                  entry.setCanonicalLink(site.buildPermalink(post));
+
+                  if(post.title != null) {
+                     entry.setTitle(post.title);
                   }
 
-                  List<TermMeta> categories = db.resolvePostTerms(meta.id, "category");
-                  for(TermMeta category : categories) {
-                     entry.addTopic(category.name);
+                  if(post.excerpt != null) {
+                     entry.setSummary(post.excerpt);
                   }
 
-                  TermMeta firstTag = tags.size() > 0 ? tags.get(0) : categories.size() > 0 ? categories.get(0) : null;
-                  entry.setCanonicalLink(
-                          db.siteMeta.buildPermalink(entry, meta.postName, user.niceName, firstTag != null ? firstTag.slug : "unclassified")
-                  );
+                  if(post.content != null) {
+                     entry.setContent(post.content);
+                  }
 
-                  //Extracts links (to citations) and images.
-                  extractLinks(entry, db.siteMeta.baseURL);
+                  if(post.publishTimestamp > 0L) {
+                     entry.setPublishTimeMillis(post.publishTimestamp);
+                  }
 
-                  //Enable duster images and transforms, if configured
+                  if(post.modifiedTimestamp > 0L) {
+                     entry.setLastModifiedMillis(post.modifiedTimestamp);
+                  }
+
+                  for(Post attachmentPost : post.children) {
+                     if(attachmentPost.type == Post.Type.ATTACHMENT) {
+                        List<Meta> meta = db.selectPostMeta(attachmentPost.id);
+                        if(isPoster(meta)) {
+                           entry.addImagesBuilder()
+                                   .setOriginalSrc(new ImageAttachment(attachmentPost).path())
+                                   .setTitle(Strings.nullToEmpty(attachmentPost.excerpt));
+                           break;
+                        }
+                     }
+                  }
+
+                  extractLinks(entry, site.baseURL); //Images, citations...
+
                   if(dusterClient != null) {
                      dusterClient.enableImages(entry);
                   }
+
+                  for(TaxonomyTerm tag : post.tags()) {
+                     entry.addTag(tag.term.name);
+                  }
+                  for(TaxonomyTerm category : post.categories()) {
+                     entry.addTopic(category.term.name);
+                  }
+
+                  replicationMessage.addEntries(entry.build());
+
+               } else {
+                  replicationMessage.addEntriesBuilder()
+                          .setId(post.id)
+                          .setDeleted(true);
                }
-
-               replicationMessage.addEntries(entry.build());
-
             } else {
                replicationMessage.addEntriesBuilder()
-                       .setUID(db.buildId(meta.id))
+                       .setId(post.id)
                        .setDeleted(true);
             }
          }
       }
 
       String messageId = this.startMeta.toBytes().toStringUtf8();
-      this.startMeta = nextMeta.get(nextMeta.size() - 1);
-
-      System.out.println(TextFormat.printToString(replicationMessage.build()));
-
+      Post lastPost = nextPosts.get(nextPosts.size() - 1);
+      this.startMeta = new PostMeta(lastPost.id, lastPost.modifiedTimestamp);
+      //System.out.println(TextFormat.printToString(replicationMessage.build()));
       return Optional.of(Message.publish(messageId, replicationMessage.build().toByteString()));
    }
 
@@ -299,6 +348,11 @@ public class WPSupplier extends RDBSupplier {
    private DB db;
 
    /**
+    * The parent site for all posts.
+    */
+   private Site site;
+
+   /**
     * The metadata start (timestamp, id) for the next request.
     */
    private PostMeta startMeta;
@@ -306,12 +360,12 @@ public class WPSupplier extends RDBSupplier {
    /**
     * The set of allowed status values.
     */
-   private Set<String> allowedStatus;
+   private Set<Post.Status> allowedStatus;
 
    /**
     * The set of allowed post types.
     */
-   private Set<String> allowedTypes;
+   private Set<Post.Type> allowedTypes;
 
    /**
     * Is the supplier initialized?
@@ -386,13 +440,13 @@ public class WPSupplier extends RDBSupplier {
     * The default set of allowed post status ('publish' only).
     * @see <a href="https://codex.wordpress.org/Post_Status">https://codex.wordpress.org/Post_Status</a>
     */
-   static final ImmutableSet<String> DEFAULT_ALLOWED_STATUS = ImmutableSet.of("publish");
+   static final ImmutableSet<Post.Status> DEFAULT_ALLOWED_STATUS = ImmutableSet.of(Post.Status.PUBLISH);
 
    /**
     * The default set of allowed post type ('post' only).
     * @see <a href="https://codex.wordpress.org/Post_Types">https://codex.wordpress.org/Post_Types</a>
     */
-   static final ImmutableSet<String> DEFAULT_ALLOWED_TYPES = ImmutableSet.of("post");
+   static final ImmutableSet<Post.Type> DEFAULT_ALLOWED_TYPES = ImmutableSet.of(Post.Type.POST);
 
    @Override
    public Map<String, Metric> getMetrics() {
@@ -403,5 +457,49 @@ public class WPSupplier extends RDBSupplier {
       builder.put("lost-messages", lostMessages);
       builder.put("time-to-acknowledge", timeToAcknowledge);
       return builder.build();
+   }
+
+   /**
+    * Sort posts in ascending order by time, id.
+    */
+   static final Comparator<Post> ascendingPostComparator = new Comparator<Post>() {
+      @Override
+      public int compare(final Post o1, final Post o2) {
+         final int c = Long.compare(o1.modifiedTimestamp, o2.modifiedTimestamp);
+         return c != 0 ? c : Long.compare(o1.id, o2.id);
+      }
+   };
+
+   /**
+    * Creates a wire author from a WP user.
+    * @param user The user.
+    * @return The wire author.
+    */
+   private static ClientProtos.WireMessage.Author fromUser(final User user) {
+      ClientProtos.WireMessage.Author.Builder author = ClientProtos.WireMessage.Author.newBuilder();
+      if(!Strings.isNullOrEmpty(user.displayName)) {
+         author.setName(user.displayName);
+      }
+      if(!Strings.isNullOrEmpty(user.username)) {
+         author.setUsername(user.username);
+      }
+      if(user.id > 0) {
+         author.setId(user.id);
+      }
+      return author.build();
+   }
+
+   /**
+    * Determine if attachment metadata identifies a "poster" image.
+    * @param meta The metadata.
+    * @return Does the metadata contain a reference to a "poster" image?
+    */
+   private static boolean isPoster(final List<Meta> meta) {
+      for(Meta m : meta) {
+         if(m.key.equals("_thumbnail_id")) {
+            return true;
+         }
+      }
+      return false;
    }
 }

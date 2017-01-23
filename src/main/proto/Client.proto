@@ -204,6 +204,8 @@ message WireMessage {
       /* The unique id assigned to the source with namespace. */
       optional Id sourceUID = 8;
 
+      /* The (usually internal) name for the author. */
+      optional string username = 9;
    }
 
    enum ImageType {

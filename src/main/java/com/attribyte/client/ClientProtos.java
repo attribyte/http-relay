@@ -5546,6 +5546,10 @@ public final class ClientProtos {
       boolean hasSourceUID();
       com.attribyte.client.ClientProtos.WireMessage.Id getSourceUID();
       com.attribyte.client.ClientProtos.WireMessage.IdOrBuilder getSourceUIDOrBuilder();
+      
+      // optional string username = 9;
+      boolean hasUsername();
+      String getUsername();
     }
     public static final class Author extends
         com.google.protobuf.GeneratedMessage
@@ -5706,6 +5710,38 @@ public final class ClientProtos {
         return sourceUID_;
       }
       
+      // optional string username = 9;
+      public static final int USERNAME_FIELD_NUMBER = 9;
+      private java.lang.Object username_;
+      public boolean hasUsername() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      public String getUsername() {
+        java.lang.Object ref = username_;
+        if (ref instanceof String) {
+          return (String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+            username_ = s;
+          }
+          return s;
+        }
+      }
+      private com.google.protobuf.ByteString getUsernameBytes() {
+        java.lang.Object ref = username_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+          username_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      
       private void initFields() {
         id_ = 0L;
         name_ = "";
@@ -5715,6 +5751,7 @@ public final class ClientProtos {
         liked_ = false;
         uID_ = com.attribyte.client.ClientProtos.WireMessage.Id.getDefaultInstance();
         sourceUID_ = com.attribyte.client.ClientProtos.WireMessage.Id.getDefaultInstance();
+        username_ = "";
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -5751,6 +5788,9 @@ public final class ClientProtos {
         }
         if (((bitField0_ & 0x00000080) == 0x00000080)) {
           output.writeMessage(8, sourceUID_);
+        }
+        if (((bitField0_ & 0x00000100) == 0x00000100)) {
+          output.writeBytes(9, getUsernameBytes());
         }
         getUnknownFields().writeTo(output);
       }
@@ -5792,6 +5832,10 @@ public final class ClientProtos {
         if (((bitField0_ & 0x00000080) == 0x00000080)) {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(8, sourceUID_);
+        }
+        if (((bitField0_ & 0x00000100) == 0x00000100)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(9, getUsernameBytes());
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -5943,6 +5987,8 @@ public final class ClientProtos {
             sourceUIDBuilder_.clear();
           }
           bitField0_ = (bitField0_ & ~0x00000080);
+          username_ = "";
+          bitField0_ = (bitField0_ & ~0x00000100);
           return this;
         }
         
@@ -6021,6 +6067,10 @@ public final class ClientProtos {
           } else {
             result.sourceUID_ = sourceUIDBuilder_.build();
           }
+          if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+            to_bitField0_ |= 0x00000100;
+          }
+          result.username_ = username_;
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -6060,6 +6110,9 @@ public final class ClientProtos {
           }
           if (other.hasSourceUID()) {
             mergeSourceUID(other.getSourceUID());
+          }
+          if (other.hasUsername()) {
+            setUsername(other.getUsername());
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -6138,6 +6191,11 @@ public final class ClientProtos {
                 }
                 input.readMessage(subBuilder, extensionRegistry);
                 setSourceUID(subBuilder.buildPartial());
+                break;
+              }
+              case 74: {
+                bitField0_ |= 0x00000100;
+                username_ = input.readBytes();
                 break;
               }
             }
@@ -6480,6 +6538,42 @@ public final class ClientProtos {
             sourceUID_ = null;
           }
           return sourceUIDBuilder_;
+        }
+        
+        // optional string username = 9;
+        private java.lang.Object username_ = "";
+        public boolean hasUsername() {
+          return ((bitField0_ & 0x00000100) == 0x00000100);
+        }
+        public String getUsername() {
+          java.lang.Object ref = username_;
+          if (!(ref instanceof String)) {
+            String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+            username_ = s;
+            return s;
+          } else {
+            return (String) ref;
+          }
+        }
+        public Builder setUsername(String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+          username_ = value;
+          onChanged();
+          return this;
+        }
+        public Builder clearUsername() {
+          bitField0_ = (bitField0_ & ~0x00000100);
+          username_ = getDefaultInstance().getUsername();
+          onChanged();
+          return this;
+        }
+        void setUsername(com.google.protobuf.ByteString value) {
+          bitField0_ |= 0x00000100;
+          username_ = value;
+          onChanged();
         }
         
         // @@protoc_insertion_point(builder_scope:com.attribyte.client.WireMessage.Author)
@@ -31782,7 +31876,7 @@ public final class ClientProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014Client.proto\022\024com.attribyte.client\"\2537\n" +
+      "\n\014Client.proto\022\024com.attribyte.client\"\2757\n" +
       "\013WireMessage\0228\n\006paging\030\001 \001(\0132(.com.attri" +
       "byte.client.WireMessage.Paging\0224\n\004sort\030\002" +
       " \001(\0132&.com.attribyte.client.WireMessage." +
@@ -31837,130 +31931,130 @@ public final class ClientProtos {
       "id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013description\030\004" +
       " \001(\t\022\020\n\010iconPath\030\005 \001(\t\022\017\n\007blocked\030\006 \001(\010\022" +
       "\r\n\005liked\030\007 \001(\010\022\013\n\003tag\030\010 \003(\t\0221\n\003UID\030\t \001(\013" +
-      "2$.com.attribyte.client.WireMessage.Id\032\323" +
+      "2$.com.attribyte.client.WireMessage.Id\032\345" +
       "\001\n\006Author\022\n\n\002id\030\001 \001(\004\022\014\n\004name\030\002 \001(\t\022\020\n\010s" +
       "ourceId\030\003 \001(\004\022\021\n\timagePath\030\004 \001(\t\022\017\n\007bloc" +
       "ked\030\005 \001(\010\022\r\n\005liked\030\006 \001(\010\0221\n\003UID\030\007 \001(\0132$." +
       "com.attribyte.client.WireMessage.Id\0227\n\ts",
       "ourceUID\030\010 \001(\0132$.com.attribyte.client.Wi" +
-      "reMessage.Id\032\207\002\n\005Image\022\r\n\005title\030\001 \001(\t\022\017\n" +
-      "\007altText\030\002 \001(\t\022\013\n\003url\030\003 \001(\t\022\023\n\013originalS" +
-      "rc\030\004 \001(\t\022\r\n\005width\030\005 \001(\r\022\016\n\006height\030\006 \001(\r\022" +
-      "\014\n\004size\030\007 \001(\t\022D\n\ntransforms\030\010 \003(\01320.com." +
-      "attribyte.client.WireMessage.ImageTransf" +
-      "orm\022\016\n\006binary\030\t \001(\014\0229\n\004type\030\n \001(\0162+.com." +
-      "attribyte.client.WireMessage.ImageType\032\225" +
-      "\001\n\016ImageTransform\022\013\n\003url\030\001 \001(\t\022\r\n\005width\030" +
-      "\002 \001(\r\022\016\n\006height\030\003 \001(\r\022\014\n\004size\030\004 \001(\t\022\016\n\006b",
-      "inary\030\005 \001(\014\0229\n\004type\030\006 \001(\0162+.com.attribyt" +
-      "e.client.WireMessage.ImageType\032\276\004\n\010Citat" +
-      "ion\022\n\n\002id\030\001 \001(\004\0228\n\006author\030\002 \001(\0132(.com.at" +
-      "tribyte.client.WireMessage.Author\022\r\n\005tit" +
-      "le\030\003 \001(\t\022\014\n\004link\030\004 \001(\t\022G\n\tdirection\030\006 \001(" +
-      "\01624.com.attribyte.client.WireMessage.Cit" +
-      "ation.Direction\022\020\n\010strength\030\007 \001(\002\0226\n\005ima" +
-      "ge\030\010 \001(\0132\'.com.attribyte.client.WireMess" +
-      "age.Image\022=\n\004type\030\t \001(\0162/.com.attribyte." +
-      "client.WireMessage.Citation.Type\0226\n\005entr",
-      "y\030\n \001(\0132\'.com.attribyte.client.WireMessa" +
-      "ge.Entry\0221\n\003UID\030\013 \001(\0132$.com.attribyte.cl" +
-      "ient.WireMessage.Id\022\017\n\007deleted\030\014 \001(\010\"G\n\t" +
-      "Direction\022\006\n\002IN\020\001\022\007\n\003OUT\020\002\022\010\n\004BOTH\020\003\022\010\n\004" +
-      "USER\020\004\022\025\n\021UNKNOWN_DIRECTION\020 \"8\n\004Type\022\t\n" +
-      "\005ENTRY\020\001\022\t\n\005TWEET\020\002\022\010\n\004HOST\020\003\022\020\n\014UNKNOWN" +
-      "_TYPE\020\004\032t\n\004Sort\022C\n\tdirection\030\001 \002(\01620.com" +
-      ".attribyte.client.WireMessage.Sort.Direc" +
-      "tion\"\'\n\tDirection\022\010\n\004DESC\020\000\022\007\n\003ASC\020\001\022\007\n\003" +
-      "TOP\020\002\032\206\001\n\rExcludeFilter\022\021\n\tauthorIds\030\001 \003",
-      "(\004\022\023\n\013sourceHosts\030\002 \003(\t\022\023\n\013authorNames\030\003" +
-      " \003(\t\0228\n\nauthorUIDs\030\004 \003(\0132$.com.attribyte" +
-      ".client.WireMessage.Id\032\360\006\n\005Query\022\023\n\013quer" +
-      "yString\030\001 \001(\t\022B\n\005range\030\002 \001(\0162-.com.attri" +
-      "byte.client.WireMessage.Query.Range:\004NON" +
-      "E\022\021\n\tsourceIds\030\003 \003(\004\022\021\n\tauthorIds\030\004 \003(\004\022" +
-      "\023\n\013authorNames\030\005 \003(\t\022\020\n\010entryIds\030\006 \003(\t\022\033" +
-      "\n\023rangeStartTimestamp\030\007 \001(\004\022\024\n\014defaultFi" +
-      "eld\030\010 \001(\t\022\020\n\010anyTerms\030\t \003(\t\022\020\n\010allTerms\030" +
-      "\n \003(\t\022\024\n\014excludeTerms\030\013 \003(\t\022\014\n\004name\030\014 \001(",
-      "\t\022\016\n\006active\030\r \001(\010\022\017\n\007anyTags\030\016 \003(\t\022\017\n\007al" +
-      "lTags\030\017 \003(\t\022\023\n\013excludeTags\030\020 \003(\t\022\r\n\005host" +
-      "s\030\021 \003(\t\022\017\n\007domains\030\022 \003(\t\0228\n\nsourceUIDs\030\023" +
-      " \003(\0132$.com.attribyte.client.WireMessage." +
-      "Id\0228\n\nauthorUIDs\030\024 \003(\0132$.com.attribyte.c" +
-      "lient.WireMessage.Id\0227\n\tentryUIDs\030\025 \003(\0132" +
-      "$.com.attribyte.client.WireMessage.Id\022H\n" +
-      "\016timestampRange\030\026 \001(\01320.com.attribyte.cl" +
-      "ient.WireMessage.TimestampRange\0227\n\007anyMe" +
-      "ta\030\027 \003(\0132&.com.attribyte.client.WireMess",
-      "age.Meta\0227\n\007allMeta\030\030 \003(\0132&.com.attribyt" +
-      "e.client.WireMessage.Meta\022;\n\013excludeMeta" +
-      "\030\031 \003(\0132&.com.attribyte.client.WireMessag" +
-      "e.Meta\"9\n\005Range\022\007\n\003DAY\020\000\022\010\n\004WEEK\020\001\022\t\n\005MO" +
-      "NTH\020\002\022\010\n\004YEAR\020\003\022\010\n\004NONE\020\004\032F\n\nQueryUnion\022" +
-      "8\n\007queries\030\001 \003(\0132\'.com.attribyte.client." +
-      "WireMessage.Query\032\246\001\n\006Paging\022\020\n\010currPage" +
-      "\030\001 \002(\r\022\017\n\007perPage\030\002 \002(\r\022\022\n\ntotalItems\030\003 " +
-      "\001(\r\022\022\n\ntotalPages\030\004 \001(\r\022\026\n\016startTimestam" +
-      "p\030\005 \001(\004\022\017\n\007baseURL\030\006 \001(\t\022\023\n\013hasPrevPage\030",
-      "\007 \001(\010\022\023\n\013hasNextPage\030\010 \001(\010\032\317\001\n\006Origin\022\030\n" +
-      "\020currentTimestamp\030\001 \001(\004\022\020\n\010timezone\030\002 \001(" +
-      "\t\022\022\n\ndateFormat\030\003 \001(\t\022\022\n\ntimeFormat\030\004 \001(" +
-      "\t\022\026\n\016dateTimeFormat\030\005 \001(\t\022\016\n\006locale\030\006 \001(" +
-      "\t\022\014\n\004lang\030\007 \001(\t\022\020\n\010serverId\030\010 \001(\t\022\024\n\014ima" +
-      "geBaseURL\030\t \001(\t\022\023\n\013iconBaseURL\030\n \001(\t\032C\n\n" +
-      "StaticPage\022\023\n\013contentType\030\001 \001(\t\022\017\n\007conte" +
-      "nt\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\032V\n\005Error\022\014\n\004co" +
-      "de\030\001 \001(\r\022\025\n\rpublicMessage\030\002 \001(\t\022\027\n\017inter" +
-      "nalMessage\030\003 \001(\t\022\017\n\007errorId\030\004 \001(\t\0324\n\014Tok",
-      "enRequest\022\020\n\010username\030\001 \001(\t\022\022\n\npassphras" +
-      "e\030\002 \001(\t\032G\n\rTokenResponse\022\016\n\006userId\030\001 \001(\004" +
-      "\022\r\n\005token\030\002 \001(\t\022\027\n\017expireTimestamp\030\003 \001(\004" +
-      "\032*\n\tTokenPing\022\016\n\006userId\030\001 \001(\004\022\r\n\005token\030\002" +
-      " \001(\t\032\273\002\n\014Subscription\022\013\n\003url\030\001 \001(\t\022\n\n\002id" +
-      "\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013description\030\004 \001" +
-      "(\t\022\020\n\010iconPath\030\005 \001(\t\022A\n\004type\030\006 \001(\01623.com" +
-      ".attribyte.client.WireMessage.Subscripti" +
-      "on.Type\022\016\n\006altUrl\030\007 \003(\t\0221\n\003UID\030\010 \001(\0132$.c" +
-      "om.attribyte.client.WireMessage.Id\"V\n\004Ty",
-      "pe\022\010\n\004FEED\020\001\022\n\n\006SEARCH\020\002\022\013\n\007TWITTER\020\003\022\014\n" +
-      "\010FACEBOOK\020\004\022\035\n\031UNKNOWN_SUBSCRIPTION_TYPE" +
-      "\020\005\032\235\002\n\006Source\022\013\n\003url\030\001 \001(\t\022\n\n\002id\030\002 \001(\004\022\r" +
-      "\n\005title\030\003 \001(\t\022\023\n\013description\030\004 \001(\t\022\016\n\006al" +
-      "tUrl\030\005 \003(\t\022:\n\nparentSite\030\006 \001(\0132&.com.att" +
-      "ribyte.client.WireMessage.Site\022J\n\022parent" +
-      "Subscription\030\007 \001(\0132..com.attribyte.clien" +
-      "t.WireMessage.Subscription\022\013\n\003tag\030\010 \003(\t\022" +
-      "1\n\003UID\030\t \001(\0132$.com.attribyte.client.Wire" +
-      "Message.Id\032\255\003\n\013Replication\0229\n\007authors\030\001 ",
-      "\003(\0132(.com.attribyte.client.WireMessage.A" +
-      "uthor\0225\n\005sites\030\002 \003(\0132&.com.attribyte.cli" +
-      "ent.WireMessage.Site\022E\n\rsubscriptions\030\003 " +
-      "\003(\0132..com.attribyte.client.WireMessage.S" +
-      "ubscription\0229\n\007sources\030\004 \003(\0132(.com.attri" +
-      "byte.client.WireMessage.Source\0228\n\007entrie" +
-      "s\030\005 \003(\0132\'.com.attribyte.client.WireMessa" +
-      "ge.Entry\0228\n\006origin\030\006 \001(\0132(.com.attribyte" +
-      ".client.WireMessage.Origin\0226\n\005error\030\007 \001(" +
-      "\0132\'.com.attribyte.client.WireMessage.Err",
-      "or\032#\n\002Id\022\n\n\002id\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\032" +
-      "\253\001\n\tTermStats\022\014\n\004term\030\001 \001(\t\022\021\n\twordCount" +
-      "\030\002 \001(\004\022\025\n\rwordFrequency\030\003 \001(\001\022\020\n\010docCoun" +
-      "t\030\004 \001(\004\022\024\n\014docFrequency\030\005 \001(\001\022\013\n\003idf\030\006 \001" +
-      "(\001\022\030\n\020wordFrequencyIDF\030\007 \001(\001\022\027\n\017docFrequ" +
-      "encyIDF\030\010 \001(\001\032\252\001\n\rTermFrequency\022\r\n\005field" +
-      "\030\001 \001(\t\022\017\n\007explain\030\002 \001(\t\022\026\n\016totalIndexDoc" +
-      "s\030\003 \001(\004\022\021\n\ttotalDocs\030\004 \001(\004\022\022\n\ntotalWords" +
-      "\030\005 \001(\004\022:\n\005stats\030\006 \003(\0132+.com.attribyte.cl" +
-      "ient.WireMessage.TermStats\032y\n\016TimestampR",
-      "ange\022\026\n\016startTimestamp\030\001 \001(\004\022\024\n\014endTimes" +
-      "tamp\030\002 \001(\004\022\025\n\rincludesStart\030\003 \001(\010\022\023\n\013inc" +
-      "ludesEnd\030\004 \001(\010\022\r\n\005field\030\005 \001(\t\0328\n\004Meta\022\014\n" +
-      "\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\022\023\n\013displayNam" +
-      "e\030\003 \001(\t\032Z\n\010GeoPoint\022\013\n\003lon\030\001 \001(\002\022\013\n\003lat\030" +
-      "\002 \001(\002\0224\n\004meta\030\003 \001(\0132&.com.attribyte.clie" +
-      "nt.WireMessage.Meta\"=\n\tImageType\022\007\n\003PNG\020" +
-      "\001\022\007\n\003JPG\020\002\022\007\n\003GIF\020\003\022\007\n\003BMP\020\004\022\014\n\007UNKNOWN\020" +
-      "\200\001B\016B\014ClientProtos"
+      "reMessage.Id\022\020\n\010username\030\t \001(\t\032\207\002\n\005Image" +
+      "\022\r\n\005title\030\001 \001(\t\022\017\n\007altText\030\002 \001(\t\022\013\n\003url\030" +
+      "\003 \001(\t\022\023\n\013originalSrc\030\004 \001(\t\022\r\n\005width\030\005 \001(" +
+      "\r\022\016\n\006height\030\006 \001(\r\022\014\n\004size\030\007 \001(\t\022D\n\ntrans" +
+      "forms\030\010 \003(\01320.com.attribyte.client.WireM" +
+      "essage.ImageTransform\022\016\n\006binary\030\t \001(\014\0229\n" +
+      "\004type\030\n \001(\0162+.com.attribyte.client.WireM" +
+      "essage.ImageType\032\225\001\n\016ImageTransform\022\013\n\003u" +
+      "rl\030\001 \001(\t\022\r\n\005width\030\002 \001(\r\022\016\n\006height\030\003 \001(\r\022",
+      "\014\n\004size\030\004 \001(\t\022\016\n\006binary\030\005 \001(\014\0229\n\004type\030\006 " +
+      "\001(\0162+.com.attribyte.client.WireMessage.I" +
+      "mageType\032\276\004\n\010Citation\022\n\n\002id\030\001 \001(\004\0228\n\006aut" +
+      "hor\030\002 \001(\0132(.com.attribyte.client.WireMes" +
+      "sage.Author\022\r\n\005title\030\003 \001(\t\022\014\n\004link\030\004 \001(\t" +
+      "\022G\n\tdirection\030\006 \001(\01624.com.attribyte.clie" +
+      "nt.WireMessage.Citation.Direction\022\020\n\010str" +
+      "ength\030\007 \001(\002\0226\n\005image\030\010 \001(\0132\'.com.attriby" +
+      "te.client.WireMessage.Image\022=\n\004type\030\t \001(" +
+      "\0162/.com.attribyte.client.WireMessage.Cit",
+      "ation.Type\0226\n\005entry\030\n \001(\0132\'.com.attribyt" +
+      "e.client.WireMessage.Entry\0221\n\003UID\030\013 \001(\0132" +
+      "$.com.attribyte.client.WireMessage.Id\022\017\n" +
+      "\007deleted\030\014 \001(\010\"G\n\tDirection\022\006\n\002IN\020\001\022\007\n\003O" +
+      "UT\020\002\022\010\n\004BOTH\020\003\022\010\n\004USER\020\004\022\025\n\021UNKNOWN_DIRE" +
+      "CTION\020 \"8\n\004Type\022\t\n\005ENTRY\020\001\022\t\n\005TWEET\020\002\022\010\n" +
+      "\004HOST\020\003\022\020\n\014UNKNOWN_TYPE\020\004\032t\n\004Sort\022C\n\tdir" +
+      "ection\030\001 \002(\01620.com.attribyte.client.Wire" +
+      "Message.Sort.Direction\"\'\n\tDirection\022\010\n\004D" +
+      "ESC\020\000\022\007\n\003ASC\020\001\022\007\n\003TOP\020\002\032\206\001\n\rExcludeFilte",
+      "r\022\021\n\tauthorIds\030\001 \003(\004\022\023\n\013sourceHosts\030\002 \003(" +
+      "\t\022\023\n\013authorNames\030\003 \003(\t\0228\n\nauthorUIDs\030\004 \003" +
+      "(\0132$.com.attribyte.client.WireMessage.Id" +
+      "\032\360\006\n\005Query\022\023\n\013queryString\030\001 \001(\t\022B\n\005range" +
+      "\030\002 \001(\0162-.com.attribyte.client.WireMessag" +
+      "e.Query.Range:\004NONE\022\021\n\tsourceIds\030\003 \003(\004\022\021" +
+      "\n\tauthorIds\030\004 \003(\004\022\023\n\013authorNames\030\005 \003(\t\022\020" +
+      "\n\010entryIds\030\006 \003(\t\022\033\n\023rangeStartTimestamp\030" +
+      "\007 \001(\004\022\024\n\014defaultField\030\010 \001(\t\022\020\n\010anyTerms\030" +
+      "\t \003(\t\022\020\n\010allTerms\030\n \003(\t\022\024\n\014excludeTerms\030",
+      "\013 \003(\t\022\014\n\004name\030\014 \001(\t\022\016\n\006active\030\r \001(\010\022\017\n\007a" +
+      "nyTags\030\016 \003(\t\022\017\n\007allTags\030\017 \003(\t\022\023\n\013exclude" +
+      "Tags\030\020 \003(\t\022\r\n\005hosts\030\021 \003(\t\022\017\n\007domains\030\022 \003" +
+      "(\t\0228\n\nsourceUIDs\030\023 \003(\0132$.com.attribyte.c" +
+      "lient.WireMessage.Id\0228\n\nauthorUIDs\030\024 \003(\013" +
+      "2$.com.attribyte.client.WireMessage.Id\0227" +
+      "\n\tentryUIDs\030\025 \003(\0132$.com.attribyte.client" +
+      ".WireMessage.Id\022H\n\016timestampRange\030\026 \001(\0132" +
+      "0.com.attribyte.client.WireMessage.Times" +
+      "tampRange\0227\n\007anyMeta\030\027 \003(\0132&.com.attriby",
+      "te.client.WireMessage.Meta\0227\n\007allMeta\030\030 " +
+      "\003(\0132&.com.attribyte.client.WireMessage.M" +
+      "eta\022;\n\013excludeMeta\030\031 \003(\0132&.com.attribyte" +
+      ".client.WireMessage.Meta\"9\n\005Range\022\007\n\003DAY" +
+      "\020\000\022\010\n\004WEEK\020\001\022\t\n\005MONTH\020\002\022\010\n\004YEAR\020\003\022\010\n\004NON" +
+      "E\020\004\032F\n\nQueryUnion\0228\n\007queries\030\001 \003(\0132\'.com" +
+      ".attribyte.client.WireMessage.Query\032\246\001\n\006" +
+      "Paging\022\020\n\010currPage\030\001 \002(\r\022\017\n\007perPage\030\002 \002(" +
+      "\r\022\022\n\ntotalItems\030\003 \001(\r\022\022\n\ntotalPages\030\004 \001(" +
+      "\r\022\026\n\016startTimestamp\030\005 \001(\004\022\017\n\007baseURL\030\006 \001",
+      "(\t\022\023\n\013hasPrevPage\030\007 \001(\010\022\023\n\013hasNextPage\030\010" +
+      " \001(\010\032\317\001\n\006Origin\022\030\n\020currentTimestamp\030\001 \001(" +
+      "\004\022\020\n\010timezone\030\002 \001(\t\022\022\n\ndateFormat\030\003 \001(\t\022" +
+      "\022\n\ntimeFormat\030\004 \001(\t\022\026\n\016dateTimeFormat\030\005 " +
+      "\001(\t\022\016\n\006locale\030\006 \001(\t\022\014\n\004lang\030\007 \001(\t\022\020\n\010ser" +
+      "verId\030\010 \001(\t\022\024\n\014imageBaseURL\030\t \001(\t\022\023\n\013ico" +
+      "nBaseURL\030\n \001(\t\032C\n\nStaticPage\022\023\n\013contentT" +
+      "ype\030\001 \001(\t\022\017\n\007content\030\002 \001(\t\022\017\n\007version\030\003 " +
+      "\001(\t\032V\n\005Error\022\014\n\004code\030\001 \001(\r\022\025\n\rpublicMess" +
+      "age\030\002 \001(\t\022\027\n\017internalMessage\030\003 \001(\t\022\017\n\007er",
+      "rorId\030\004 \001(\t\0324\n\014TokenRequest\022\020\n\010username\030" +
+      "\001 \001(\t\022\022\n\npassphrase\030\002 \001(\t\032G\n\rTokenRespon" +
+      "se\022\016\n\006userId\030\001 \001(\004\022\r\n\005token\030\002 \001(\t\022\027\n\017exp" +
+      "ireTimestamp\030\003 \001(\004\032*\n\tTokenPing\022\016\n\006userI" +
+      "d\030\001 \001(\004\022\r\n\005token\030\002 \001(\t\032\273\002\n\014Subscription\022" +
+      "\013\n\003url\030\001 \001(\t\022\n\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022" +
+      "\023\n\013description\030\004 \001(\t\022\020\n\010iconPath\030\005 \001(\t\022A" +
+      "\n\004type\030\006 \001(\01623.com.attribyte.client.Wire" +
+      "Message.Subscription.Type\022\016\n\006altUrl\030\007 \003(" +
+      "\t\0221\n\003UID\030\010 \001(\0132$.com.attribyte.client.Wi",
+      "reMessage.Id\"V\n\004Type\022\010\n\004FEED\020\001\022\n\n\006SEARCH" +
+      "\020\002\022\013\n\007TWITTER\020\003\022\014\n\010FACEBOOK\020\004\022\035\n\031UNKNOWN" +
+      "_SUBSCRIPTION_TYPE\020\005\032\235\002\n\006Source\022\013\n\003url\030\001" +
+      " \001(\t\022\n\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013descr" +
+      "iption\030\004 \001(\t\022\016\n\006altUrl\030\005 \003(\t\022:\n\nparentSi" +
+      "te\030\006 \001(\0132&.com.attribyte.client.WireMess" +
+      "age.Site\022J\n\022parentSubscription\030\007 \001(\0132..c" +
+      "om.attribyte.client.WireMessage.Subscrip" +
+      "tion\022\013\n\003tag\030\010 \003(\t\0221\n\003UID\030\t \001(\0132$.com.att" +
+      "ribyte.client.WireMessage.Id\032\255\003\n\013Replica",
+      "tion\0229\n\007authors\030\001 \003(\0132(.com.attribyte.cl" +
+      "ient.WireMessage.Author\0225\n\005sites\030\002 \003(\0132&" +
+      ".com.attribyte.client.WireMessage.Site\022E" +
+      "\n\rsubscriptions\030\003 \003(\0132..com.attribyte.cl" +
+      "ient.WireMessage.Subscription\0229\n\007sources" +
+      "\030\004 \003(\0132(.com.attribyte.client.WireMessag" +
+      "e.Source\0228\n\007entries\030\005 \003(\0132\'.com.attribyt" +
+      "e.client.WireMessage.Entry\0228\n\006origin\030\006 \001" +
+      "(\0132(.com.attribyte.client.WireMessage.Or" +
+      "igin\0226\n\005error\030\007 \001(\0132\'.com.attribyte.clie",
+      "nt.WireMessage.Error\032#\n\002Id\022\n\n\002id\030\001 \001(\t\022\021" +
+      "\n\tnamespace\030\002 \001(\t\032\253\001\n\tTermStats\022\014\n\004term\030" +
+      "\001 \001(\t\022\021\n\twordCount\030\002 \001(\004\022\025\n\rwordFrequenc" +
+      "y\030\003 \001(\001\022\020\n\010docCount\030\004 \001(\004\022\024\n\014docFrequenc" +
+      "y\030\005 \001(\001\022\013\n\003idf\030\006 \001(\001\022\030\n\020wordFrequencyIDF" +
+      "\030\007 \001(\001\022\027\n\017docFrequencyIDF\030\010 \001(\001\032\252\001\n\rTerm" +
+      "Frequency\022\r\n\005field\030\001 \001(\t\022\017\n\007explain\030\002 \001(" +
+      "\t\022\026\n\016totalIndexDocs\030\003 \001(\004\022\021\n\ttotalDocs\030\004" +
+      " \001(\004\022\022\n\ntotalWords\030\005 \001(\004\022:\n\005stats\030\006 \003(\0132" +
+      "+.com.attribyte.client.WireMessage.TermS",
+      "tats\032y\n\016TimestampRange\022\026\n\016startTimestamp" +
+      "\030\001 \001(\004\022\024\n\014endTimestamp\030\002 \001(\004\022\025\n\rincludes" +
+      "Start\030\003 \001(\010\022\023\n\013includesEnd\030\004 \001(\010\022\r\n\005fiel" +
+      "d\030\005 \001(\t\0328\n\004Meta\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002" +
+      " \001(\t\022\023\n\013displayName\030\003 \001(\t\032Z\n\010GeoPoint\022\013\n" +
+      "\003lon\030\001 \001(\002\022\013\n\003lat\030\002 \001(\002\0224\n\004meta\030\003 \001(\0132&." +
+      "com.attribyte.client.WireMessage.Meta\"=\n" +
+      "\tImageType\022\007\n\003PNG\020\001\022\007\n\003JPG\020\002\022\007\n\003GIF\020\003\022\007\n" +
+      "\003BMP\020\004\022\014\n\007UNKNOWN\020\200\001B\016B\014ClientProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -32004,7 +32098,7 @@ public final class ClientProtos {
           internal_static_com_attribyte_client_WireMessage_Author_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_attribyte_client_WireMessage_Author_descriptor,
-              new java.lang.String[] { "Id", "Name", "SourceId", "ImagePath", "Blocked", "Liked", "UID", "SourceUID", },
+              new java.lang.String[] { "Id", "Name", "SourceId", "ImagePath", "Blocked", "Liked", "UID", "SourceUID", "Username", },
               com.attribyte.client.ClientProtos.WireMessage.Author.class,
               com.attribyte.client.ClientProtos.WireMessage.Author.Builder.class);
           internal_static_com_attribyte_client_WireMessage_Image_descriptor =

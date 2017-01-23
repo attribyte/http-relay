@@ -23,14 +23,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+/**
+ * HTML-related utility methods.
+ */
 public class HTMLUtil {
 
    /**
-    * Extracts links (to citations) and images.
+    * Extracts links for external citations and images.
     * @param entry The entry.
     * @param baseURI The URI used to resolve relative links.
     */
-   public static final void extractLinks(final ClientProtos.WireMessage.Entry.Builder entry, final String baseURI) {
+   public static void extractLinks(final ClientProtos.WireMessage.Entry.Builder entry, final String baseURI) {
       Document doc = Jsoup.parse(entry.getContent(), baseURI);
       Elements links = doc.select("a[href]");
       for(Element link : links) {
