@@ -275,13 +275,18 @@ public class WPSupplier extends RDBSupplier {
                   }
 
                   for(Post attachmentPost : post.children) {
-                     if(attachmentPost.type == Post.Type.ATTACHMENT) {
+                     if(attachmentPost.type == Post.Type.ATTACHMENT && isImageAttachment(attachmentPost)) {
                         List<Meta> meta = db.selectPostMeta(attachmentPost.id);
                         if(isPoster(meta)) {
+                           entry.setPrimaryImage(
+                                   ClientProtos.WireMessage.Image.newBuilder()
+                                           .setOriginalSrc(new ImageAttachment(attachmentPost).path())
+                                           .setTitle(Strings.nullToEmpty(attachmentPost.excerpt))
+                           );
+                        } else {
                            entry.addImagesBuilder()
                                    .setOriginalSrc(new ImageAttachment(attachmentPost).path())
                                    .setTitle(Strings.nullToEmpty(attachmentPost.excerpt));
-                           break;
                         }
                      }
                   }
@@ -510,4 +515,23 @@ public class WPSupplier extends RDBSupplier {
       }
       return false;
    }
+
+   /**
+    * Check the mime type of an attachment to determine if it is an image.
+    * @param post The post.
+    * @return Is the attachment an image?
+    */
+   private static boolean isImageAttachment(final Post post) {
+      return imageMimeTypes.contains(Strings.nullToEmpty(post.mimeType));
+   }
+
+   /**
+    * The default set of mime types allowed for images.
+    */
+   private static ImmutableSet<String> imageMimeTypes = ImmutableSet.of(
+           "image/jpeg",
+           "image/jpg",
+           "image/png",
+           "image/gif"
+   );
 }
