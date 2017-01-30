@@ -291,7 +291,7 @@ public class WPSupplier extends RDBSupplier {
                      }
                   }
 
-                  extractLinks(entry, site.baseURL); //Images, citations...
+                  extractLinks(entry, site.baseURL); //Other images, citations...
 
                   if(dusterClient != null) {
                      dusterClient.enableImages(entry);

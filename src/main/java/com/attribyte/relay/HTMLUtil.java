@@ -17,11 +17,14 @@ package com.attribyte.relay;
 
 import com.attribyte.client.ClientProtos;
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.util.Set;
 
 /**
  * HTML-related utility methods.
@@ -45,10 +48,23 @@ public class HTMLUtil {
          }
       }
 
+      Set<String> imageSources = Sets.newHashSetWithExpectedSize(8);
+
+      //Don't replace/duplicate any previously added images...
+
+      if(entry.hasPrimaryImage()) {
+         imageSources.add(entry.getPrimaryImage().getOriginalSrc());
+      }
+
+      if(entry.getImagesCount() > 0) {
+         entry.getImagesList().stream().forEach(image -> imageSources.add(image.getOriginalSrc()));
+      }
+
       Elements images = doc.select("img[src]");
       for(Element image : images) {
          String src = Strings.nullToEmpty(image.attr("src")).trim();
-         if(!src.isEmpty()) {
+         if(!src.isEmpty() && !imageSources.contains(src)) {
+            imageSources.add(src);
             ClientProtos.WireMessage.Image.Builder imageBuilder = entry.addImagesBuilder().setOriginalSrc(src);
             String alt = Strings.nullToEmpty(image.attr("alt")).trim();
             if(!alt.isEmpty()) {
@@ -74,7 +90,7 @@ public class HTMLUtil {
          }
       }
 
-      if(entry.getImagesCount() > 0) { //Set the primary image as the first image.
+      if(!entry.hasPrimaryImage() && entry.getImagesCount() > 0) { //Set the primary image as the first image.
          entry.setPrimaryImage(entry.getImages(0));
       }
    }
