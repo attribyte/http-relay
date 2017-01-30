@@ -19,6 +19,9 @@
 
     <path id="classpath">
         <fileset refid="ivy.fileset"/>
+        <fileset dir="lib/">
+            <include name="**/*.jar"/>
+        </fileset>
         <pathelement location="${build}"/>
     </path>
 
