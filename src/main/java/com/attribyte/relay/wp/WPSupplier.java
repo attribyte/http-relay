@@ -86,6 +86,9 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *
  *    <dt>stopOnLostMessage</dt>
  *    <dd>Stops the relay on any lost message report.</dd>
+ *
+ *    <dt>originId</dt>
+ *    <dd>The origin id sent with replicated messages.</dd>
  * </dl>
  */
 public class WPSupplier extends RDBSupplier {
@@ -140,6 +143,7 @@ public class WPSupplier extends RDBSupplier {
          }
 
          this.stopOnLostMessage = props.getProperty("stopOnLostMessage", "false").equalsIgnoreCase("true");
+         this.originId = props.getProperty("originId", "");
 
          Properties dusterProps = new InitUtil("duster.", props, false).getProperties();
          if(dusterProps.size() > 0) {
@@ -224,7 +228,7 @@ public class WPSupplier extends RDBSupplier {
 
       replicationMessage.addSites(parentSite);
 
-      replicationMessage.setOrigin(MessageUtil.buildServerOrigin());
+      replicationMessage.setOrigin(MessageUtil.buildServerOrigin(originId));
 
       for(Post post : nextPosts) {
          if(!allEntries.contains(post.id)) {
@@ -368,6 +372,11 @@ public class WPSupplier extends RDBSupplier {
     * The set of allowed post types.
     */
    private Set<Post.Type> allowedTypes;
+
+   /**
+    * The origin id sent with messages.
+    */
+   private String originId;
 
    /**
     * Is the supplier initialized?

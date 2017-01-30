@@ -15,6 +15,7 @@
 package org.attribyte.relay.util;
 
 import com.attribyte.client.ClientProtos;
+import com.google.common.base.Strings;
 
 import java.net.UnknownHostException;
 import java.util.TimeZone;
@@ -40,10 +41,11 @@ public class MessageUtil {
 
    /**
     * Builds the server origin for messages.
+    * @param originServerId The origin id. If {@code null} or empty, attempts to use the system hostname.
     * @return The server origin.
     */
-   public static final ClientProtos.WireMessage.Origin buildServerOrigin() {
-      return buildServerOrigin(null, null);
+   public static final ClientProtos.WireMessage.Origin buildServerOrigin(final String originServerId) {
+      return buildServerOrigin(originServerId, null, null);
    }
 
    /**
@@ -52,10 +54,10 @@ public class MessageUtil {
     * @param iconBaseURL The base URL for icons. May be {@code null}.
     * @return The origin.
     */
-   public static final ClientProtos.WireMessage.Origin buildServerOrigin(String imageBaseURL, String iconBaseURL) {
+   public static final ClientProtos.WireMessage.Origin buildServerOrigin(final String originServerId, String imageBaseURL, String iconBaseURL) {
       ClientProtos.WireMessage.Origin.Builder builder = ClientProtos.WireMessage.Origin.newBuilder();
       builder.setCurrentTimestamp(System.currentTimeMillis());
-      builder.setServerId(HOSTNAME);
+      builder.setServerId(Strings.isNullOrEmpty(originServerId) ? HOSTNAME : originServerId);
       builder.setTimezone(TimeZone.getDefault().getID());
       if(imageBaseURL != null) {
          builder.setImageBaseURL(imageBaseURL);
