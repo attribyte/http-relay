@@ -102,20 +102,24 @@ public class WPSupplier extends RDBSupplier {
 
          this.logger = logger;
 
+         logger.info("Initializing WP supplier...");
+
          final long siteId = Long.parseLong(props.getProperty("siteId", "0"));
          if(siteId < 1L) {
             throw new Exception("A 'siteId' must be specified");
          }
-
-         Properties siteProps = new InitUtil("site.", props, false).getProperties();
-         Site overrideSite = new Site(siteProps);
-         this.site = db.selectSite().overrideWith(overrideSite);
 
          final Set<String> cachedTaxonomies = ImmutableSet.of(TAG_TAXONOMY, CATEGORY_TAXONOMY);
          final Duration taxonomyCacheTimeout = Duration.ofMinutes(30); //TODO: Configure
          final Duration userCacheTimeout = Duration.ofMinutes(30); //TODO: Configure
          initPools(props, logger);
          this.db = new DB(defaultConnectionPool, siteId, cachedTaxonomies, taxonomyCacheTimeout, userCacheTimeout);
+
+         Properties siteProps = new InitUtil("site.", props, false).getProperties();
+         Site overrideSite = new Site(siteProps);
+         this.site = this.db.selectSite().overrideWith(overrideSite);
+
+         logger.info(String.format("Initizlied site %d - %s", this.site.id, Strings.nullToEmpty(this.site.title)));
 
          if(savedState.isPresent()) {
             startMeta = PostMeta.fromBytes(savedState.get());
@@ -150,7 +154,13 @@ public class WPSupplier extends RDBSupplier {
             this.httpClient = new JettyClient();
             this.httpClient.init("http.", props, logger);
             this.dusterClient = new DusterClient(dusterProps, httpClient, logger);
+            logger.info("Duster is enabled...");
+         } else {
+            logger.info("Duster is disabled...");
          }
+
+         logger.info("Initialized WP supplier...");
+
       }
    }
 
