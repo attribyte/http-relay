@@ -126,7 +126,7 @@ public class WPSupplier extends RDBSupplier {
          String allowedStatusStr = props.getProperty("allowedStatus", "").trim();
          if(!allowedStatusStr.isEmpty()) {
             this.allowedStatus = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedStatusStr)
-                    .stream().map(str -> Post.Status.fromString(str)).collect(Collectors.toSet()));
+                    .stream().map(Post.Status::fromString).collect(Collectors.toSet()));
          } else {
             this.allowedStatus = DEFAULT_ALLOWED_STATUS;
          }
@@ -134,7 +134,7 @@ public class WPSupplier extends RDBSupplier {
          String allowedTypesStr = props.getProperty("allowedTypes", "").trim();
          if(!allowedStatusStr.isEmpty()) {
             this.allowedTypes = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedTypesStr))
-                    .stream().map(str -> Post.Type.fromString(str)).collect(Collectors.toSet());
+                    .stream().map(Post.Type::fromString).collect(Collectors.toSet());
          } else {
             this.allowedTypes = DEFAULT_ALLOWED_TYPES;
          }
@@ -464,12 +464,9 @@ public class WPSupplier extends RDBSupplier {
    /**
     * Sort posts in ascending order by time, id.
     */
-   static final Comparator<Post> ascendingPostComparator = new Comparator<Post>() {
-      @Override
-      public int compare(final Post o1, final Post o2) {
-         final int c = Long.compare(o1.modifiedTimestamp, o2.modifiedTimestamp);
-         return c != 0 ? c : Long.compare(o1.id, o2.id);
-      }
+   static final Comparator<Post> ascendingPostComparator = (o1, o2) -> {
+      final int c = Long.compare(o1.modifiedTimestamp, o2.modifiedTimestamp);
+      return c != 0 ? c : Long.compare(o1.id, o2.id);
    };
 
    /**
