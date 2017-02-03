@@ -89,6 +89,16 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *
  *    <dt>originId</dt>
  *    <dd>The origin id sent with replicated messages.</dd>
+ *
+ *    <dt>contentTransformer</dt>
+ *    <dd>A class that implements {@code ContentTransformer}.
+ *    Must have a default constructor.
+ *    </dd>
+ *
+ *    <dt>cleanShortcodes</dt>
+ *    <dd>If {@code true}, shortcodes will be removed from content. Ignored
+ *    if {@code contentTransfomer} is specified. Default is {@code true}.</dd>
+ *
  * </dl>
  */
 public class WPSupplier extends RDBSupplier {
@@ -119,7 +129,7 @@ public class WPSupplier extends RDBSupplier {
          Site overrideSite = new Site(siteProps);
          this.site = this.db.selectSite().overrideWith(overrideSite);
 
-         logger.info(String.format("Initizlied site %d - %s", this.site.id, Strings.nullToEmpty(this.site.title)));
+         logger.info(String.format("Initialized site %d - %s", this.site.id, Strings.nullToEmpty(this.site.title)));
 
          if(savedState.isPresent()) {
             startMeta = PostMeta.fromBytes(savedState.get());
@@ -157,6 +167,13 @@ public class WPSupplier extends RDBSupplier {
             logger.info("Duster is enabled...");
          } else {
             logger.info("Duster is disabled...");
+         }
+
+         if(!props.getProperty("contentTransformer", "").trim().isEmpty()) {
+            this.contentTransformer = (ContentTransformer)(Class.forName(props.getProperty("contentTransformer")).newInstance());
+            this.contentTransformer.init(props);
+         } else if(props.getProperty("cleanShortcodes", "true").equalsIgnoreCase("true")) {
+            this.contentTransformer = new ShortcodeCleaner();
          }
 
          logger.info("Initialized WP supplier...");
@@ -273,7 +290,7 @@ public class WPSupplier extends RDBSupplier {
                   }
 
                   if(post.content != null) {
-                     entry.setContent(post.content);
+                     entry.setContent(contentTransformer == null ? post.content : contentTransformer.transform(post.content));
                   }
 
                   if(post.publishTimestamp > 0L) {
@@ -306,6 +323,7 @@ public class WPSupplier extends RDBSupplier {
                   if(dusterClient != null) {
                      dusterClient.enableImages(entry);
                   }
+
 
                   for(TaxonomyTerm tag : post.tags()) {
                      entry.addTag(tag.term.name);
@@ -441,6 +459,11 @@ public class WPSupplier extends RDBSupplier {
     * </p>
     */
    private State state = State.MESSAGE;
+
+   /**
+    * An optional content transformer.
+    */
+   private ContentTransformer contentTransformer;
 
    /**
     * Time to build published messages.
