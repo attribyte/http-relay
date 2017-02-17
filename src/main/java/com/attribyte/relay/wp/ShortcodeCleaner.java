@@ -31,8 +31,12 @@ public class ShortcodeCleaner implements ContentTransformer {
    @Override
    public String transform(final String content) {
       IgnoreHandler handler = new IgnoreHandler();
-      Shortcode.parse(content, handler);
-      return handler.buf.toString();
+      try {
+         Shortcode.parse(content, handler);
+         return handler.buf.toString();
+      } catch(Exception pe) { //Don't die for any reason...just return the original content.
+         return content;
+      }
    }
 
    /**
