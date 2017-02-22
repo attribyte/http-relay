@@ -47,7 +47,14 @@ public class ShortcodeCleaner implements ContentTransformer {
       @Override
       public void shortcode(Shortcode shortcode) {
          if(!Strings.isNullOrEmpty(shortcode.content)) {
-            buf.append(shortcode.content);
+            switch(shortcode.name) {
+               case "embed":
+                  buf.append("<embed src=\"").append(shortcode.content).append("\"> ");
+                  break;
+               default:
+                  buf.append(shortcode.content).append(" ");
+                  break;
+            }
          } else {
             buf.append(" ");
          }
