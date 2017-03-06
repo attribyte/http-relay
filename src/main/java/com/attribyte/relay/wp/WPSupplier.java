@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.primitives.Longs;
 import com.google.protobuf.ByteString;
 import org.attribyte.api.Logger;
 import org.attribyte.api.http.AsyncClient;
@@ -301,10 +302,11 @@ public class WPSupplier extends RDBSupplier {
                      entry.setLastModifiedMillis(post.modifiedTimestamp);
                   }
 
+                  long featuredImageId = featuredImageId(post.metadata);
+
                   for(Post attachmentPost : post.children) {
                      if(attachmentPost.type == Post.Type.ATTACHMENT && isImageAttachment(attachmentPost)) {
-                        List<Meta> meta = db.selectPostMeta(attachmentPost.id);
-                        if(isPoster(meta)) {
+                        if(featuredImageId > 0 && attachmentPost.id == featuredImageId) {
                            entry.setPrimaryImage(
                                    ClientProtos.WireMessage.Image.newBuilder()
                                            .setOriginalSrc(new ImageAttachment(attachmentPost).path())
@@ -536,17 +538,20 @@ public class WPSupplier extends RDBSupplier {
    }
 
    /**
-    * Determine if attachment metadata identifies a "poster" image.
-    * @param meta The metadata.
-    * @return Does the metadata contain a reference to a "poster" image?
+    * Gets the id of the featured image from post metadata.
+    * @param meta The post metadata.
+    * @return The id of the featured image or {@code 0} if none.
     */
-   private static boolean isPoster(final List<Meta> meta) {
+   private static long featuredImageId(final List<Meta> meta) {
       for(Meta m : meta) {
          if(m.key.equals("_thumbnail_id")) {
-            return true;
+            Long id = Longs.tryParse(m.value);
+            if(id != null) {
+               return id;
+            }
          }
       }
-      return false;
+      return 0;
    }
 
    /**
