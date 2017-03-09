@@ -85,6 +85,9 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>allowedTypes</dt>
  *    <dd>A comma-separated list of post types allowed for replication.</dd>
  *
+ *    <dt>allowedMeta</dt>
+ *    <dd>A comma-separated list of metadata names to replicate with posts.</dd>
+ *
  *    <dt>stopOnLostMessage</dt>
  *    <dd>Stops the relay on any lost message report.</dd>
  *
@@ -155,6 +158,14 @@ public class WPSupplier extends RDBSupplier {
                     .stream().map(Post.Type::fromString).collect(Collectors.toSet());
          } else {
             this.allowedTypes = DEFAULT_ALLOWED_TYPES;
+         }
+
+         String allowedMetaStr = props.getProperty("allowedMeta", "").trim();
+         if(!allowedMetaStr.isEmpty()) {
+            this.allowedMeta = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedMetaStr))
+                    .stream().collect(Collectors.toSet());
+         } else {
+            this.allowedMeta = ImmutableSet.of();
          }
 
          this.stopOnLostMessage = props.getProperty("stopOnLostMessage", "false").equalsIgnoreCase("true");
@@ -233,7 +244,7 @@ public class WPSupplier extends RDBSupplier {
 
       List<Post> nextPosts = Lists.newArrayListWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
       for(Post.Type type : allowedTypes) {
-         nextPosts.addAll(db.selectModifiedPosts(type, startMeta.lastModifiedMillis, startMeta.id, maxSelected, true));
+         nextPosts.addAll(db.selectModifiedPosts(type, startMeta.lastModifiedMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
       }
       Collections.sort(nextPosts, ascendingPostComparator);
 
@@ -334,6 +345,12 @@ public class WPSupplier extends RDBSupplier {
                      entry.addTopic(category.term.name);
                   }
 
+                  if(allowedMeta.size() > 0 && post.metadata != null && post.metadata.size() > 0) {
+                     for(Meta meta : post.metadata) {
+                        entry.addMetaBuilder().setName(meta.key).setValue(meta.value);
+                     }
+                  }
+
                   replicationMessage.addEntries(entry.build());
 
                } else {
@@ -407,6 +424,11 @@ public class WPSupplier extends RDBSupplier {
     * The set of allowed post types.
     */
    private Set<Post.Type> allowedTypes;
+
+   /**
+    * The set of metadata to be replicated with posts.
+    */
+   private Set<String> allowedMeta;
 
    /**
     * The origin id sent with messages.
