@@ -369,7 +369,6 @@ public class WPSupplier extends RDBSupplier {
       String messageId = this.startMeta.toBytes().toStringUtf8();
       Post lastPost = nextPosts.get(nextPosts.size() - 1);
       this.startMeta = new PostMeta(lastPost.id, lastPost.modifiedTimestamp);
-      //System.out.println(TextFormat.printToString(replicationMessage.build()));
       return Optional.of(Message.publish(messageId, replicationMessage.build().toByteString()));
    }
 
