@@ -80,8 +80,17 @@ then
   exit 1
 fi
 
+TZ_CONFIG="$RELAY_INSTALL_DIR/config/timezone"
+if [ ! -f "$TZ_CONFIG" ]
+then
+  echo "A 'timezone' file must exist and the value (e.g. America/New_York) must match the WP timezone"
+  exit 1
+fi
+
+TZ=$(<$TZ_CONFIG)
+
 # Command line arguments in the format -[name]=value override properties in config files.
 
-nohup $JAVA_EXE -Dinstall.dir="$RELAY_INSTALL_DIR" org.attribyte.relay.Relay $SYSTEM_CONFIG $@ $LOG_CONFIG 1> $CONSOLE_LOG 2>&1 &
+nohup $JAVA_EXE -Duser.timezone=$TZ -Dinstall.dir="$RELAY_INSTALL_DIR" org.attribyte.relay.Relay $SYSTEM_CONFIG $@ $LOG_CONFIG 1> $CONSOLE_LOG 2>&1 &
 
 echo $! > $RELAY_INSTALL_DIR/bin/$PIDFILE
