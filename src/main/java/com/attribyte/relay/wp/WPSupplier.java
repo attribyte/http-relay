@@ -244,7 +244,12 @@ public class WPSupplier extends RDBSupplier {
 
       List<Post> nextPosts = Lists.newArrayListWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
       for(Post.Type type : allowedTypes) {
-         nextPosts.addAll(db.selectModifiedPosts(type, startMeta.lastModifiedMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
+         final Timer.Context ctx = postSelects.time();
+         try {
+            nextPosts.addAll(db.selectModifiedPosts(type, startMeta.lastModifiedMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
+         } finally {
+            ctx.stop();
+         }
       }
       Collections.sort(nextPosts, ascendingPostComparator);
 
@@ -254,122 +259,130 @@ public class WPSupplier extends RDBSupplier {
          return Optional.absent();
       }
 
-      Set<Long> allEntries = Sets.newHashSetWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
-      Set<Long> allAuthors = Sets.newHashSetWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
 
-      ClientProtos.WireMessage.Replication.Builder replicationMessage = ClientProtos.WireMessage.Replication.newBuilder();
+      final Timer.Context ctx = messageBuilds.time();
 
-      ClientProtos.WireMessage.Site parentSite =
-              ClientProtos.WireMessage.Site.newBuilder()
-                      .setTitle(site.title)
-                      .setDescription(site.description)
-                      .setUrl(site.baseURL).build();
+      try {
 
-      replicationMessage.addSites(parentSite);
+         Set<Long> allEntries = Sets.newHashSetWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
+         Set<Long> allAuthors = Sets.newHashSetWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
 
-      replicationMessage.setOrigin(MessageUtil.buildServerOrigin(originId));
+         ClientProtos.WireMessage.Replication.Builder replicationMessage = ClientProtos.WireMessage.Replication.newBuilder();
 
-      for(Post post : nextPosts) {
-         if(!allEntries.contains(post.id)) {
-            allEntries.add(post.id);
-            if(allowedStatus.contains(post.status)) {
-               if(post.status == Post.Status.PUBLISH) {
-                  if(post.author == null) {
-                     logger.error(String.format("Skipping post with missing author (%d)", post.id));
-                     continue;
-                  }
+         ClientProtos.WireMessage.Site parentSite =
+                 ClientProtos.WireMessage.Site.newBuilder()
+                         .setTitle(site.title)
+                         .setDescription(site.description)
+                         .setUrl(site.baseURL).build();
 
-                  ClientProtos.WireMessage.Author author = fromUser(post.author);
-                  if(!allAuthors.contains(author.getId())) {
-                     allAuthors.add(author.getId());
-                     replicationMessage.addAuthors(author);
-                  }
+         replicationMessage.addSites(parentSite);
 
-                  ClientProtos.WireMessage.Entry.Builder entry = ClientProtos.WireMessage.Entry.newBuilder();
-                  entry.setId(post.id);
-                  entry.setPermanent(true);
-                  entry.setAuthor(author);
-                  entry.setParentSite(parentSite);
+         replicationMessage.setOrigin(MessageUtil.buildServerOrigin(originId));
 
-                  entry.setCanonicalLink(site.buildPermalink(post));
+         for(Post post : nextPosts) {
+            if(!allEntries.contains(post.id)) {
+               allEntries.add(post.id);
+               if(allowedStatus.contains(post.status)) {
+                  if(post.status == Post.Status.PUBLISH) {
+                     if(post.author == null) {
+                        logger.error(String.format("Skipping post with missing author (%d)", post.id));
+                        continue;
+                     }
 
-                  if(post.title != null) {
-                     entry.setTitle(post.title);
-                  }
+                     ClientProtos.WireMessage.Author author = fromUser(post.author);
+                     if(!allAuthors.contains(author.getId())) {
+                        allAuthors.add(author.getId());
+                        replicationMessage.addAuthors(author);
+                     }
 
-                  if(post.excerpt != null) {
-                     entry.setSummary(post.excerpt);
-                  }
+                     ClientProtos.WireMessage.Entry.Builder entry = ClientProtos.WireMessage.Entry.newBuilder();
+                     entry.setId(post.id);
+                     entry.setPermanent(true);
+                     entry.setAuthor(author);
+                     entry.setParentSite(parentSite);
 
-                  if(post.content != null) {
-                     entry.setContent(contentTransformer == null ? post.content : contentTransformer.transform(post.content));
-                  }
+                     entry.setCanonicalLink(site.buildPermalink(post));
 
-                  if(post.publishTimestamp > 0L) {
-                     entry.setPublishTimeMillis(post.publishTimestamp);
-                  }
+                     if(post.title != null) {
+                        entry.setTitle(post.title);
+                     }
 
-                  if(post.modifiedTimestamp > 0L) {
-                     entry.setLastModifiedMillis(post.modifiedTimestamp);
-                  }
+                     if(post.excerpt != null) {
+                        entry.setSummary(post.excerpt);
+                     }
 
-                  long featuredImageId = featuredImageId(post.metadata);
+                     if(post.content != null) {
+                        entry.setContent(contentTransformer == null ? post.content : contentTransformer.transform(post.content));
+                     }
 
-                  for(Post attachmentPost : post.children) {
-                     if(attachmentPost.type == Post.Type.ATTACHMENT && isImageAttachment(attachmentPost)) {
-                        if(featuredImageId > 0 && attachmentPost.id == featuredImageId) {
-                           entry.setPrimaryImage(
-                                   ClientProtos.WireMessage.Image.newBuilder()
-                                           .setOriginalSrc(new ImageAttachment(attachmentPost).path())
-                                           .setTitle(Strings.nullToEmpty(attachmentPost.excerpt))
-                           );
-                        } else {
-                           entry.addImagesBuilder()
-                                   .setOriginalSrc(new ImageAttachment(attachmentPost).path())
-                                   .setTitle(Strings.nullToEmpty(attachmentPost.excerpt));
+                     if(post.publishTimestamp > 0L) {
+                        entry.setPublishTimeMillis(post.publishTimestamp);
+                     }
+
+                     if(post.modifiedTimestamp > 0L) {
+                        entry.setLastModifiedMillis(post.modifiedTimestamp);
+                     }
+
+                     long featuredImageId = featuredImageId(post.metadata);
+
+                     for(Post attachmentPost : post.children) {
+                        if(attachmentPost.type == Post.Type.ATTACHMENT && isImageAttachment(attachmentPost)) {
+                           if(featuredImageId > 0 && attachmentPost.id == featuredImageId) {
+                              entry.setPrimaryImage(
+                                      ClientProtos.WireMessage.Image.newBuilder()
+                                              .setOriginalSrc(new ImageAttachment(attachmentPost).path())
+                                              .setTitle(Strings.nullToEmpty(attachmentPost.excerpt))
+                              );
+                           } else {
+                              entry.addImagesBuilder()
+                                      .setOriginalSrc(new ImageAttachment(attachmentPost).path())
+                                      .setTitle(Strings.nullToEmpty(attachmentPost.excerpt));
+                           }
                         }
                      }
-                  }
 
-                  extractLinks(entry, site.baseURL); //Other images, citations...
+                     extractLinks(entry, site.baseURL); //Other images, citations...
 
-                  if(dusterClient != null) {
-                     dusterClient.enableImages(entry);
-                  }
-
-
-                  for(TaxonomyTerm tag : post.tags()) {
-                     entry.addTag(tag.term.name);
-                  }
-                  for(TaxonomyTerm category : post.categories()) {
-                     entry.addTopic(category.term.name);
-                  }
-
-                  if(allowedMeta.size() > 0 && post.metadata != null && post.metadata.size() > 0) {
-                     for(Meta meta : post.metadata) {
-                        entry.addMetaBuilder().setName(meta.key).setValue(meta.value);
+                     if(dusterClient != null) {
+                        dusterClient.enableImages(entry);
                      }
+
+
+                     for(TaxonomyTerm tag : post.tags()) {
+                        entry.addTag(tag.term.name);
+                     }
+                     for(TaxonomyTerm category : post.categories()) {
+                        entry.addTopic(category.term.name);
+                     }
+
+                     if(allowedMeta.size() > 0 && post.metadata != null && post.metadata.size() > 0) {
+                        for(Meta meta : post.metadata) {
+                           entry.addMetaBuilder().setName(meta.key).setValue(meta.value);
+                        }
+                     }
+
+                     replicationMessage.addEntries(entry.build());
+
+                  } else {
+                     replicationMessage.addEntriesBuilder()
+                             .setId(post.id)
+                             .setDeleted(true);
                   }
-
-                  replicationMessage.addEntries(entry.build());
-
                } else {
                   replicationMessage.addEntriesBuilder()
                           .setId(post.id)
                           .setDeleted(true);
                }
-            } else {
-               replicationMessage.addEntriesBuilder()
-                       .setId(post.id)
-                       .setDeleted(true);
             }
          }
-      }
 
-      String messageId = this.startMeta.toBytes().toStringUtf8();
-      Post lastPost = nextPosts.get(nextPosts.size() - 1);
-      this.startMeta = new PostMeta(lastPost.id, lastPost.modifiedTimestamp);
-      return Optional.of(Message.publish(messageId, replicationMessage.build().toByteString()));
+         String messageId = this.startMeta.toBytes().toStringUtf8();
+         Post lastPost = nextPosts.get(nextPosts.size() - 1);
+         this.startMeta = new PostMeta(lastPost.id, lastPost.modifiedTimestamp);
+         return Optional.of(Message.publish(messageId, replicationMessage.build().toByteString()));
+      } finally {
+         ctx.stop();
+      }
    }
 
    @Override
@@ -494,6 +507,11 @@ public class WPSupplier extends RDBSupplier {
    private final Timer messageBuilds = new Timer();
 
    /**
+    * Time to select modified posts.
+    */
+   private final Timer postSelects = new Timer();
+
+   /**
     * Counts completed messages.
     */
    private final Counter completedMessages = new Counter();
@@ -525,6 +543,7 @@ public class WPSupplier extends RDBSupplier {
       ImmutableMap.Builder<String, Metric> builder = ImmutableMap.builder();
       builder.put("db", defaultConnectionPool.getMetrics());
       builder.put("message-builds", messageBuilds);
+      builder.put("post-selects", postSelects);
       builder.put("completed-messages", completedMessages);
       builder.put("lost-messages", lostMessages);
       builder.put("time-to-acknowledge", timeToAcknowledge);
