@@ -277,7 +277,6 @@ public class Relay implements MetricSet {
       this.baseBackOffDelayMillis = relayProps.getIntProperty("baseBackOffDelayMillis", 50);
       this.maxShutdownWaitSeconds = relayProps.getIntProperty("maxShutdownWaitSeconds", 30);
       this.reporting = new Reporting("metrics-reporting.", cli.props, registry, null);
-      registry.register("metrics-reporting", registry);
       this.reporting.start();
    }
 
@@ -487,7 +486,6 @@ public class Relay implements MetricSet {
       builder.put("abandoned-notifications", abandonedNotifications);
       builder.put("save-state", savedStates);
       builder.put("save-state-errors", saveStateErrors);
-      builder.put("supplier", supplier);
       return builder.build();
    }
 
