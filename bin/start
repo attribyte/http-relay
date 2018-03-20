@@ -83,7 +83,7 @@ fi
 TZ_CONFIG="$RELAY_INSTALL_DIR/config/timezone"
 if [ ! -f "$TZ_CONFIG" ]
 then
-  echo "A 'timezone' file must exist and the value (e.g. America/New_York) must match the WP timezone"
+  echo "A 'timezone' file must exist and the value (e.g. America/New_York) must match the target server timezone"
   exit 1
 fi
 
