@@ -59,7 +59,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * to an HTTP endpoint with configurable authentication
  * and retry for failed messages.
  *
- * <h4>Configuration Properties</h4>
+ * <b>Configuration Properties</b>
  *
  * <dl>
  *    <dt>relay.acceptCodes</dt>

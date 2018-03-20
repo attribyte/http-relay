@@ -50,6 +50,7 @@ public class MessageUtil {
 
    /**
     * Builds the server origin for messages.
+    * @param originServerId The id string sent to identify the origin server. If {@code null}, the hostname will be used.
     * @param imageBaseURL The base URL for images. May be {@code null}.
     * @param iconBaseURL The base URL for icons. May be {@code null}.
     * @return The origin.

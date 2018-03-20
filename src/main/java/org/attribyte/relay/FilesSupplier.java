@@ -54,7 +54,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Supplies the contents of each file in a directory.
  *
- * <h4>Configuration Properties</h4>
+ * <b>Configuration Properties</b>
  *
  * <dl>
  *    <dt>sourceDir</dt>
@@ -120,6 +120,7 @@ public class FilesSupplier implements Supplier {
     * @param initialState The initial state, if any.
     * @param saveStateInterval The number of messages between state saves.
     * @param logger The logger. If <code>null</code>, messages are logged to the console.
+    * @throws IOException on create error such as a filesystem error.
     */
    public FilesSupplier(final File sourceDir,
                         final boolean recurseSourceDirs,
