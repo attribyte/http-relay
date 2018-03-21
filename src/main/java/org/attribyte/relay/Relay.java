@@ -329,6 +329,8 @@ public class Relay implements MetricSet {
             originalMessage = supplier.nextMessage();
             transformedMessage = transformer.transform(originalMessage);
          }
+
+         shutdown();
       }
    }
 
