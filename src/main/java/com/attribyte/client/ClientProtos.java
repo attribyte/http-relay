@@ -1720,6 +1720,32 @@ public final class ClientProtos {
        */
       com.attribyte.client.ClientProtos.WireMessage.GeoPointOrBuilder getGeoOrBuilder(
           int index);
+
+      /**
+       * <code>optional string dek = 27;</code>
+       *
+       * <pre>
+       * The 'dek', if any. 
+       * </pre>
+       */
+      boolean hasDek();
+      /**
+       * <code>optional string dek = 27;</code>
+       *
+       * <pre>
+       * The 'dek', if any. 
+       * </pre>
+       */
+      java.lang.String getDek();
+      /**
+       * <code>optional string dek = 27;</code>
+       *
+       * <pre>
+       * The 'dek', if any. 
+       * </pre>
+       */
+      com.google.protobuf.ByteString
+          getDekBytes();
     }
     /**
      * Protobuf type {@code com.attribyte.client.WireMessage.Entry}
@@ -1968,6 +1994,12 @@ public final class ClientProtos {
                   mutable_bitField0_ |= 0x02000000;
                 }
                 geo_.add(input.readMessage(com.attribyte.client.ClientProtos.WireMessage.GeoPoint.PARSER, extensionRegistry));
+                break;
+              }
+              case 218: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00040000;
+                dek_ = bs;
                 break;
               }
             }
@@ -3146,6 +3178,60 @@ public final class ClientProtos {
         return geo_.get(index);
       }
 
+      public static final int DEK_FIELD_NUMBER = 27;
+      private java.lang.Object dek_;
+      /**
+       * <code>optional string dek = 27;</code>
+       *
+       * <pre>
+       * The 'dek', if any. 
+       * </pre>
+       */
+      public boolean hasDek() {
+        return ((bitField0_ & 0x00040000) == 0x00040000);
+      }
+      /**
+       * <code>optional string dek = 27;</code>
+       *
+       * <pre>
+       * The 'dek', if any. 
+       * </pre>
+       */
+      public java.lang.String getDek() {
+        java.lang.Object ref = dek_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            dek_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string dek = 27;</code>
+       *
+       * <pre>
+       * The 'dek', if any. 
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getDekBytes() {
+        java.lang.Object ref = dek_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          dek_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
       private void initFields() {
         id_ = 0L;
         title_ = "";
@@ -3173,6 +3259,7 @@ public final class ClientProtos {
         deleted_ = false;
         meta_ = java.util.Collections.emptyList();
         geo_ = java.util.Collections.emptyList();
+        dek_ = "";
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -3276,6 +3363,9 @@ public final class ClientProtos {
         }
         for (int i = 0; i < geo_.size(); i++) {
           output.writeMessage(26, geo_.get(i));
+        }
+        if (((bitField0_ & 0x00040000) == 0x00040000)) {
+          output.writeBytes(27, getDekBytes());
         }
         getUnknownFields().writeTo(output);
       }
@@ -3404,6 +3494,10 @@ public final class ClientProtos {
         for (int i = 0; i < geo_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(26, geo_.get(i));
+        }
+        if (((bitField0_ & 0x00040000) == 0x00040000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(27, getDekBytes());
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -3619,6 +3713,8 @@ public final class ClientProtos {
           } else {
             geoBuilder_.clear();
           }
+          dek_ = "";
+          bitField0_ = (bitField0_ & ~0x04000000);
           return this;
         }
 
@@ -3795,6 +3891,10 @@ public final class ClientProtos {
           } else {
             result.geo_ = geoBuilder_.build();
           }
+          if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
+            to_bitField0_ |= 0x00040000;
+          }
+          result.dek_ = dek_;
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -4040,6 +4140,11 @@ public final class ClientProtos {
                 geoBuilder_.addAllMessages(other.geo_);
               }
             }
+          }
+          if (other.hasDek()) {
+            bitField0_ |= 0x04000000;
+            dek_ = other.dek_;
+            onChanged();
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -7721,6 +7826,106 @@ public final class ClientProtos {
             geo_ = null;
           }
           return geoBuilder_;
+        }
+
+        private java.lang.Object dek_ = "";
+        /**
+         * <code>optional string dek = 27;</code>
+         *
+         * <pre>
+         * The 'dek', if any. 
+         * </pre>
+         */
+        public boolean hasDek() {
+          return ((bitField0_ & 0x04000000) == 0x04000000);
+        }
+        /**
+         * <code>optional string dek = 27;</code>
+         *
+         * <pre>
+         * The 'dek', if any. 
+         * </pre>
+         */
+        public java.lang.String getDek() {
+          java.lang.Object ref = dek_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              dek_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string dek = 27;</code>
+         *
+         * <pre>
+         * The 'dek', if any. 
+         * </pre>
+         */
+        public com.google.protobuf.ByteString
+            getDekBytes() {
+          java.lang.Object ref = dek_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            dek_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string dek = 27;</code>
+         *
+         * <pre>
+         * The 'dek', if any. 
+         * </pre>
+         */
+        public Builder setDek(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x04000000;
+          dek_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dek = 27;</code>
+         *
+         * <pre>
+         * The 'dek', if any. 
+         * </pre>
+         */
+        public Builder clearDek() {
+          bitField0_ = (bitField0_ & ~0x04000000);
+          dek_ = getDefaultInstance().getDek();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dek = 27;</code>
+         *
+         * <pre>
+         * The 'dek', if any. 
+         * </pre>
+         */
+        public Builder setDekBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x04000000;
+          dek_ = value;
+          onChanged();
+          return this;
         }
 
         // @@protoc_insertion_point(builder_scope:com.attribyte.client.WireMessage.Entry)
@@ -21278,6 +21483,181 @@ public final class ClientProtos {
        */
       com.attribyte.client.ClientProtos.WireMessage.MetaOrBuilder getExcludeMetaOrBuilder(
           int index);
+
+      /**
+       * <code>repeated string anyTopics = 26;</code>
+       *
+       * <pre>
+       * A list of topics, any of which may match. 
+       * </pre>
+       */
+      com.google.protobuf.ProtocolStringList
+          getAnyTopicsList();
+      /**
+       * <code>repeated string anyTopics = 26;</code>
+       *
+       * <pre>
+       * A list of topics, any of which may match. 
+       * </pre>
+       */
+      int getAnyTopicsCount();
+      /**
+       * <code>repeated string anyTopics = 26;</code>
+       *
+       * <pre>
+       * A list of topics, any of which may match. 
+       * </pre>
+       */
+      java.lang.String getAnyTopics(int index);
+      /**
+       * <code>repeated string anyTopics = 26;</code>
+       *
+       * <pre>
+       * A list of topics, any of which may match. 
+       * </pre>
+       */
+      com.google.protobuf.ByteString
+          getAnyTopicsBytes(int index);
+
+      /**
+       * <code>repeated string allTopics = 27;</code>
+       *
+       * <pre>
+       * A list of topics, all of which must be present. 
+       * </pre>
+       */
+      com.google.protobuf.ProtocolStringList
+          getAllTopicsList();
+      /**
+       * <code>repeated string allTopics = 27;</code>
+       *
+       * <pre>
+       * A list of topics, all of which must be present. 
+       * </pre>
+       */
+      int getAllTopicsCount();
+      /**
+       * <code>repeated string allTopics = 27;</code>
+       *
+       * <pre>
+       * A list of topics, all of which must be present. 
+       * </pre>
+       */
+      java.lang.String getAllTopics(int index);
+      /**
+       * <code>repeated string allTopics = 27;</code>
+       *
+       * <pre>
+       * A list of topics, all of which must be present. 
+       * </pre>
+       */
+      com.google.protobuf.ByteString
+          getAllTopicsBytes(int index);
+
+      /**
+       * <code>repeated string excludeTopics = 28;</code>
+       *
+       * <pre>
+       * A list of topics which must not be present. 
+       * </pre>
+       */
+      com.google.protobuf.ProtocolStringList
+          getExcludeTopicsList();
+      /**
+       * <code>repeated string excludeTopics = 28;</code>
+       *
+       * <pre>
+       * A list of topics which must not be present. 
+       * </pre>
+       */
+      int getExcludeTopicsCount();
+      /**
+       * <code>repeated string excludeTopics = 28;</code>
+       *
+       * <pre>
+       * A list of topics which must not be present. 
+       * </pre>
+       */
+      java.lang.String getExcludeTopics(int index);
+      /**
+       * <code>repeated string excludeTopics = 28;</code>
+       *
+       * <pre>
+       * A list of topics which must not be present. 
+       * </pre>
+       */
+      com.google.protobuf.ByteString
+          getExcludeTopicsBytes(int index);
+
+      /**
+       * <code>repeated string sourceTags = 29;</code>
+       *
+       * <pre>
+       * A list of tags used to select source ids 
+       * </pre>
+       */
+      com.google.protobuf.ProtocolStringList
+          getSourceTagsList();
+      /**
+       * <code>repeated string sourceTags = 29;</code>
+       *
+       * <pre>
+       * A list of tags used to select source ids 
+       * </pre>
+       */
+      int getSourceTagsCount();
+      /**
+       * <code>repeated string sourceTags = 29;</code>
+       *
+       * <pre>
+       * A list of tags used to select source ids 
+       * </pre>
+       */
+      java.lang.String getSourceTags(int index);
+      /**
+       * <code>repeated string sourceTags = 29;</code>
+       *
+       * <pre>
+       * A list of tags used to select source ids 
+       * </pre>
+       */
+      com.google.protobuf.ByteString
+          getSourceTagsBytes(int index);
+
+      /**
+       * <code>repeated string editorTags = 30;</code>
+       *
+       * <pre>
+       * A list of tags added by editors 
+       * </pre>
+       */
+      com.google.protobuf.ProtocolStringList
+          getEditorTagsList();
+      /**
+       * <code>repeated string editorTags = 30;</code>
+       *
+       * <pre>
+       * A list of tags added by editors 
+       * </pre>
+       */
+      int getEditorTagsCount();
+      /**
+       * <code>repeated string editorTags = 30;</code>
+       *
+       * <pre>
+       * A list of tags added by editors 
+       * </pre>
+       */
+      java.lang.String getEditorTags(int index);
+      /**
+       * <code>repeated string editorTags = 30;</code>
+       *
+       * <pre>
+       * A list of tags added by editors 
+       * </pre>
+       */
+      com.google.protobuf.ByteString
+          getEditorTagsBytes(int index);
     }
     /**
      * Protobuf type {@code com.attribyte.client.WireMessage.Query}
@@ -21563,6 +21943,51 @@ public final class ClientProtos {
                 excludeMeta_.add(input.readMessage(com.attribyte.client.ClientProtos.WireMessage.Meta.PARSER, extensionRegistry));
                 break;
               }
+              case 210: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                if (!((mutable_bitField0_ & 0x02000000) == 0x02000000)) {
+                  anyTopics_ = new com.google.protobuf.LazyStringArrayList();
+                  mutable_bitField0_ |= 0x02000000;
+                }
+                anyTopics_.add(bs);
+                break;
+              }
+              case 218: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                if (!((mutable_bitField0_ & 0x04000000) == 0x04000000)) {
+                  allTopics_ = new com.google.protobuf.LazyStringArrayList();
+                  mutable_bitField0_ |= 0x04000000;
+                }
+                allTopics_.add(bs);
+                break;
+              }
+              case 226: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                if (!((mutable_bitField0_ & 0x08000000) == 0x08000000)) {
+                  excludeTopics_ = new com.google.protobuf.LazyStringArrayList();
+                  mutable_bitField0_ |= 0x08000000;
+                }
+                excludeTopics_.add(bs);
+                break;
+              }
+              case 234: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                if (!((mutable_bitField0_ & 0x10000000) == 0x10000000)) {
+                  sourceTags_ = new com.google.protobuf.LazyStringArrayList();
+                  mutable_bitField0_ |= 0x10000000;
+                }
+                sourceTags_.add(bs);
+                break;
+              }
+              case 242: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                if (!((mutable_bitField0_ & 0x20000000) == 0x20000000)) {
+                  editorTags_ = new com.google.protobuf.LazyStringArrayList();
+                  mutable_bitField0_ |= 0x20000000;
+                }
+                editorTags_.add(bs);
+                break;
+              }
             }
           }
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -21624,6 +22049,21 @@ public final class ClientProtos {
           }
           if (((mutable_bitField0_ & 0x01000000) == 0x01000000)) {
             excludeMeta_ = java.util.Collections.unmodifiableList(excludeMeta_);
+          }
+          if (((mutable_bitField0_ & 0x02000000) == 0x02000000)) {
+            anyTopics_ = anyTopics_.getUnmodifiableView();
+          }
+          if (((mutable_bitField0_ & 0x04000000) == 0x04000000)) {
+            allTopics_ = allTopics_.getUnmodifiableView();
+          }
+          if (((mutable_bitField0_ & 0x08000000) == 0x08000000)) {
+            excludeTopics_ = excludeTopics_.getUnmodifiableView();
+          }
+          if (((mutable_bitField0_ & 0x10000000) == 0x10000000)) {
+            sourceTags_ = sourceTags_.getUnmodifiableView();
+          }
+          if (((mutable_bitField0_ & 0x20000000) == 0x20000000)) {
+            editorTags_ = editorTags_.getUnmodifiableView();
           }
           this.unknownFields = unknownFields.build();
           makeExtensionsImmutable();
@@ -22918,6 +23358,231 @@ public final class ClientProtos {
         return excludeMeta_.get(index);
       }
 
+      public static final int ANYTOPICS_FIELD_NUMBER = 26;
+      private com.google.protobuf.LazyStringList anyTopics_;
+      /**
+       * <code>repeated string anyTopics = 26;</code>
+       *
+       * <pre>
+       * A list of topics, any of which may match. 
+       * </pre>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getAnyTopicsList() {
+        return anyTopics_;
+      }
+      /**
+       * <code>repeated string anyTopics = 26;</code>
+       *
+       * <pre>
+       * A list of topics, any of which may match. 
+       * </pre>
+       */
+      public int getAnyTopicsCount() {
+        return anyTopics_.size();
+      }
+      /**
+       * <code>repeated string anyTopics = 26;</code>
+       *
+       * <pre>
+       * A list of topics, any of which may match. 
+       * </pre>
+       */
+      public java.lang.String getAnyTopics(int index) {
+        return anyTopics_.get(index);
+      }
+      /**
+       * <code>repeated string anyTopics = 26;</code>
+       *
+       * <pre>
+       * A list of topics, any of which may match. 
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getAnyTopicsBytes(int index) {
+        return anyTopics_.getByteString(index);
+      }
+
+      public static final int ALLTOPICS_FIELD_NUMBER = 27;
+      private com.google.protobuf.LazyStringList allTopics_;
+      /**
+       * <code>repeated string allTopics = 27;</code>
+       *
+       * <pre>
+       * A list of topics, all of which must be present. 
+       * </pre>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getAllTopicsList() {
+        return allTopics_;
+      }
+      /**
+       * <code>repeated string allTopics = 27;</code>
+       *
+       * <pre>
+       * A list of topics, all of which must be present. 
+       * </pre>
+       */
+      public int getAllTopicsCount() {
+        return allTopics_.size();
+      }
+      /**
+       * <code>repeated string allTopics = 27;</code>
+       *
+       * <pre>
+       * A list of topics, all of which must be present. 
+       * </pre>
+       */
+      public java.lang.String getAllTopics(int index) {
+        return allTopics_.get(index);
+      }
+      /**
+       * <code>repeated string allTopics = 27;</code>
+       *
+       * <pre>
+       * A list of topics, all of which must be present. 
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getAllTopicsBytes(int index) {
+        return allTopics_.getByteString(index);
+      }
+
+      public static final int EXCLUDETOPICS_FIELD_NUMBER = 28;
+      private com.google.protobuf.LazyStringList excludeTopics_;
+      /**
+       * <code>repeated string excludeTopics = 28;</code>
+       *
+       * <pre>
+       * A list of topics which must not be present. 
+       * </pre>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getExcludeTopicsList() {
+        return excludeTopics_;
+      }
+      /**
+       * <code>repeated string excludeTopics = 28;</code>
+       *
+       * <pre>
+       * A list of topics which must not be present. 
+       * </pre>
+       */
+      public int getExcludeTopicsCount() {
+        return excludeTopics_.size();
+      }
+      /**
+       * <code>repeated string excludeTopics = 28;</code>
+       *
+       * <pre>
+       * A list of topics which must not be present. 
+       * </pre>
+       */
+      public java.lang.String getExcludeTopics(int index) {
+        return excludeTopics_.get(index);
+      }
+      /**
+       * <code>repeated string excludeTopics = 28;</code>
+       *
+       * <pre>
+       * A list of topics which must not be present. 
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getExcludeTopicsBytes(int index) {
+        return excludeTopics_.getByteString(index);
+      }
+
+      public static final int SOURCETAGS_FIELD_NUMBER = 29;
+      private com.google.protobuf.LazyStringList sourceTags_;
+      /**
+       * <code>repeated string sourceTags = 29;</code>
+       *
+       * <pre>
+       * A list of tags used to select source ids 
+       * </pre>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getSourceTagsList() {
+        return sourceTags_;
+      }
+      /**
+       * <code>repeated string sourceTags = 29;</code>
+       *
+       * <pre>
+       * A list of tags used to select source ids 
+       * </pre>
+       */
+      public int getSourceTagsCount() {
+        return sourceTags_.size();
+      }
+      /**
+       * <code>repeated string sourceTags = 29;</code>
+       *
+       * <pre>
+       * A list of tags used to select source ids 
+       * </pre>
+       */
+      public java.lang.String getSourceTags(int index) {
+        return sourceTags_.get(index);
+      }
+      /**
+       * <code>repeated string sourceTags = 29;</code>
+       *
+       * <pre>
+       * A list of tags used to select source ids 
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getSourceTagsBytes(int index) {
+        return sourceTags_.getByteString(index);
+      }
+
+      public static final int EDITORTAGS_FIELD_NUMBER = 30;
+      private com.google.protobuf.LazyStringList editorTags_;
+      /**
+       * <code>repeated string editorTags = 30;</code>
+       *
+       * <pre>
+       * A list of tags added by editors 
+       * </pre>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getEditorTagsList() {
+        return editorTags_;
+      }
+      /**
+       * <code>repeated string editorTags = 30;</code>
+       *
+       * <pre>
+       * A list of tags added by editors 
+       * </pre>
+       */
+      public int getEditorTagsCount() {
+        return editorTags_.size();
+      }
+      /**
+       * <code>repeated string editorTags = 30;</code>
+       *
+       * <pre>
+       * A list of tags added by editors 
+       * </pre>
+       */
+      public java.lang.String getEditorTags(int index) {
+        return editorTags_.get(index);
+      }
+      /**
+       * <code>repeated string editorTags = 30;</code>
+       *
+       * <pre>
+       * A list of tags added by editors 
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getEditorTagsBytes(int index) {
+        return editorTags_.getByteString(index);
+      }
+
       private void initFields() {
         queryString_ = "";
         range_ = com.attribyte.client.ClientProtos.WireMessage.Query.Range.NONE;
@@ -22944,6 +23609,11 @@ public final class ClientProtos {
         anyMeta_ = java.util.Collections.emptyList();
         allMeta_ = java.util.Collections.emptyList();
         excludeMeta_ = java.util.Collections.emptyList();
+        anyTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        allTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        excludeTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        sourceTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        editorTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -23032,6 +23702,21 @@ public final class ClientProtos {
         }
         for (int i = 0; i < excludeMeta_.size(); i++) {
           output.writeMessage(25, excludeMeta_.get(i));
+        }
+        for (int i = 0; i < anyTopics_.size(); i++) {
+          output.writeBytes(26, anyTopics_.getByteString(i));
+        }
+        for (int i = 0; i < allTopics_.size(); i++) {
+          output.writeBytes(27, allTopics_.getByteString(i));
+        }
+        for (int i = 0; i < excludeTopics_.size(); i++) {
+          output.writeBytes(28, excludeTopics_.getByteString(i));
+        }
+        for (int i = 0; i < sourceTags_.size(); i++) {
+          output.writeBytes(29, sourceTags_.getByteString(i));
+        }
+        for (int i = 0; i < editorTags_.size(); i++) {
+          output.writeBytes(30, editorTags_.getByteString(i));
         }
         getUnknownFields().writeTo(output);
       }
@@ -23201,6 +23886,51 @@ public final class ClientProtos {
         for (int i = 0; i < excludeMeta_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(25, excludeMeta_.get(i));
+        }
+        {
+          int dataSize = 0;
+          for (int i = 0; i < anyTopics_.size(); i++) {
+            dataSize += com.google.protobuf.CodedOutputStream
+              .computeBytesSizeNoTag(anyTopics_.getByteString(i));
+          }
+          size += dataSize;
+          size += 2 * getAnyTopicsList().size();
+        }
+        {
+          int dataSize = 0;
+          for (int i = 0; i < allTopics_.size(); i++) {
+            dataSize += com.google.protobuf.CodedOutputStream
+              .computeBytesSizeNoTag(allTopics_.getByteString(i));
+          }
+          size += dataSize;
+          size += 2 * getAllTopicsList().size();
+        }
+        {
+          int dataSize = 0;
+          for (int i = 0; i < excludeTopics_.size(); i++) {
+            dataSize += com.google.protobuf.CodedOutputStream
+              .computeBytesSizeNoTag(excludeTopics_.getByteString(i));
+          }
+          size += dataSize;
+          size += 2 * getExcludeTopicsList().size();
+        }
+        {
+          int dataSize = 0;
+          for (int i = 0; i < sourceTags_.size(); i++) {
+            dataSize += com.google.protobuf.CodedOutputStream
+              .computeBytesSizeNoTag(sourceTags_.getByteString(i));
+          }
+          size += dataSize;
+          size += 2 * getSourceTagsList().size();
+        }
+        {
+          int dataSize = 0;
+          for (int i = 0; i < editorTags_.size(); i++) {
+            dataSize += com.google.protobuf.CodedOutputStream
+              .computeBytesSizeNoTag(editorTags_.getByteString(i));
+          }
+          size += dataSize;
+          size += 2 * getEditorTagsList().size();
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -23404,6 +24134,16 @@ public final class ClientProtos {
           } else {
             excludeMetaBuilder_.clear();
           }
+          anyTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x02000000);
+          allTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x04000000);
+          excludeTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x08000000);
+          sourceTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x10000000);
+          editorTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x20000000);
           return this;
         }
 
@@ -23578,6 +24318,31 @@ public final class ClientProtos {
           } else {
             result.excludeMeta_ = excludeMetaBuilder_.build();
           }
+          if (((bitField0_ & 0x02000000) == 0x02000000)) {
+            anyTopics_ = anyTopics_.getUnmodifiableView();
+            bitField0_ = (bitField0_ & ~0x02000000);
+          }
+          result.anyTopics_ = anyTopics_;
+          if (((bitField0_ & 0x04000000) == 0x04000000)) {
+            allTopics_ = allTopics_.getUnmodifiableView();
+            bitField0_ = (bitField0_ & ~0x04000000);
+          }
+          result.allTopics_ = allTopics_;
+          if (((bitField0_ & 0x08000000) == 0x08000000)) {
+            excludeTopics_ = excludeTopics_.getUnmodifiableView();
+            bitField0_ = (bitField0_ & ~0x08000000);
+          }
+          result.excludeTopics_ = excludeTopics_;
+          if (((bitField0_ & 0x10000000) == 0x10000000)) {
+            sourceTags_ = sourceTags_.getUnmodifiableView();
+            bitField0_ = (bitField0_ & ~0x10000000);
+          }
+          result.sourceTags_ = sourceTags_;
+          if (((bitField0_ & 0x20000000) == 0x20000000)) {
+            editorTags_ = editorTags_.getUnmodifiableView();
+            bitField0_ = (bitField0_ & ~0x20000000);
+          }
+          result.editorTags_ = editorTags_;
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -23896,6 +24661,56 @@ public final class ClientProtos {
                 excludeMetaBuilder_.addAllMessages(other.excludeMeta_);
               }
             }
+          }
+          if (!other.anyTopics_.isEmpty()) {
+            if (anyTopics_.isEmpty()) {
+              anyTopics_ = other.anyTopics_;
+              bitField0_ = (bitField0_ & ~0x02000000);
+            } else {
+              ensureAnyTopicsIsMutable();
+              anyTopics_.addAll(other.anyTopics_);
+            }
+            onChanged();
+          }
+          if (!other.allTopics_.isEmpty()) {
+            if (allTopics_.isEmpty()) {
+              allTopics_ = other.allTopics_;
+              bitField0_ = (bitField0_ & ~0x04000000);
+            } else {
+              ensureAllTopicsIsMutable();
+              allTopics_.addAll(other.allTopics_);
+            }
+            onChanged();
+          }
+          if (!other.excludeTopics_.isEmpty()) {
+            if (excludeTopics_.isEmpty()) {
+              excludeTopics_ = other.excludeTopics_;
+              bitField0_ = (bitField0_ & ~0x08000000);
+            } else {
+              ensureExcludeTopicsIsMutable();
+              excludeTopics_.addAll(other.excludeTopics_);
+            }
+            onChanged();
+          }
+          if (!other.sourceTags_.isEmpty()) {
+            if (sourceTags_.isEmpty()) {
+              sourceTags_ = other.sourceTags_;
+              bitField0_ = (bitField0_ & ~0x10000000);
+            } else {
+              ensureSourceTagsIsMutable();
+              sourceTags_.addAll(other.sourceTags_);
+            }
+            onChanged();
+          }
+          if (!other.editorTags_.isEmpty()) {
+            if (editorTags_.isEmpty()) {
+              editorTags_ = other.editorTags_;
+              bitField0_ = (bitField0_ & ~0x20000000);
+            } else {
+              ensureEditorTagsIsMutable();
+              editorTags_.addAll(other.editorTags_);
+            }
+            onChanged();
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -27871,6 +28686,651 @@ public final class ClientProtos {
             excludeMeta_ = null;
           }
           return excludeMetaBuilder_;
+        }
+
+        private com.google.protobuf.LazyStringList anyTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        private void ensureAnyTopicsIsMutable() {
+          if (!((bitField0_ & 0x02000000) == 0x02000000)) {
+            anyTopics_ = new com.google.protobuf.LazyStringArrayList(anyTopics_);
+            bitField0_ |= 0x02000000;
+           }
+        }
+        /**
+         * <code>repeated string anyTopics = 26;</code>
+         *
+         * <pre>
+         * A list of topics, any of which may match. 
+         * </pre>
+         */
+        public com.google.protobuf.ProtocolStringList
+            getAnyTopicsList() {
+          return anyTopics_.getUnmodifiableView();
+        }
+        /**
+         * <code>repeated string anyTopics = 26;</code>
+         *
+         * <pre>
+         * A list of topics, any of which may match. 
+         * </pre>
+         */
+        public int getAnyTopicsCount() {
+          return anyTopics_.size();
+        }
+        /**
+         * <code>repeated string anyTopics = 26;</code>
+         *
+         * <pre>
+         * A list of topics, any of which may match. 
+         * </pre>
+         */
+        public java.lang.String getAnyTopics(int index) {
+          return anyTopics_.get(index);
+        }
+        /**
+         * <code>repeated string anyTopics = 26;</code>
+         *
+         * <pre>
+         * A list of topics, any of which may match. 
+         * </pre>
+         */
+        public com.google.protobuf.ByteString
+            getAnyTopicsBytes(int index) {
+          return anyTopics_.getByteString(index);
+        }
+        /**
+         * <code>repeated string anyTopics = 26;</code>
+         *
+         * <pre>
+         * A list of topics, any of which may match. 
+         * </pre>
+         */
+        public Builder setAnyTopics(
+            int index, java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnyTopicsIsMutable();
+          anyTopics_.set(index, value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string anyTopics = 26;</code>
+         *
+         * <pre>
+         * A list of topics, any of which may match. 
+         * </pre>
+         */
+        public Builder addAnyTopics(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnyTopicsIsMutable();
+          anyTopics_.add(value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string anyTopics = 26;</code>
+         *
+         * <pre>
+         * A list of topics, any of which may match. 
+         * </pre>
+         */
+        public Builder addAllAnyTopics(
+            java.lang.Iterable<java.lang.String> values) {
+          ensureAnyTopicsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, anyTopics_);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string anyTopics = 26;</code>
+         *
+         * <pre>
+         * A list of topics, any of which may match. 
+         * </pre>
+         */
+        public Builder clearAnyTopics() {
+          anyTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x02000000);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string anyTopics = 26;</code>
+         *
+         * <pre>
+         * A list of topics, any of which may match. 
+         * </pre>
+         */
+        public Builder addAnyTopicsBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnyTopicsIsMutable();
+          anyTopics_.add(value);
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.LazyStringList allTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        private void ensureAllTopicsIsMutable() {
+          if (!((bitField0_ & 0x04000000) == 0x04000000)) {
+            allTopics_ = new com.google.protobuf.LazyStringArrayList(allTopics_);
+            bitField0_ |= 0x04000000;
+           }
+        }
+        /**
+         * <code>repeated string allTopics = 27;</code>
+         *
+         * <pre>
+         * A list of topics, all of which must be present. 
+         * </pre>
+         */
+        public com.google.protobuf.ProtocolStringList
+            getAllTopicsList() {
+          return allTopics_.getUnmodifiableView();
+        }
+        /**
+         * <code>repeated string allTopics = 27;</code>
+         *
+         * <pre>
+         * A list of topics, all of which must be present. 
+         * </pre>
+         */
+        public int getAllTopicsCount() {
+          return allTopics_.size();
+        }
+        /**
+         * <code>repeated string allTopics = 27;</code>
+         *
+         * <pre>
+         * A list of topics, all of which must be present. 
+         * </pre>
+         */
+        public java.lang.String getAllTopics(int index) {
+          return allTopics_.get(index);
+        }
+        /**
+         * <code>repeated string allTopics = 27;</code>
+         *
+         * <pre>
+         * A list of topics, all of which must be present. 
+         * </pre>
+         */
+        public com.google.protobuf.ByteString
+            getAllTopicsBytes(int index) {
+          return allTopics_.getByteString(index);
+        }
+        /**
+         * <code>repeated string allTopics = 27;</code>
+         *
+         * <pre>
+         * A list of topics, all of which must be present. 
+         * </pre>
+         */
+        public Builder setAllTopics(
+            int index, java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAllTopicsIsMutable();
+          allTopics_.set(index, value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string allTopics = 27;</code>
+         *
+         * <pre>
+         * A list of topics, all of which must be present. 
+         * </pre>
+         */
+        public Builder addAllTopics(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAllTopicsIsMutable();
+          allTopics_.add(value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string allTopics = 27;</code>
+         *
+         * <pre>
+         * A list of topics, all of which must be present. 
+         * </pre>
+         */
+        public Builder addAllAllTopics(
+            java.lang.Iterable<java.lang.String> values) {
+          ensureAllTopicsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, allTopics_);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string allTopics = 27;</code>
+         *
+         * <pre>
+         * A list of topics, all of which must be present. 
+         * </pre>
+         */
+        public Builder clearAllTopics() {
+          allTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x04000000);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string allTopics = 27;</code>
+         *
+         * <pre>
+         * A list of topics, all of which must be present. 
+         * </pre>
+         */
+        public Builder addAllTopicsBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAllTopicsIsMutable();
+          allTopics_.add(value);
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.LazyStringList excludeTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        private void ensureExcludeTopicsIsMutable() {
+          if (!((bitField0_ & 0x08000000) == 0x08000000)) {
+            excludeTopics_ = new com.google.protobuf.LazyStringArrayList(excludeTopics_);
+            bitField0_ |= 0x08000000;
+           }
+        }
+        /**
+         * <code>repeated string excludeTopics = 28;</code>
+         *
+         * <pre>
+         * A list of topics which must not be present. 
+         * </pre>
+         */
+        public com.google.protobuf.ProtocolStringList
+            getExcludeTopicsList() {
+          return excludeTopics_.getUnmodifiableView();
+        }
+        /**
+         * <code>repeated string excludeTopics = 28;</code>
+         *
+         * <pre>
+         * A list of topics which must not be present. 
+         * </pre>
+         */
+        public int getExcludeTopicsCount() {
+          return excludeTopics_.size();
+        }
+        /**
+         * <code>repeated string excludeTopics = 28;</code>
+         *
+         * <pre>
+         * A list of topics which must not be present. 
+         * </pre>
+         */
+        public java.lang.String getExcludeTopics(int index) {
+          return excludeTopics_.get(index);
+        }
+        /**
+         * <code>repeated string excludeTopics = 28;</code>
+         *
+         * <pre>
+         * A list of topics which must not be present. 
+         * </pre>
+         */
+        public com.google.protobuf.ByteString
+            getExcludeTopicsBytes(int index) {
+          return excludeTopics_.getByteString(index);
+        }
+        /**
+         * <code>repeated string excludeTopics = 28;</code>
+         *
+         * <pre>
+         * A list of topics which must not be present. 
+         * </pre>
+         */
+        public Builder setExcludeTopics(
+            int index, java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureExcludeTopicsIsMutable();
+          excludeTopics_.set(index, value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string excludeTopics = 28;</code>
+         *
+         * <pre>
+         * A list of topics which must not be present. 
+         * </pre>
+         */
+        public Builder addExcludeTopics(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureExcludeTopicsIsMutable();
+          excludeTopics_.add(value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string excludeTopics = 28;</code>
+         *
+         * <pre>
+         * A list of topics which must not be present. 
+         * </pre>
+         */
+        public Builder addAllExcludeTopics(
+            java.lang.Iterable<java.lang.String> values) {
+          ensureExcludeTopicsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, excludeTopics_);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string excludeTopics = 28;</code>
+         *
+         * <pre>
+         * A list of topics which must not be present. 
+         * </pre>
+         */
+        public Builder clearExcludeTopics() {
+          excludeTopics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x08000000);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string excludeTopics = 28;</code>
+         *
+         * <pre>
+         * A list of topics which must not be present. 
+         * </pre>
+         */
+        public Builder addExcludeTopicsBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureExcludeTopicsIsMutable();
+          excludeTopics_.add(value);
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.LazyStringList sourceTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        private void ensureSourceTagsIsMutable() {
+          if (!((bitField0_ & 0x10000000) == 0x10000000)) {
+            sourceTags_ = new com.google.protobuf.LazyStringArrayList(sourceTags_);
+            bitField0_ |= 0x10000000;
+           }
+        }
+        /**
+         * <code>repeated string sourceTags = 29;</code>
+         *
+         * <pre>
+         * A list of tags used to select source ids 
+         * </pre>
+         */
+        public com.google.protobuf.ProtocolStringList
+            getSourceTagsList() {
+          return sourceTags_.getUnmodifiableView();
+        }
+        /**
+         * <code>repeated string sourceTags = 29;</code>
+         *
+         * <pre>
+         * A list of tags used to select source ids 
+         * </pre>
+         */
+        public int getSourceTagsCount() {
+          return sourceTags_.size();
+        }
+        /**
+         * <code>repeated string sourceTags = 29;</code>
+         *
+         * <pre>
+         * A list of tags used to select source ids 
+         * </pre>
+         */
+        public java.lang.String getSourceTags(int index) {
+          return sourceTags_.get(index);
+        }
+        /**
+         * <code>repeated string sourceTags = 29;</code>
+         *
+         * <pre>
+         * A list of tags used to select source ids 
+         * </pre>
+         */
+        public com.google.protobuf.ByteString
+            getSourceTagsBytes(int index) {
+          return sourceTags_.getByteString(index);
+        }
+        /**
+         * <code>repeated string sourceTags = 29;</code>
+         *
+         * <pre>
+         * A list of tags used to select source ids 
+         * </pre>
+         */
+        public Builder setSourceTags(
+            int index, java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureSourceTagsIsMutable();
+          sourceTags_.set(index, value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string sourceTags = 29;</code>
+         *
+         * <pre>
+         * A list of tags used to select source ids 
+         * </pre>
+         */
+        public Builder addSourceTags(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureSourceTagsIsMutable();
+          sourceTags_.add(value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string sourceTags = 29;</code>
+         *
+         * <pre>
+         * A list of tags used to select source ids 
+         * </pre>
+         */
+        public Builder addAllSourceTags(
+            java.lang.Iterable<java.lang.String> values) {
+          ensureSourceTagsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, sourceTags_);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string sourceTags = 29;</code>
+         *
+         * <pre>
+         * A list of tags used to select source ids 
+         * </pre>
+         */
+        public Builder clearSourceTags() {
+          sourceTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x10000000);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string sourceTags = 29;</code>
+         *
+         * <pre>
+         * A list of tags used to select source ids 
+         * </pre>
+         */
+        public Builder addSourceTagsBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureSourceTagsIsMutable();
+          sourceTags_.add(value);
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.LazyStringList editorTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        private void ensureEditorTagsIsMutable() {
+          if (!((bitField0_ & 0x20000000) == 0x20000000)) {
+            editorTags_ = new com.google.protobuf.LazyStringArrayList(editorTags_);
+            bitField0_ |= 0x20000000;
+           }
+        }
+        /**
+         * <code>repeated string editorTags = 30;</code>
+         *
+         * <pre>
+         * A list of tags added by editors 
+         * </pre>
+         */
+        public com.google.protobuf.ProtocolStringList
+            getEditorTagsList() {
+          return editorTags_.getUnmodifiableView();
+        }
+        /**
+         * <code>repeated string editorTags = 30;</code>
+         *
+         * <pre>
+         * A list of tags added by editors 
+         * </pre>
+         */
+        public int getEditorTagsCount() {
+          return editorTags_.size();
+        }
+        /**
+         * <code>repeated string editorTags = 30;</code>
+         *
+         * <pre>
+         * A list of tags added by editors 
+         * </pre>
+         */
+        public java.lang.String getEditorTags(int index) {
+          return editorTags_.get(index);
+        }
+        /**
+         * <code>repeated string editorTags = 30;</code>
+         *
+         * <pre>
+         * A list of tags added by editors 
+         * </pre>
+         */
+        public com.google.protobuf.ByteString
+            getEditorTagsBytes(int index) {
+          return editorTags_.getByteString(index);
+        }
+        /**
+         * <code>repeated string editorTags = 30;</code>
+         *
+         * <pre>
+         * A list of tags added by editors 
+         * </pre>
+         */
+        public Builder setEditorTags(
+            int index, java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureEditorTagsIsMutable();
+          editorTags_.set(index, value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string editorTags = 30;</code>
+         *
+         * <pre>
+         * A list of tags added by editors 
+         * </pre>
+         */
+        public Builder addEditorTags(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureEditorTagsIsMutable();
+          editorTags_.add(value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string editorTags = 30;</code>
+         *
+         * <pre>
+         * A list of tags added by editors 
+         * </pre>
+         */
+        public Builder addAllEditorTags(
+            java.lang.Iterable<java.lang.String> values) {
+          ensureEditorTagsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, editorTags_);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string editorTags = 30;</code>
+         *
+         * <pre>
+         * A list of tags added by editors 
+         * </pre>
+         */
+        public Builder clearEditorTags() {
+          editorTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x20000000);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string editorTags = 30;</code>
+         *
+         * <pre>
+         * A list of tags added by editors 
+         * </pre>
+         */
+        public Builder addEditorTagsBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureEditorTagsIsMutable();
+          editorTags_.add(value);
+          onChanged();
+          return this;
         }
 
         // @@protoc_insertion_point(builder_scope:com.attribyte.client.WireMessage.Query)
@@ -54910,7 +56370,7 @@ public final class ClientProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014Client.proto\022\024com.attribyte.client\"\2757\n" +
+      "\n\014Client.proto\022\024com.attribyte.client\"\2578\n" +
       "\013WireMessage\0228\n\006paging\030\001 \001(\0132(.com.attri" +
       "byte.client.WireMessage.Paging\0224\n\004sort\030\002" +
       " \001(\0132&.com.attribyte.client.WireMessage." +
@@ -54937,7 +56397,7 @@ public final class ClientProtos {
       "ueryUnion\030\021 \001(\0132,.com.attribyte.client.W" +
       "ireMessage.QueryUnion\022F\n\rtermFrequency\030\022" +
       " \001(\0132/.com.attribyte.client.WireMessage." +
-      "TermFrequency\032\345\006\n\005Entry\022\n\n\002id\030\001 \001(\004\022\r\n\005t" +
+      "TermFrequency\032\362\006\n\005Entry\022\n\n\002id\030\001 \001(\004\022\r\n\005t" +
       "itle\030\002 \001(\t\022\017\n\007summary\030\003 \001(\t\022\017\n\007content\030\004" +
       " \001(\t\022\027\n\017extendedContent\030\005 \001(\t\022\032\n\022lastMod",
       "ifiedMillis\030\006 \001(\004\022\031\n\021publishTimeMillis\030\007" +
@@ -54959,136 +56419,139 @@ public final class ClientProtos {
       "\007deleted\030\030 \001(\010\0224\n\004meta\030\031 \003(\0132&.com.attri" +
       "byte.client.WireMessage.Meta\0227\n\003geo\030\032 \003(" +
       "\0132*.com.attribyte.client.WireMessage.Geo" +
-      "Point\032W\n\014SimilarEntry\0226\n\005entry\030\001 \002(\0132\'.c",
-      "om.attribyte.client.WireMessage.Entry\022\017\n" +
-      "\007explain\030\002 \001(\t\032\265\001\n\004Site\022\013\n\003url\030\001 \001(\t\022\n\n\002" +
-      "id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013description\030\004" +
-      " \001(\t\022\020\n\010iconPath\030\005 \001(\t\022\017\n\007blocked\030\006 \001(\010\022" +
-      "\r\n\005liked\030\007 \001(\010\022\013\n\003tag\030\010 \003(\t\0221\n\003UID\030\t \001(\013" +
-      "2$.com.attribyte.client.WireMessage.Id\032\345" +
-      "\001\n\006Author\022\n\n\002id\030\001 \001(\004\022\014\n\004name\030\002 \001(\t\022\020\n\010s" +
-      "ourceId\030\003 \001(\004\022\021\n\timagePath\030\004 \001(\t\022\017\n\007bloc" +
-      "ked\030\005 \001(\010\022\r\n\005liked\030\006 \001(\010\0221\n\003UID\030\007 \001(\0132$." +
-      "com.attribyte.client.WireMessage.Id\0227\n\ts",
-      "ourceUID\030\010 \001(\0132$.com.attribyte.client.Wi" +
-      "reMessage.Id\022\020\n\010username\030\t \001(\t\032\207\002\n\005Image" +
-      "\022\r\n\005title\030\001 \001(\t\022\017\n\007altText\030\002 \001(\t\022\013\n\003url\030" +
-      "\003 \001(\t\022\023\n\013originalSrc\030\004 \001(\t\022\r\n\005width\030\005 \001(" +
-      "\r\022\016\n\006height\030\006 \001(\r\022\014\n\004size\030\007 \001(\t\022D\n\ntrans" +
-      "forms\030\010 \003(\01320.com.attribyte.client.WireM" +
-      "essage.ImageTransform\022\016\n\006binary\030\t \001(\014\0229\n" +
-      "\004type\030\n \001(\0162+.com.attribyte.client.WireM" +
-      "essage.ImageType\032\225\001\n\016ImageTransform\022\013\n\003u" +
-      "rl\030\001 \001(\t\022\r\n\005width\030\002 \001(\r\022\016\n\006height\030\003 \001(\r\022",
-      "\014\n\004size\030\004 \001(\t\022\016\n\006binary\030\005 \001(\014\0229\n\004type\030\006 " +
-      "\001(\0162+.com.attribyte.client.WireMessage.I" +
-      "mageType\032\276\004\n\010Citation\022\n\n\002id\030\001 \001(\004\0228\n\006aut" +
-      "hor\030\002 \001(\0132(.com.attribyte.client.WireMes" +
-      "sage.Author\022\r\n\005title\030\003 \001(\t\022\014\n\004link\030\004 \001(\t" +
-      "\022G\n\tdirection\030\006 \001(\01624.com.attribyte.clie" +
-      "nt.WireMessage.Citation.Direction\022\020\n\010str" +
-      "ength\030\007 \001(\002\0226\n\005image\030\010 \001(\0132\'.com.attriby" +
-      "te.client.WireMessage.Image\022=\n\004type\030\t \001(" +
-      "\0162/.com.attribyte.client.WireMessage.Cit",
-      "ation.Type\0226\n\005entry\030\n \001(\0132\'.com.attribyt" +
-      "e.client.WireMessage.Entry\0221\n\003UID\030\013 \001(\0132" +
-      "$.com.attribyte.client.WireMessage.Id\022\017\n" +
-      "\007deleted\030\014 \001(\010\"G\n\tDirection\022\006\n\002IN\020\001\022\007\n\003O" +
-      "UT\020\002\022\010\n\004BOTH\020\003\022\010\n\004USER\020\004\022\025\n\021UNKNOWN_DIRE" +
-      "CTION\020 \"8\n\004Type\022\t\n\005ENTRY\020\001\022\t\n\005TWEET\020\002\022\010\n" +
-      "\004HOST\020\003\022\020\n\014UNKNOWN_TYPE\020\004\032t\n\004Sort\022C\n\tdir" +
-      "ection\030\001 \002(\01620.com.attribyte.client.Wire" +
-      "Message.Sort.Direction\"\'\n\tDirection\022\010\n\004D" +
-      "ESC\020\000\022\007\n\003ASC\020\001\022\007\n\003TOP\020\002\032\206\001\n\rExcludeFilte",
-      "r\022\021\n\tauthorIds\030\001 \003(\004\022\023\n\013sourceHosts\030\002 \003(" +
-      "\t\022\023\n\013authorNames\030\003 \003(\t\0228\n\nauthorUIDs\030\004 \003" +
-      "(\0132$.com.attribyte.client.WireMessage.Id" +
-      "\032\360\006\n\005Query\022\023\n\013queryString\030\001 \001(\t\022B\n\005range" +
-      "\030\002 \001(\0162-.com.attribyte.client.WireMessag" +
-      "e.Query.Range:\004NONE\022\021\n\tsourceIds\030\003 \003(\004\022\021" +
-      "\n\tauthorIds\030\004 \003(\004\022\023\n\013authorNames\030\005 \003(\t\022\020" +
-      "\n\010entryIds\030\006 \003(\t\022\033\n\023rangeStartTimestamp\030" +
-      "\007 \001(\004\022\024\n\014defaultField\030\010 \001(\t\022\020\n\010anyTerms\030" +
-      "\t \003(\t\022\020\n\010allTerms\030\n \003(\t\022\024\n\014excludeTerms\030",
-      "\013 \003(\t\022\014\n\004name\030\014 \001(\t\022\016\n\006active\030\r \001(\010\022\017\n\007a" +
-      "nyTags\030\016 \003(\t\022\017\n\007allTags\030\017 \003(\t\022\023\n\013exclude" +
-      "Tags\030\020 \003(\t\022\r\n\005hosts\030\021 \003(\t\022\017\n\007domains\030\022 \003" +
-      "(\t\0228\n\nsourceUIDs\030\023 \003(\0132$.com.attribyte.c" +
-      "lient.WireMessage.Id\0228\n\nauthorUIDs\030\024 \003(\013" +
-      "2$.com.attribyte.client.WireMessage.Id\0227" +
-      "\n\tentryUIDs\030\025 \003(\0132$.com.attribyte.client" +
-      ".WireMessage.Id\022H\n\016timestampRange\030\026 \001(\0132" +
-      "0.com.attribyte.client.WireMessage.Times" +
-      "tampRange\0227\n\007anyMeta\030\027 \003(\0132&.com.attriby",
-      "te.client.WireMessage.Meta\0227\n\007allMeta\030\030 " +
-      "\003(\0132&.com.attribyte.client.WireMessage.M" +
-      "eta\022;\n\013excludeMeta\030\031 \003(\0132&.com.attribyte" +
-      ".client.WireMessage.Meta\"9\n\005Range\022\007\n\003DAY" +
-      "\020\000\022\010\n\004WEEK\020\001\022\t\n\005MONTH\020\002\022\010\n\004YEAR\020\003\022\010\n\004NON" +
-      "E\020\004\032F\n\nQueryUnion\0228\n\007queries\030\001 \003(\0132\'.com" +
-      ".attribyte.client.WireMessage.Query\032\246\001\n\006" +
-      "Paging\022\020\n\010currPage\030\001 \002(\r\022\017\n\007perPage\030\002 \002(" +
-      "\r\022\022\n\ntotalItems\030\003 \001(\r\022\022\n\ntotalPages\030\004 \001(" +
-      "\r\022\026\n\016startTimestamp\030\005 \001(\004\022\017\n\007baseURL\030\006 \001",
-      "(\t\022\023\n\013hasPrevPage\030\007 \001(\010\022\023\n\013hasNextPage\030\010" +
-      " \001(\010\032\317\001\n\006Origin\022\030\n\020currentTimestamp\030\001 \001(" +
-      "\004\022\020\n\010timezone\030\002 \001(\t\022\022\n\ndateFormat\030\003 \001(\t\022" +
-      "\022\n\ntimeFormat\030\004 \001(\t\022\026\n\016dateTimeFormat\030\005 " +
-      "\001(\t\022\016\n\006locale\030\006 \001(\t\022\014\n\004lang\030\007 \001(\t\022\020\n\010ser" +
-      "verId\030\010 \001(\t\022\024\n\014imageBaseURL\030\t \001(\t\022\023\n\013ico" +
-      "nBaseURL\030\n \001(\t\032C\n\nStaticPage\022\023\n\013contentT" +
-      "ype\030\001 \001(\t\022\017\n\007content\030\002 \001(\t\022\017\n\007version\030\003 " +
-      "\001(\t\032V\n\005Error\022\014\n\004code\030\001 \001(\r\022\025\n\rpublicMess" +
-      "age\030\002 \001(\t\022\027\n\017internalMessage\030\003 \001(\t\022\017\n\007er",
-      "rorId\030\004 \001(\t\0324\n\014TokenRequest\022\020\n\010username\030" +
-      "\001 \001(\t\022\022\n\npassphrase\030\002 \001(\t\032G\n\rTokenRespon" +
-      "se\022\016\n\006userId\030\001 \001(\004\022\r\n\005token\030\002 \001(\t\022\027\n\017exp" +
-      "ireTimestamp\030\003 \001(\004\032*\n\tTokenPing\022\016\n\006userI" +
-      "d\030\001 \001(\004\022\r\n\005token\030\002 \001(\t\032\273\002\n\014Subscription\022" +
-      "\013\n\003url\030\001 \001(\t\022\n\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022" +
-      "\023\n\013description\030\004 \001(\t\022\020\n\010iconPath\030\005 \001(\t\022A" +
-      "\n\004type\030\006 \001(\01623.com.attribyte.client.Wire" +
-      "Message.Subscription.Type\022\016\n\006altUrl\030\007 \003(" +
-      "\t\0221\n\003UID\030\010 \001(\0132$.com.attribyte.client.Wi",
-      "reMessage.Id\"V\n\004Type\022\010\n\004FEED\020\001\022\n\n\006SEARCH" +
-      "\020\002\022\013\n\007TWITTER\020\003\022\014\n\010FACEBOOK\020\004\022\035\n\031UNKNOWN" +
-      "_SUBSCRIPTION_TYPE\020\005\032\235\002\n\006Source\022\013\n\003url\030\001" +
-      " \001(\t\022\n\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013descr" +
-      "iption\030\004 \001(\t\022\016\n\006altUrl\030\005 \003(\t\022:\n\nparentSi" +
-      "te\030\006 \001(\0132&.com.attribyte.client.WireMess" +
-      "age.Site\022J\n\022parentSubscription\030\007 \001(\0132..c" +
-      "om.attribyte.client.WireMessage.Subscrip" +
-      "tion\022\013\n\003tag\030\010 \003(\t\0221\n\003UID\030\t \001(\0132$.com.att" +
-      "ribyte.client.WireMessage.Id\032\255\003\n\013Replica",
-      "tion\0229\n\007authors\030\001 \003(\0132(.com.attribyte.cl" +
-      "ient.WireMessage.Author\0225\n\005sites\030\002 \003(\0132&" +
-      ".com.attribyte.client.WireMessage.Site\022E" +
-      "\n\rsubscriptions\030\003 \003(\0132..com.attribyte.cl" +
-      "ient.WireMessage.Subscription\0229\n\007sources" +
-      "\030\004 \003(\0132(.com.attribyte.client.WireMessag" +
-      "e.Source\0228\n\007entries\030\005 \003(\0132\'.com.attribyt" +
-      "e.client.WireMessage.Entry\0228\n\006origin\030\006 \001" +
-      "(\0132(.com.attribyte.client.WireMessage.Or" +
-      "igin\0226\n\005error\030\007 \001(\0132\'.com.attribyte.clie",
-      "nt.WireMessage.Error\032#\n\002Id\022\n\n\002id\030\001 \001(\t\022\021" +
-      "\n\tnamespace\030\002 \001(\t\032\253\001\n\tTermStats\022\014\n\004term\030" +
-      "\001 \001(\t\022\021\n\twordCount\030\002 \001(\004\022\025\n\rwordFrequenc" +
-      "y\030\003 \001(\001\022\020\n\010docCount\030\004 \001(\004\022\024\n\014docFrequenc" +
-      "y\030\005 \001(\001\022\013\n\003idf\030\006 \001(\001\022\030\n\020wordFrequencyIDF" +
-      "\030\007 \001(\001\022\027\n\017docFrequencyIDF\030\010 \001(\001\032\252\001\n\rTerm" +
-      "Frequency\022\r\n\005field\030\001 \001(\t\022\017\n\007explain\030\002 \001(" +
-      "\t\022\026\n\016totalIndexDocs\030\003 \001(\004\022\021\n\ttotalDocs\030\004" +
-      " \001(\004\022\022\n\ntotalWords\030\005 \001(\004\022:\n\005stats\030\006 \003(\0132" +
-      "+.com.attribyte.client.WireMessage.TermS",
-      "tats\032y\n\016TimestampRange\022\026\n\016startTimestamp" +
-      "\030\001 \001(\004\022\024\n\014endTimestamp\030\002 \001(\004\022\025\n\rincludes" +
-      "Start\030\003 \001(\010\022\023\n\013includesEnd\030\004 \001(\010\022\r\n\005fiel" +
-      "d\030\005 \001(\t\0328\n\004Meta\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002" +
-      " \001(\t\022\023\n\013displayName\030\003 \001(\t\032Z\n\010GeoPoint\022\013\n" +
-      "\003lon\030\001 \001(\002\022\013\n\003lat\030\002 \001(\002\0224\n\004meta\030\003 \001(\0132&." +
-      "com.attribyte.client.WireMessage.Meta\"=\n" +
-      "\tImageType\022\007\n\003PNG\020\001\022\007\n\003JPG\020\002\022\007\n\003GIF\020\003\022\007\n" +
-      "\003BMP\020\004\022\014\n\007UNKNOWN\020\200\001B\016B\014ClientProtos"
+      "Point\022\013\n\003dek\030\033 \001(\t\032W\n\014SimilarEntry\0226\n\005en",
+      "try\030\001 \002(\0132\'.com.attribyte.client.WireMes" +
+      "sage.Entry\022\017\n\007explain\030\002 \001(\t\032\265\001\n\004Site\022\013\n\003" +
+      "url\030\001 \001(\t\022\n\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013" +
+      "description\030\004 \001(\t\022\020\n\010iconPath\030\005 \001(\t\022\017\n\007b" +
+      "locked\030\006 \001(\010\022\r\n\005liked\030\007 \001(\010\022\013\n\003tag\030\010 \003(\t" +
+      "\0221\n\003UID\030\t \001(\0132$.com.attribyte.client.Wir" +
+      "eMessage.Id\032\345\001\n\006Author\022\n\n\002id\030\001 \001(\004\022\014\n\004na" +
+      "me\030\002 \001(\t\022\020\n\010sourceId\030\003 \001(\004\022\021\n\timagePath\030" +
+      "\004 \001(\t\022\017\n\007blocked\030\005 \001(\010\022\r\n\005liked\030\006 \001(\010\0221\n" +
+      "\003UID\030\007 \001(\0132$.com.attribyte.client.WireMe",
+      "ssage.Id\0227\n\tsourceUID\030\010 \001(\0132$.com.attrib" +
+      "yte.client.WireMessage.Id\022\020\n\010username\030\t " +
+      "\001(\t\032\207\002\n\005Image\022\r\n\005title\030\001 \001(\t\022\017\n\007altText\030" +
+      "\002 \001(\t\022\013\n\003url\030\003 \001(\t\022\023\n\013originalSrc\030\004 \001(\t\022" +
+      "\r\n\005width\030\005 \001(\r\022\016\n\006height\030\006 \001(\r\022\014\n\004size\030\007" +
+      " \001(\t\022D\n\ntransforms\030\010 \003(\01320.com.attribyte" +
+      ".client.WireMessage.ImageTransform\022\016\n\006bi" +
+      "nary\030\t \001(\014\0229\n\004type\030\n \001(\0162+.com.attribyte" +
+      ".client.WireMessage.ImageType\032\225\001\n\016ImageT" +
+      "ransform\022\013\n\003url\030\001 \001(\t\022\r\n\005width\030\002 \001(\r\022\016\n\006",
+      "height\030\003 \001(\r\022\014\n\004size\030\004 \001(\t\022\016\n\006binary\030\005 \001" +
+      "(\014\0229\n\004type\030\006 \001(\0162+.com.attribyte.client." +
+      "WireMessage.ImageType\032\276\004\n\010Citation\022\n\n\002id" +
+      "\030\001 \001(\004\0228\n\006author\030\002 \001(\0132(.com.attribyte.c" +
+      "lient.WireMessage.Author\022\r\n\005title\030\003 \001(\t\022" +
+      "\014\n\004link\030\004 \001(\t\022G\n\tdirection\030\006 \001(\01624.com.a" +
+      "ttribyte.client.WireMessage.Citation.Dir" +
+      "ection\022\020\n\010strength\030\007 \001(\002\0226\n\005image\030\010 \001(\0132" +
+      "\'.com.attribyte.client.WireMessage.Image" +
+      "\022=\n\004type\030\t \001(\0162/.com.attribyte.client.Wi",
+      "reMessage.Citation.Type\0226\n\005entry\030\n \001(\0132\'" +
+      ".com.attribyte.client.WireMessage.Entry\022" +
+      "1\n\003UID\030\013 \001(\0132$.com.attribyte.client.Wire" +
+      "Message.Id\022\017\n\007deleted\030\014 \001(\010\"G\n\tDirection" +
+      "\022\006\n\002IN\020\001\022\007\n\003OUT\020\002\022\010\n\004BOTH\020\003\022\010\n\004USER\020\004\022\025\n" +
+      "\021UNKNOWN_DIRECTION\020 \"8\n\004Type\022\t\n\005ENTRY\020\001\022" +
+      "\t\n\005TWEET\020\002\022\010\n\004HOST\020\003\022\020\n\014UNKNOWN_TYPE\020\004\032t" +
+      "\n\004Sort\022C\n\tdirection\030\001 \002(\01620.com.attribyt" +
+      "e.client.WireMessage.Sort.Direction\"\'\n\tD" +
+      "irection\022\010\n\004DESC\020\000\022\007\n\003ASC\020\001\022\007\n\003TOP\020\002\032\206\001\n",
+      "\rExcludeFilter\022\021\n\tauthorIds\030\001 \003(\004\022\023\n\013sou" +
+      "rceHosts\030\002 \003(\t\022\023\n\013authorNames\030\003 \003(\t\0228\n\na" +
+      "uthorUIDs\030\004 \003(\0132$.com.attribyte.client.W" +
+      "ireMessage.Id\032\325\007\n\005Query\022\023\n\013queryString\030\001" +
+      " \001(\t\022B\n\005range\030\002 \001(\0162-.com.attribyte.clie" +
+      "nt.WireMessage.Query.Range:\004NONE\022\021\n\tsour" +
+      "ceIds\030\003 \003(\004\022\021\n\tauthorIds\030\004 \003(\004\022\023\n\013author" +
+      "Names\030\005 \003(\t\022\020\n\010entryIds\030\006 \003(\t\022\033\n\023rangeSt" +
+      "artTimestamp\030\007 \001(\004\022\024\n\014defaultField\030\010 \001(\t" +
+      "\022\020\n\010anyTerms\030\t \003(\t\022\020\n\010allTerms\030\n \003(\t\022\024\n\014",
+      "excludeTerms\030\013 \003(\t\022\014\n\004name\030\014 \001(\t\022\016\n\006acti" +
+      "ve\030\r \001(\010\022\017\n\007anyTags\030\016 \003(\t\022\017\n\007allTags\030\017 \003" +
+      "(\t\022\023\n\013excludeTags\030\020 \003(\t\022\r\n\005hosts\030\021 \003(\t\022\017" +
+      "\n\007domains\030\022 \003(\t\0228\n\nsourceUIDs\030\023 \003(\0132$.co" +
+      "m.attribyte.client.WireMessage.Id\0228\n\naut" +
+      "horUIDs\030\024 \003(\0132$.com.attribyte.client.Wir" +
+      "eMessage.Id\0227\n\tentryUIDs\030\025 \003(\0132$.com.att" +
+      "ribyte.client.WireMessage.Id\022H\n\016timestam" +
+      "pRange\030\026 \001(\01320.com.attribyte.client.Wire" +
+      "Message.TimestampRange\0227\n\007anyMeta\030\027 \003(\0132",
+      "&.com.attribyte.client.WireMessage.Meta\022" +
+      "7\n\007allMeta\030\030 \003(\0132&.com.attribyte.client." +
+      "WireMessage.Meta\022;\n\013excludeMeta\030\031 \003(\0132&." +
+      "com.attribyte.client.WireMessage.Meta\022\021\n" +
+      "\tanyTopics\030\032 \003(\t\022\021\n\tallTopics\030\033 \003(\t\022\025\n\re" +
+      "xcludeTopics\030\034 \003(\t\022\022\n\nsourceTags\030\035 \003(\t\022\022" +
+      "\n\neditorTags\030\036 \003(\t\"9\n\005Range\022\007\n\003DAY\020\000\022\010\n\004" +
+      "WEEK\020\001\022\t\n\005MONTH\020\002\022\010\n\004YEAR\020\003\022\010\n\004NONE\020\004\032F\n" +
+      "\nQueryUnion\0228\n\007queries\030\001 \003(\0132\'.com.attri" +
+      "byte.client.WireMessage.Query\032\246\001\n\006Paging",
+      "\022\020\n\010currPage\030\001 \002(\r\022\017\n\007perPage\030\002 \002(\r\022\022\n\nt" +
+      "otalItems\030\003 \001(\r\022\022\n\ntotalPages\030\004 \001(\r\022\026\n\016s" +
+      "tartTimestamp\030\005 \001(\004\022\017\n\007baseURL\030\006 \001(\t\022\023\n\013" +
+      "hasPrevPage\030\007 \001(\010\022\023\n\013hasNextPage\030\010 \001(\010\032\317" +
+      "\001\n\006Origin\022\030\n\020currentTimestamp\030\001 \001(\004\022\020\n\010t" +
+      "imezone\030\002 \001(\t\022\022\n\ndateFormat\030\003 \001(\t\022\022\n\ntim" +
+      "eFormat\030\004 \001(\t\022\026\n\016dateTimeFormat\030\005 \001(\t\022\016\n" +
+      "\006locale\030\006 \001(\t\022\014\n\004lang\030\007 \001(\t\022\020\n\010serverId\030" +
+      "\010 \001(\t\022\024\n\014imageBaseURL\030\t \001(\t\022\023\n\013iconBaseU" +
+      "RL\030\n \001(\t\032C\n\nStaticPage\022\023\n\013contentType\030\001 ",
+      "\001(\t\022\017\n\007content\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\032V\n" +
+      "\005Error\022\014\n\004code\030\001 \001(\r\022\025\n\rpublicMessage\030\002 " +
+      "\001(\t\022\027\n\017internalMessage\030\003 \001(\t\022\017\n\007errorId\030" +
+      "\004 \001(\t\0324\n\014TokenRequest\022\020\n\010username\030\001 \001(\t\022" +
+      "\022\n\npassphrase\030\002 \001(\t\032G\n\rTokenResponse\022\016\n\006" +
+      "userId\030\001 \001(\004\022\r\n\005token\030\002 \001(\t\022\027\n\017expireTim" +
+      "estamp\030\003 \001(\004\032*\n\tTokenPing\022\016\n\006userId\030\001 \001(" +
+      "\004\022\r\n\005token\030\002 \001(\t\032\273\002\n\014Subscription\022\013\n\003url" +
+      "\030\001 \001(\t\022\n\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013des" +
+      "cription\030\004 \001(\t\022\020\n\010iconPath\030\005 \001(\t\022A\n\004type",
+      "\030\006 \001(\01623.com.attribyte.client.WireMessag" +
+      "e.Subscription.Type\022\016\n\006altUrl\030\007 \003(\t\0221\n\003U" +
+      "ID\030\010 \001(\0132$.com.attribyte.client.WireMess" +
+      "age.Id\"V\n\004Type\022\010\n\004FEED\020\001\022\n\n\006SEARCH\020\002\022\013\n\007" +
+      "TWITTER\020\003\022\014\n\010FACEBOOK\020\004\022\035\n\031UNKNOWN_SUBSC" +
+      "RIPTION_TYPE\020\005\032\235\002\n\006Source\022\013\n\003url\030\001 \001(\t\022\n" +
+      "\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013description" +
+      "\030\004 \001(\t\022\016\n\006altUrl\030\005 \003(\t\022:\n\nparentSite\030\006 \001" +
+      "(\0132&.com.attribyte.client.WireMessage.Si" +
+      "te\022J\n\022parentSubscription\030\007 \001(\0132..com.att",
+      "ribyte.client.WireMessage.Subscription\022\013" +
+      "\n\003tag\030\010 \003(\t\0221\n\003UID\030\t \001(\0132$.com.attribyte" +
+      ".client.WireMessage.Id\032\255\003\n\013Replication\0229" +
+      "\n\007authors\030\001 \003(\0132(.com.attribyte.client.W" +
+      "ireMessage.Author\0225\n\005sites\030\002 \003(\0132&.com.a" +
+      "ttribyte.client.WireMessage.Site\022E\n\rsubs" +
+      "criptions\030\003 \003(\0132..com.attribyte.client.W" +
+      "ireMessage.Subscription\0229\n\007sources\030\004 \003(\013" +
+      "2(.com.attribyte.client.WireMessage.Sour" +
+      "ce\0228\n\007entries\030\005 \003(\0132\'.com.attribyte.clie",
+      "nt.WireMessage.Entry\0228\n\006origin\030\006 \001(\0132(.c" +
+      "om.attribyte.client.WireMessage.Origin\0226" +
+      "\n\005error\030\007 \001(\0132\'.com.attribyte.client.Wir" +
+      "eMessage.Error\032#\n\002Id\022\n\n\002id\030\001 \001(\t\022\021\n\tname" +
+      "space\030\002 \001(\t\032\253\001\n\tTermStats\022\014\n\004term\030\001 \001(\t\022" +
+      "\021\n\twordCount\030\002 \001(\004\022\025\n\rwordFrequency\030\003 \001(" +
+      "\001\022\020\n\010docCount\030\004 \001(\004\022\024\n\014docFrequency\030\005 \001(" +
+      "\001\022\013\n\003idf\030\006 \001(\001\022\030\n\020wordFrequencyIDF\030\007 \001(\001" +
+      "\022\027\n\017docFrequencyIDF\030\010 \001(\001\032\252\001\n\rTermFreque" +
+      "ncy\022\r\n\005field\030\001 \001(\t\022\017\n\007explain\030\002 \001(\t\022\026\n\016t",
+      "otalIndexDocs\030\003 \001(\004\022\021\n\ttotalDocs\030\004 \001(\004\022\022" +
+      "\n\ntotalWords\030\005 \001(\004\022:\n\005stats\030\006 \003(\0132+.com." +
+      "attribyte.client.WireMessage.TermStats\032y" +
+      "\n\016TimestampRange\022\026\n\016startTimestamp\030\001 \001(\004" +
+      "\022\024\n\014endTimestamp\030\002 \001(\004\022\025\n\rincludesStart\030" +
+      "\003 \001(\010\022\023\n\013includesEnd\030\004 \001(\010\022\r\n\005field\030\005 \001(" +
+      "\t\0328\n\004Meta\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\022\023" +
+      "\n\013displayName\030\003 \001(\t\032Z\n\010GeoPoint\022\013\n\003lon\030\001" +
+      " \001(\002\022\013\n\003lat\030\002 \001(\002\0224\n\004meta\030\003 \001(\0132&.com.at" +
+      "tribyte.client.WireMessage.Meta\"=\n\tImage",
+      "Type\022\007\n\003PNG\020\001\022\007\n\003JPG\020\002\022\007\n\003GIF\020\003\022\007\n\003BMP\020\004" +
+      "\022\014\n\007UNKNOWN\020\200\001B\016B\014ClientProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -55113,7 +56576,7 @@ public final class ClientProtos {
     internal_static_com_attribyte_client_WireMessage_Entry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_attribyte_client_WireMessage_Entry_descriptor,
-        new java.lang.String[] { "Id", "Title", "Summary", "Content", "ExtendedContent", "LastModifiedMillis", "PublishTimeMillis", "CanonicalLink", "ParentSite", "Author", "PrimaryImage", "LastModifiedHuman", "PublishTimeHuman", "Citations", "SimilarEntries", "Score", "Tag", "Topic", "Lang", "Permanent", "AltLink", "Images", "UID", "Deleted", "Meta", "Geo", });
+        new java.lang.String[] { "Id", "Title", "Summary", "Content", "ExtendedContent", "LastModifiedMillis", "PublishTimeMillis", "CanonicalLink", "ParentSite", "Author", "PrimaryImage", "LastModifiedHuman", "PublishTimeHuman", "Citations", "SimilarEntries", "Score", "Tag", "Topic", "Lang", "Permanent", "AltLink", "Images", "UID", "Deleted", "Meta", "Geo", "Dek", });
     internal_static_com_attribyte_client_WireMessage_SimilarEntry_descriptor =
       internal_static_com_attribyte_client_WireMessage_descriptor.getNestedTypes().get(1);
     internal_static_com_attribyte_client_WireMessage_SimilarEntry_fieldAccessorTable = new
@@ -55167,7 +56630,7 @@ public final class ClientProtos {
     internal_static_com_attribyte_client_WireMessage_Query_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_attribyte_client_WireMessage_Query_descriptor,
-        new java.lang.String[] { "QueryString", "Range", "SourceIds", "AuthorIds", "AuthorNames", "EntryIds", "RangeStartTimestamp", "DefaultField", "AnyTerms", "AllTerms", "ExcludeTerms", "Name", "Active", "AnyTags", "AllTags", "ExcludeTags", "Hosts", "Domains", "SourceUIDs", "AuthorUIDs", "EntryUIDs", "TimestampRange", "AnyMeta", "AllMeta", "ExcludeMeta", });
+        new java.lang.String[] { "QueryString", "Range", "SourceIds", "AuthorIds", "AuthorNames", "EntryIds", "RangeStartTimestamp", "DefaultField", "AnyTerms", "AllTerms", "ExcludeTerms", "Name", "Active", "AnyTags", "AllTags", "ExcludeTags", "Hosts", "Domains", "SourceUIDs", "AuthorUIDs", "EntryUIDs", "TimestampRange", "AnyMeta", "AllMeta", "ExcludeMeta", "AnyTopics", "AllTopics", "ExcludeTopics", "SourceTags", "EditorTags", });
     internal_static_com_attribyte_client_WireMessage_QueryUnion_descriptor =
       internal_static_com_attribyte_client_WireMessage_descriptor.getNestedTypes().get(10);
     internal_static_com_attribyte_client_WireMessage_QueryUnion_fieldAccessorTable = new

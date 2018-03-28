@@ -137,6 +137,9 @@ message WireMessage {
 
       /* Geographic data associated with the entry. */
       repeated GeoPoint geo = 26;
+
+      /* The 'dek', if any. */
+      optional string dek = 27;
    }
 
    message SimilarEntry {
@@ -474,6 +477,21 @@ message WireMessage {
 
       /* A list of custom metadata which must not be present. */
       repeated Meta excludeMeta = 25;
+
+      /* A list of topics, any of which may match. */
+      repeated string anyTopics = 26;
+
+      /* A list of topics, all of which must be present. */
+      repeated string allTopics = 27;
+
+      /* A list of topics which must not be present. */
+      repeated string excludeTopics = 28;
+
+      /* A list of tags used to select source ids */
+      repeated string sourceTags = 29;
+
+      /* A list of tags added by editors */
+      repeated string editorTags = 30;
    }
 
    message QueryUnion {
