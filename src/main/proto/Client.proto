@@ -209,6 +209,9 @@ message WireMessage {
 
       /* The (usually internal) name for the author. */
       optional string username = 9;
+
+      /* Arbitrary metadata associated with the author. */
+      repeated Meta meta = 10;
    }
 
    enum ImageType {
