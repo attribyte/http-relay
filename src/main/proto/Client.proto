@@ -140,6 +140,9 @@ message WireMessage {
 
       /* The 'dek', if any. */
       optional string dek = 27;
+
+      /* The entry status, if any. */
+      optional string status = 28;
    }
 
    message SimilarEntry {
@@ -263,6 +266,9 @@ message WireMessage {
 
       /* The image type. */
       optional ImageType type = 10;
+
+      /* Arbitrary metadata associated with the image. */
+      repeated Meta meta = 11;
    }
 
    message ImageTransform {
@@ -284,6 +290,9 @@ message WireMessage {
 
       /* The image type. */
       optional ImageType type = 6;
+
+      /* Arbitrary metadata associated with the image transform. */
+      repeated Meta meta = 7;
    }
 
    message Citation {
@@ -409,6 +418,7 @@ message WireMessage {
          /* No range is specified. */
          NONE = 4;
       }
+
       /* The range for the query. Default <code>None</code>. */
       optional Range range = 2 [default = NONE];
 
@@ -495,6 +505,9 @@ message WireMessage {
 
       /* A list of tags added by editors */
       repeated string editorTags = 30;
+
+      /* A list of post status that must match */
+      repeated string status = 31;
    }
 
    message QueryUnion {
