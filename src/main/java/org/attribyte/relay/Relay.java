@@ -129,6 +129,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *       it provides the initial state.
  *    </dd>
  *
+ *    <dt>supplier.completeWithTransformedMessage</dt>
+ *    <dd>
+ *       If true, supplier is completed with the transformed message, not the original message.
+ *    </dd>
+ *
  *    <dt>transformer.class</dt>
  *    <dd>
  *       The name of the class that transforms messages from the input
@@ -251,6 +256,9 @@ public class Relay implements MetricSet {
          this.supplierStateFile = null;
          savedState = Optional.absent();
       }
+
+      this.completeWithTransformedMessage =
+              supplierProps.getProperty("completeWithTransformedMessage", "false").equalsIgnoreCase("true");
 
       this.supplier.init(supplierProps.getProperties(), savedState, logger);
       registry.register("supplier", this.supplier);
@@ -407,7 +415,7 @@ public class Relay implements MetricSet {
          public void onSuccess(Publisher.NotificationResult result) {
             if (result.code > 199 && result.code < 300) {
                logger.info("Completed " + transformedMessage.id);
-               supplier.completedMessage(originalMessage);
+               supplier.completedMessage(completeWithTransformedMessage ? transformedMessage : originalMessage);
             } else {
                logError(result, transformedMessage.id);
                scheduleRetry(originalMessage.incrementAttempts(), transformedMessage.incrementAttempts());
@@ -560,6 +568,11 @@ public class Relay implements MetricSet {
     * Metrics reporting.
     */
    private final Reporting reporting;
+
+   /**
+    * If {@code true}, supplier is notified with the transformed message, not the original.
+    */
+   private final boolean completeWithTransformedMessage;
 
    /**
     * Is the relay initialized and running?
