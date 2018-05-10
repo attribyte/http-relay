@@ -12,6 +12,7 @@
  *  See the License for the specific language governing permissions and limitations under the License.
  */
 
+
 package com.attribyte.relay.feed;
 
 import com.attribyte.client.ClientProtos;
@@ -126,15 +127,20 @@ public class FeedTransformer implements Transformer {
 
                      if(!username.isEmpty()) {
                         ClientProtos.WireMessage.Author entryAuthor =
-                                authors.computeIfAbsent(username, un ->
-                                        ClientProtos.WireMessage.Author.newBuilder().setUsername(un).build());
+                                authors.computeIfAbsent(username, un -> {
+                                   ClientProtos.WireMessage.Author.Builder authorBuilder = ClientProtos.WireMessage.Author.newBuilder();
+                                   authorBuilder.setUsername(un);
+                                   if(!Strings.isNullOrEmpty(author.name)) {
+                                      authorBuilder.setName(author.name);
+                                   }
+                                   return authorBuilder.build();
+                                });
                         builder.setAuthor(entryAuthor);
                      }
                   }
                });
 
                replicationMessage.addAllAuthors(authors.values());
-
             });
          }
 
