@@ -38,7 +38,7 @@ public interface Transformer extends MetricSet {
    public Message transform(Message message);
 
    /**
-    * Initialize the supplier from properties.
+    * Initialize the transformer from properties.
     * @param supplier The supplier feeding this transformer.
     * @param props The properties.
     * @param logger A logger.
@@ -49,7 +49,7 @@ public interface Transformer extends MetricSet {
                     final Logger logger) throws Exception;
 
    /**
-    * Shutdown the supplier.
+    * Shutdown the transformer.
     */
    public void shutdown();
 }
