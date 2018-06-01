@@ -75,6 +75,9 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>selectSleepMillis</dt>
  *    <dd>The time to sleep between selects, in milliseconds.</dd>
  *
+ *    <dt>selectAll</dt>
+ *    <dd>If {@code true}, selects all posts by id in ascending order and stops when finished.</dd>
+ *
  *    <dt>maxSelected</dt>
  *    <dd>The maximum number of posts/comments selected</dd>
  *
@@ -155,6 +158,14 @@ public class WPSupplier extends RDBSupplier {
          }
 
          this.selectSleepMillis = Integer.parseInt(props.getProperty("selectSleepMillis", "30000"));
+
+         this.selectAll = props.getProperty("selectAll", "false").equalsIgnoreCase("true");
+         if(this.selectAll) {
+            this.stopId = this.db.selectMaxPostId();
+         } else {
+            this.stopId = 0L;
+         }
+
          this.maxSelected = Integer.parseInt(props.getProperty("maxSelected", "500"));
 
          String allowedStatusStr = props.getProperty("allowedStatus", "").trim();
@@ -250,7 +261,7 @@ public class WPSupplier extends RDBSupplier {
          case MESSAGE:
             state = State.PAUSE;
             try {
-               return buildMessage().or(Message.pause(0));
+               return buildMessage().or(selectAll ? Message.stop() : Message.pause(0));
             } catch(SQLException se) {
                logger.error("Message select error", se);
                return Message.error("Message select error: " + se.getMessage());
@@ -289,10 +300,18 @@ public class WPSupplier extends RDBSupplier {
    protected Optional<Message> buildMessage() throws SQLException {
 
       List<Post> nextPosts = Lists.newArrayListWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
+
+      //TODO: Selecting modified posts will be incorrect if there are multiple types specified
+      //To make it work correctly - add multiple types to the select!
+
       for(Post.Type type : allowedTypes) {
          final Timer.Context ctx = postSelects.time();
          try {
-            nextPosts.addAll(db.selectModifiedPosts(type, startMeta.lastModifiedMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
+            if(!selectAll) {
+               nextPosts.addAll(db.selectModifiedPosts(type, startMeta.lastModifiedMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
+            } else {
+               nextPosts.addAll(db.selectPostsAfterId(type, startMeta.id, maxSelected, true));
+            }
          } finally {
             ctx.stop();
          }
@@ -464,6 +483,16 @@ public class WPSupplier extends RDBSupplier {
     * The sleep time between selects.
     */
    private int selectSleepMillis;
+
+   /**
+    * Iterating through all posts?
+    */
+   private boolean selectAll;
+
+   /**
+    * When iterating through all, stop at this id.
+    */
+   private long stopId;
 
    /**
     * The maximum number of posts selected for one message.
