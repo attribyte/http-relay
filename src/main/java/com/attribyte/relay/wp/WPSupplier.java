@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Attribyte, LLC
+ * Copyright 2016-2018 Attribyte, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import com.attribyte.client.ClientProtos;
 import com.attribyte.relay.DusterClient;
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Metric;
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -85,8 +86,14 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>allowedTypes</dt>
  *    <dd>A comma-separated list of post types allowed for replication.</dd>
  *
- *    <dt>allowedMeta</dt>
+ *    <dt>allowedPostMeta</dt>
  *    <dd>A comma-separated list of metadata names to replicate with posts.</dd>
+ *
+ *    <dt>allowedUserMeta</dt>
+ *    <dd>A comma-separated list of metadata names to replicate with users.</dd>
+ *
+ *    <dt>metaNameCaseFormat</dt>
+ *    <dd>One of 'lower_camel', 'lower_hyphen', 'upper_camel' or 'upper_underscore'.</dd>
  *
  *    <dt>stopOnLostMessage</dt>
  *    <dd>Stops the relay on any lost message report.</dd>
@@ -160,12 +167,36 @@ public class WPSupplier extends RDBSupplier {
             this.allowedTypes = DEFAULT_ALLOWED_TYPES;
          }
 
-         String allowedMetaStr = props.getProperty("allowedMeta", "").trim();
-         if(!allowedMetaStr.isEmpty()) {
-            this.allowedMeta = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedMetaStr))
-                    .stream().collect(Collectors.toSet());
+         String allowedPostMetaStr = props.getProperty("allowedPostMeta", "").trim();
+         if(!allowedPostMetaStr.isEmpty()) {
+            this.allowedPostMeta = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedPostMetaStr));
          } else {
-            this.allowedMeta = ImmutableSet.of();
+            this.allowedPostMeta = ImmutableSet.of();
+         }
+
+         String allowedUserMetaStr = props.getProperty("allowedUserMeta", "").trim();
+         if(!allowedUserMetaStr.isEmpty()) {
+            this.allowedUserMeta = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedUserMetaStr));
+         } else {
+            this.allowedUserMeta = ImmutableSet.of();
+         }
+
+         String metaNameCaseFormat = props.getProperty("metaNameCaseFormat", "").trim().toLowerCase();
+         switch(metaNameCaseFormat) {
+            case "lower_camel":
+               this.metaNameCaseFormat = CaseFormat.LOWER_CAMEL;
+               break;
+            case "lower_hyphen":
+               this.metaNameCaseFormat = CaseFormat.LOWER_HYPHEN;
+               break;
+            case "upper_camel":
+               this.metaNameCaseFormat = CaseFormat.UPPER_CAMEL;
+               break;
+            case "upper_underscore":
+               this.metaNameCaseFormat = CaseFormat.UPPER_UNDERSCORE;
+               break;
+            default:
+               this.metaNameCaseFormat = null;
          }
 
          this.stopOnLostMessage = props.getProperty("stopOnLostMessage", "false").equalsIgnoreCase("true");
@@ -355,9 +386,11 @@ public class WPSupplier extends RDBSupplier {
                         entry.addTopic(category.term.name);
                      }
 
-                     if(allowedMeta.size() > 0 && post.metadata != null && post.metadata.size() > 0) {
+                     if(!allowedPostMeta.isEmpty() && !post.metadata.isEmpty()) {
                         for(Meta meta : post.metadata) {
-                           entry.addMetaBuilder().setName(meta.key).setValue(meta.value);
+                           if(allowedPostMeta.contains(meta.key)) {
+                              entry.addMetaBuilder().setName(metaKey(meta)).setValue(meta.value);
+                           }
                         }
                      }
 
@@ -440,7 +473,17 @@ public class WPSupplier extends RDBSupplier {
    /**
     * The set of metadata to be replicated with posts.
     */
-   private Set<String> allowedMeta;
+   private Set<String> allowedPostMeta;
+
+   /**
+    * The set of metadata to be replicated with users/authors.
+    */
+   private Set<String> allowedUserMeta;
+
+   /**
+    * If non-null, convert meta names to this format.
+    */
+   private CaseFormat metaNameCaseFormat;
 
    /**
     * The origin id sent with messages.
@@ -559,11 +602,22 @@ public class WPSupplier extends RDBSupplier {
    };
 
    /**
+    * Gets the key for replicated metadata - converting based on 'metaNameCaseFormat', if
+    * configured.
+    * @param meta The metadata.
+    * @return The key with conversion applied.
+    */
+   private String metaKey(final Meta meta) {
+      return metaNameCaseFormat == null ? meta.key :
+              CaseFormat.LOWER_UNDERSCORE.to(metaNameCaseFormat, meta.key);
+   }
+
+   /**
     * Creates a wire author from a WP user.
     * @param user The user.
     * @return The wire author.
     */
-   private static ClientProtos.WireMessage.Author fromUser(final User user) {
+   private ClientProtos.WireMessage.Author fromUser(final User user) {
       ClientProtos.WireMessage.Author.Builder author = ClientProtos.WireMessage.Author.newBuilder();
       if(!Strings.isNullOrEmpty(user.displayName)) {
          author.setName(user.displayName);
@@ -574,6 +628,15 @@ public class WPSupplier extends RDBSupplier {
       if(user.id > 0) {
          author.setId(user.id);
       }
+
+      if(!allowedUserMeta.isEmpty() && !user.metadata.isEmpty()) {
+         for(Meta meta : user.metadata) {
+            if(allowedUserMeta.contains(meta.key)) {
+               author.addMetaBuilder().setName(metaKey(meta)).setValue(meta.value);
+            }
+         }
+      }
+
       return author.build();
    }
 
