@@ -107,6 +107,11 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    Must have a default constructor.
  *    </dd>
  *
+ *    <dt>postTransformer</dt>
+ *    <dd>A class that implements {@code PostTransformer}.
+ *    Must have a default constructor.
+ *    </dd>
+ *
  *    <dt>cleanShortcodes</dt>
  *    <dd>If {@code true}, shortcodes will be removed from content. Ignored
  *    if {@code contentTransfomer} is specified. Default is {@code true}.</dd>
@@ -220,6 +225,13 @@ public class WPSupplier extends RDBSupplier {
             this.contentTransformer.init(props);
          } else if(props.getProperty("cleanShortcodes", "true").equalsIgnoreCase("true")) {
             this.contentTransformer = new ShortcodeCleaner();
+         }
+
+         if(!props.getProperty("postTransformer", "").trim().isEmpty()) {
+            this.postTransformer = (PostTransformer)(Class.forName(props.getProperty("postTransformer")).newInstance());
+            this.postTransformer.init(props);
+         } else {
+            this.postTransformer = null;
          }
 
          logger.info("Initialized WP supplier...");
@@ -403,6 +415,10 @@ public class WPSupplier extends RDBSupplier {
                         }
                      }
 
+                     if(postTransformer != null) {
+                        postTransformer.transform(post, entry);
+                     }
+
                      replicationMessage.addEntries(entry.build());
 
                   } else {
@@ -557,6 +573,11 @@ public class WPSupplier extends RDBSupplier {
     * An optional content transformer.
     */
    private ContentTransformer contentTransformer;
+
+   /**
+    * An optional post transformer.
+    */
+   private PostTransformer postTransformer;
 
    /**
     * Time to build published messages.
