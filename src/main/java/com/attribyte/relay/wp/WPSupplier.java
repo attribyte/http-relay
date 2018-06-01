@@ -46,8 +46,6 @@ import org.attribyte.wp.model.User;
 
 import java.sql.SQLException;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -282,7 +280,6 @@ public class WPSupplier extends RDBSupplier {
             ctx.stop();
          }
       }
-      Collections.sort(nextPosts, ascendingPostComparator);
 
       logger.info(String.format("Selected %d modified posts", nextPosts.size()));
 
@@ -389,7 +386,7 @@ public class WPSupplier extends RDBSupplier {
                      if(!allowedPostMeta.isEmpty() && !post.metadata.isEmpty()) {
                         for(Meta meta : post.metadata) {
                            if(allowedPostMeta.contains(meta.key)) {
-                              entry.addMetaBuilder().setName(metaKey(meta)).setValue(meta.value);
+                              entry.addMetaBuilder().setName(metaKey(meta.key)).setValue(meta.value);
                            }
                         }
                      }
@@ -594,22 +591,14 @@ public class WPSupplier extends RDBSupplier {
    }
 
    /**
-    * Sort posts in ascending order by time, id.
-    */
-   static final Comparator<Post> ascendingPostComparator = (o1, o2) -> {
-      final int c = Long.compare(o1.modifiedTimestamp, o2.modifiedTimestamp);
-      return c != 0 ? c : Long.compare(o1.id, o2.id);
-   };
-
-   /**
     * Gets the key for replicated metadata - converting based on 'metaNameCaseFormat', if
     * configured.
-    * @param meta The metadata.
+    * @param key The metadata key.
     * @return The key with conversion applied.
     */
-   private String metaKey(final Meta meta) {
-      return metaNameCaseFormat == null ? meta.key :
-              CaseFormat.LOWER_UNDERSCORE.to(metaNameCaseFormat, meta.key);
+   private String metaKey(final String key) {
+      return metaNameCaseFormat == null ? key :
+              CaseFormat.LOWER_UNDERSCORE.to(metaNameCaseFormat, key);
    }
 
    /**
@@ -629,10 +618,19 @@ public class WPSupplier extends RDBSupplier {
          author.setId(user.id);
       }
 
-      if(!allowedUserMeta.isEmpty() && !user.metadata.isEmpty()) {
+      if(!allowedUserMeta.isEmpty()) {
+
+         if(allowedUserMeta.contains("email") && !Strings.isNullOrEmpty(user.email)) {
+            author.addMetaBuilder().setName(metaKey("email")).setValue(user.email);
+         }
+
+         if(allowedUserMeta.contains("url") && !Strings.isNullOrEmpty(user.url)) {
+            author.addMetaBuilder().setName(metaKey("url")).setValue(user.url);
+         }
+
          for(Meta meta : user.metadata) {
             if(allowedUserMeta.contains(meta.key)) {
-               author.addMetaBuilder().setName(metaKey(meta)).setValue(meta.value);
+               author.addMetaBuilder().setName(metaKey(meta.key)).setValue(meta.value);
             }
          }
       }
