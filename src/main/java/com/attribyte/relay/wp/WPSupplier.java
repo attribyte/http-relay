@@ -93,6 +93,9 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>metaNameCaseFormat</dt>
  *    <dd>One of 'lower_camel', 'lower_hyphen', 'upper_camel' or 'upper_underscore'.</dd>
  *
+ *    <dt>excerptOutputField</dt>
+ *    <dd>The output field for excerpt ('summary', 'dek' or [none] for no output). Default is 'summary'.</dd>
+ *
  *    <dt>stopOnLostMessage</dt>
  *    <dd>Stops the relay on any lost message report.</dd>
  *
@@ -196,6 +199,8 @@ public class WPSupplier extends RDBSupplier {
             default:
                this.metaNameCaseFormat = null;
          }
+
+         this.excerptOutputField = props.getProperty("excerptOutputField", "summary").toLowerCase().trim();
 
          this.stopOnLostMessage = props.getProperty("stopOnLostMessage", "false").equalsIgnoreCase("true");
          this.originId = props.getProperty("originId", "");
@@ -336,7 +341,14 @@ public class WPSupplier extends RDBSupplier {
                      }
 
                      if(post.excerpt != null) {
-                        entry.setSummary(post.excerpt);
+                        switch(excerptOutputField) {
+                           case "summary":
+                              entry.setSummary(post.excerpt);
+                              break;
+                           case "dek":
+                              entry.setDek(post.excerpt);
+                              break;
+                        }
                      }
 
                      if(post.content != null) {
@@ -481,6 +493,11 @@ public class WPSupplier extends RDBSupplier {
     * If non-null, convert meta names to this format.
     */
    private CaseFormat metaNameCaseFormat;
+
+   /**
+    * The output field for the excerpt ('summary' or 'dek').
+    */
+   private String excerptOutputField = "summary";
 
    /**
     * The origin id sent with messages.
