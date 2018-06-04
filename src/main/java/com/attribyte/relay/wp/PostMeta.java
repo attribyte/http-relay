@@ -73,17 +73,18 @@ public class PostMeta {
     * @throws IOException on invalid format.
     */
    public static PostMeta fromBytes(final ByteString bytes) throws IOException {
+
       String[] components = bytes.toStringUtf8().split(",");
       if(components.length < 2) {
          throw new IOException(String.format("Invalid state: '%s'", bytes.toStringUtf8()));
       }
 
-      Long id = Longs.tryParse(components[0]);
+      Long id = Longs.tryParse(components[0].trim());
       if(id == null) {
          throw new IOException(String.format("Invalid state: '%s'", bytes.toStringUtf8()));
       }
 
-      Long lastModifiedMillis = Longs.tryParse(components[1]);
+      Long lastModifiedMillis = Longs.tryParse(components[1].trim());
       if(lastModifiedMillis == null) {
          throw new IOException(String.format("Invalid state: '%s'", bytes.toStringUtf8()));
       }
