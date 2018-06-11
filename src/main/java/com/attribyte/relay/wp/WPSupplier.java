@@ -22,6 +22,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
@@ -89,6 +90,9 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *
  *    <dt>allowedPostMeta</dt>
  *    <dd>A comma-separated list of metadata names to replicate with posts.</dd>
+ *
+ *    <dt>allowedImageMeta</dt>
+ *    <dd>A comma-separated list of metadata names to replicate with images.</dd> *
  *
  *    <dt>allowedUserMeta</dt>
  *    <dd>A comma-separated list of metadata names to replicate with users.</dd>
@@ -189,6 +193,13 @@ public class WPSupplier extends RDBSupplier {
             this.allowedPostMeta = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedPostMetaStr));
          } else {
             this.allowedPostMeta = ImmutableSet.of();
+         }
+
+         String allowedImageMetaStr = props.getProperty("allowedImageMeta", "").trim();
+         if(!allowedImageMetaStr.isEmpty()) {
+            this.allowedImageMeta = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedImageMetaStr));
+         } else {
+            this.allowedImageMeta = ImmutableSet.of();
          }
 
          String allowedUserMetaStr = props.getProperty("allowedUserMeta", "").trim();
@@ -398,14 +409,34 @@ public class WPSupplier extends RDBSupplier {
 
                      for(Post attachmentPost : post.children) {
                         if(attachmentPost.type == Post.Type.ATTACHMENT && isImageAttachment(attachmentPost)) {
+                           final List<ClientProtos.WireMessage.Meta> protoImageMeta;
+                           if(allowedImageMeta.isEmpty()) {
+                              protoImageMeta = ImmutableList.of();
+                           } else {
+                              List<Meta> imageMeta = db.selectPostMeta(attachmentPost.id);
+                              protoImageMeta = imageMeta.isEmpty() ?
+                                      ImmutableList.of() : Lists.newArrayListWithExpectedSize(imageMeta.size());
+                              imageMeta.forEach(meta -> {
+                                 if(allowedImageMeta.contains(meta.key)) {
+                                    protoImageMeta.add(
+                                            ClientProtos.WireMessage.Meta.newBuilder()
+                                                    .setName(meta.key)
+                                                    .setValue(meta.value).build()
+                                    );
+                                 }
+                              });
+                           }
+
                            if(featuredImageId > 0 && attachmentPost.id == featuredImageId) {
                               entry.setPrimaryImage(
                                       ClientProtos.WireMessage.Image.newBuilder()
+                                              .addAllMeta(protoImageMeta)
                                               .setOriginalSrc(new ImageAttachment(attachmentPost).path())
                                               .setTitle(Strings.nullToEmpty(attachmentPost.excerpt))
                               );
                            } else {
                               entry.addImagesBuilder()
+                                      .addAllMeta(protoImageMeta)
                                       .setOriginalSrc(new ImageAttachment(attachmentPost).path())
                                       .setTitle(Strings.nullToEmpty(attachmentPost.excerpt));
                            }
@@ -528,6 +559,11 @@ public class WPSupplier extends RDBSupplier {
     * The set of metadata to be replicated with posts.
     */
    private Set<String> allowedPostMeta;
+
+   /**
+    * The set of metadata to be replicated with image.
+    */
+   private Set<String> allowedImageMeta;
 
    /**
     * The set of metadata to be replicated with users/authors.
