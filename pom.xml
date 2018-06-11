@@ -192,6 +192,7 @@
                 <configuration>
                     <show>protected</show>
                     <nohelp>true</nohelp>
+                    <additionalOptions>-Xdoclint:none</additionalOptions>
                 </configuration>
                 <executions>
                     <execution>
