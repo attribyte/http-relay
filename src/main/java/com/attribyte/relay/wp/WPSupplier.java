@@ -47,6 +47,7 @@ import org.attribyte.wp.model.User;
 
 import java.sql.SQLException;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -174,8 +175,12 @@ public class WPSupplier extends RDBSupplier {
 
          String allowedStatusStr = props.getProperty("allowedStatus", "").trim();
          if(!allowedStatusStr.isEmpty()) {
-            this.allowedStatus = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedStatusStr)
-                    .stream().map(Post.Status::fromString).collect(Collectors.toSet()));
+            if(allowedStatusStr.equalsIgnoreCase("all")) {
+               this.allowedStatus = ALL_STATUS;
+            } else {
+               this.allowedStatus = ImmutableSet.copyOf(Splitter.on(',').omitEmptyStrings().splitToList(allowedStatusStr)
+                       .stream().map(Post.Status::fromString).collect(Collectors.toSet()));
+            }
          } else {
             this.allowedStatus = DEFAULT_ALLOWED_STATUS;
          }
@@ -681,6 +686,12 @@ public class WPSupplier extends RDBSupplier {
     * The time elapsed between message create and the (async) response from the target.
     */
    private final Timer timeToAcknowledge = new Timer();
+
+   /**
+    * A set that contains all supported status.
+    * @see <a href="https://codex.wordpress.org/Post_Status">https://codex.wordpress.org/Post_Status</a>
+    */
+   static final ImmutableSet<Post.Status> ALL_STATUS = ImmutableSet.copyOf(EnumSet.allOf(Post.Status.class));
 
    /**
     * The default set of allowed post status ('publish' only).
