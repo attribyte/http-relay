@@ -324,8 +324,15 @@ public class WPSupplier extends RDBSupplier {
          final Timer.Context ctx = postSelects.time();
          try {
             System.out.println("Selecting posts from " + startMeta.toString());
+            long currTime = System.currentTimeMillis();
             if(!selectAll) {
-               nextPosts.addAll(db.selectModifiedPosts(type, startMeta.lastModifiedMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
+               long lastModifiedMillis = startMeta.lastModifiedMillis;
+               if(lastModifiedMillis > currTime) {
+                  System.out.println("Meta last modified > current time!");
+                  lastModifiedMillis = currTime;
+               }
+
+               nextPosts.addAll(db.selectModifiedPosts(type, lastModifiedMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
             } else {
                nextPosts.addAll(db.selectPostsAfterId(type, startMeta.id, maxSelected, true));
             }
