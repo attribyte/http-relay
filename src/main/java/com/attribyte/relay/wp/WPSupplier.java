@@ -363,142 +363,140 @@ public class WPSupplier extends RDBSupplier {
             if(!allEntries.contains(post.id)) {
                allEntries.add(post.id);
                if(allowedStatus.contains(post.status)) {
-                  if(post.status == Post.Status.PUBLISH) {
-                     if(post.author == null) {
-                        logger.error(String.format("Skipping post with missing author (%d)", post.id));
-                        continue;
-                     }
-
-                     ClientProtos.WireMessage.Author author = fromUser(post.author);
-                     if(!allAuthors.contains(author.getId())) {
-                        allAuthors.add(author.getId());
-                        replicationMessage.addAuthors(author);
-                     }
-
-                     ClientProtos.WireMessage.Entry.Builder entry = ClientProtos.WireMessage.Entry.newBuilder();
-                     entry.setId(post.id);
-                     entry.setPermanent(true);
-                     entry.setAuthor(author);
-                     entry.setParentSite(parentSite);
-
-                     entry.setCanonicalLink(site.buildPermalink(post));
-
-                     if(post.title != null) {
-                        entry.setTitle(post.title);
-                     }
-
-                     if(post.excerpt != null) {
-                        switch(excerptOutputField) {
-                           case "summary":
-                              entry.setSummary(post.excerpt);
-                              break;
-                           case "dek":
-                              entry.setDek(post.excerpt);
-                              break;
-                        }
-                     }
-
-                     if(post.content != null) {
-                        entry.setContent(contentTransformer == null ? post.content : contentTransformer.transform(post.content));
-                     }
-
-                     if(post.publishTimestamp > 0L) {
-                        entry.setPublishTimeMillis(post.publishTimestamp);
-                     }
-
-                     if(post.modifiedTimestamp > 0L) {
-                        entry.setLastModifiedMillis(post.modifiedTimestamp);
-                     }
-
-                     switch(post.status) {
-                        case PUBLISH:
-                           entry.setStatus("published");
-                           break;
-                        case PENDING:
-                        case FUTURE:
-                           entry.setStatus("scheduled");
-                           break;
-                        default:
-                           entry.setStatus("draft");
-                           break;
-                     }
-
-                     long featuredImageId = featuredImageId(post.metadata);
-
-                     for(Post attachmentPost : post.children) {
-                        if(attachmentPost.type == Post.Type.ATTACHMENT && isImageAttachment(attachmentPost)) {
-                           final List<ClientProtos.WireMessage.Meta> protoImageMeta;
-                           if(allowedImageMeta.isEmpty()) {
-                              protoImageMeta = ImmutableList.of();
-                           } else {
-                              List<Meta> imageMeta = db.selectPostMeta(attachmentPost.id);
-                              protoImageMeta = imageMeta.isEmpty() ?
-                                      ImmutableList.of() : Lists.newArrayListWithExpectedSize(imageMeta.size());
-                              imageMeta.forEach(meta -> {
-                                 if(allowedImageMeta.contains(meta.key)) {
-                                    protoImageMeta.add(
-                                            ClientProtos.WireMessage.Meta.newBuilder()
-                                                    .setName(meta.key)
-                                                    .setValue(meta.value).build()
-                                    );
-                                 }
-                              });
-                           }
-
-                           if(featuredImageId > 0 && attachmentPost.id == featuredImageId) {
-                              entry.setPrimaryImage(
-                                      ClientProtos.WireMessage.Image.newBuilder()
-                                              .addAllMeta(protoImageMeta)
-                                              .setOriginalSrc(new ImageAttachment(attachmentPost).path())
-                                              .setTitle(Strings.nullToEmpty(attachmentPost.excerpt))
-                              );
-                           } else {
-                              entry.addImagesBuilder()
-                                      .addAllMeta(protoImageMeta)
-                                      .setOriginalSrc(new ImageAttachment(attachmentPost).path())
-                                      .setTitle(Strings.nullToEmpty(attachmentPost.excerpt));
-                           }
-                        }
-                     }
-
-                     extractLinks(entry, site.baseURL); //Other images, citations...
-
-                     if(dusterClient != null) {
-                        dusterClient.enableImages(entry);
-                     }
-
-
-                     for(TaxonomyTerm tag : post.tags()) {
-                        entry.addTag(tag.term.name);
-                     }
-                     for(TaxonomyTerm category : post.categories()) {
-                        entry.addTopic(category.term.name);
-                     }
-
-                     if(!allowedPostMeta.isEmpty() && !post.metadata.isEmpty()) {
-                        for(Meta meta : post.metadata) {
-                           if(allowedPostMeta.contains(meta.key)) {
-                              entry.addMetaBuilder().setName(metaKey(meta.key)).setValue(meta.value);
-                           }
-                        }
-                     }
-
-                     if(postTransformer != null) {
-                        postTransformer.transform(post, entry);
-                     }
-
-                     replicationMessage.addEntries(entry.build());
-
-                  } else {
-                     replicationMessage.addEntriesBuilder()
-                             .setId(post.id)
-                             .setDeleted(true);
+                  if(post.author == null) {
+                     logger.error(String.format("Skipping post with missing author (%d)", post.id));
+                     continue;
                   }
+
+                  ClientProtos.WireMessage.Author author = fromUser(post.author);
+                  if(!allAuthors.contains(author.getId())) {
+                     allAuthors.add(author.getId());
+                     replicationMessage.addAuthors(author);
+                  }
+
+                  ClientProtos.WireMessage.Entry.Builder entry = ClientProtos.WireMessage.Entry.newBuilder();
+                  entry.setId(post.id);
+                  entry.setPermanent(true);
+                  entry.setAuthor(author);
+                  entry.setParentSite(parentSite);
+
+                  entry.setCanonicalLink(site.buildPermalink(post));
+
+                  if(post.title != null) {
+                     entry.setTitle(post.title);
+                  }
+
+                  if(post.excerpt != null) {
+                     switch(excerptOutputField) {
+                        case "summary":
+                           entry.setSummary(post.excerpt);
+                           break;
+                        case "dek":
+                           entry.setDek(post.excerpt);
+                           break;
+                     }
+                  }
+
+                  if(post.content != null) {
+                     entry.setContent(contentTransformer == null ? post.content : contentTransformer.transform(post.content));
+                  }
+
+                  if(post.publishTimestamp > 0L) {
+                     entry.setPublishTimeMillis(post.publishTimestamp);
+                  }
+
+                  if(post.modifiedTimestamp > 0L) {
+                     entry.setLastModifiedMillis(post.modifiedTimestamp);
+                  }
+
+                  switch(post.status) {
+                     case PUBLISH:
+                        entry.setStatus("published");
+                        break;
+                     case PENDING:
+                     case FUTURE:
+                        entry.setStatus("scheduled");
+                        break;
+                     default:
+                        entry.setStatus("draft");
+                        break;
+                  }
+
+                  long featuredImageId = featuredImageId(post.metadata);
+
+                  for(Post attachmentPost : post.children) {
+                     if(attachmentPost.type == Post.Type.ATTACHMENT && isImageAttachment(attachmentPost)) {
+                        final List<ClientProtos.WireMessage.Meta> protoImageMeta;
+                        if(allowedImageMeta.isEmpty()) {
+                           protoImageMeta = ImmutableList.of();
+                        } else {
+                           List<Meta> imageMeta = db.selectPostMeta(attachmentPost.id);
+                           protoImageMeta = imageMeta.isEmpty() ?
+                                   ImmutableList.of() : Lists.newArrayListWithExpectedSize(imageMeta.size());
+                           imageMeta.forEach(meta -> {
+                              if(allowedImageMeta.contains(meta.key)) {
+                                 protoImageMeta.add(
+                                         ClientProtos.WireMessage.Meta.newBuilder()
+                                                 .setName(meta.key)
+                                                 .setValue(meta.value).build()
+                                 );
+                              }
+                           });
+                        }
+
+                        if(featuredImageId > 0 && attachmentPost.id == featuredImageId) {
+                           entry.setPrimaryImage(
+                                   ClientProtos.WireMessage.Image.newBuilder()
+                                           .addAllMeta(protoImageMeta)
+                                           .setOriginalSrc(new ImageAttachment(attachmentPost).path())
+                                           .setTitle(Strings.nullToEmpty(attachmentPost.excerpt))
+                           );
+                        } else {
+                           entry.addImagesBuilder()
+                                   .addAllMeta(protoImageMeta)
+                                   .setOriginalSrc(new ImageAttachment(attachmentPost).path())
+                                   .setTitle(Strings.nullToEmpty(attachmentPost.excerpt));
+                        }
+                     }
+                  }
+
+                  extractLinks(entry, site.baseURL); //Other images, citations...
+
+                  if(dusterClient != null) {
+                     dusterClient.enableImages(entry);
+                  }
+
+
+                  for(TaxonomyTerm tag : post.tags()) {
+                     entry.addTag(tag.term.name);
+                  }
+                  for(TaxonomyTerm category : post.categories()) {
+                     entry.addTopic(category.term.name);
+                  }
+
+                  if(!allowedPostMeta.isEmpty() && !post.metadata.isEmpty()) {
+                     for(Meta meta : post.metadata) {
+                        if(allowedPostMeta.contains(meta.key)) {
+                           entry.addMetaBuilder().setName(metaKey(meta.key)).setValue(meta.value);
+                        }
+                     }
+                  }
+
+                  if(postTransformer != null) {
+                     postTransformer.transform(post, entry);
+                  }
+
+                  replicationMessage.addEntries(entry.build());
+
                } else {
                   replicationMessage.addEntriesBuilder()
                           .setId(post.id)
                           .setDeleted(true);
                }
+            } else {
+               replicationMessage.addEntriesBuilder()
+                       .setId(post.id)
+                       .setDeleted(true);
             }
          }
 
