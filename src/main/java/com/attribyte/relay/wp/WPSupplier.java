@@ -323,6 +323,7 @@ public class WPSupplier extends RDBSupplier {
       for(Post.Type type : allowedTypes) {
          final Timer.Context ctx = postSelects.time();
          try {
+            System.out.println("Selecting posts from " + startMeta.toString());
             if(!selectAll) {
                nextPosts.addAll(db.selectModifiedPosts(type, startMeta.lastModifiedMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
             } else {

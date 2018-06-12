@@ -17,6 +17,9 @@ package com.attribyte.relay.wp;
 import com.google.common.base.MoreObjects;
 import com.google.common.primitives.Longs;
 import com.google.protobuf.ByteString;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.ISODateTimeFormat;
 
 import java.io.IOException;
 
@@ -55,6 +58,8 @@ public class PostMeta {
       return MoreObjects.toStringHelper(this.getClass())
               .add("id", id)
               .add("lastModifiedMillis",lastModifiedMillis)
+              .add("lastModifiedHumanUTC", ISODateTimeFormat.basicDateTime().withZoneUTC().print(lastModifiedMillis))
+              .add("lastModifiedHuman", ISODateTimeFormat.basicDateTime().withZone(DateTimeZone.getDefault()).print(lastModifiedMillis))
               .toString();
    }
 
