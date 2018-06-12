@@ -405,6 +405,19 @@ public class WPSupplier extends RDBSupplier {
                         entry.setLastModifiedMillis(post.modifiedTimestamp);
                      }
 
+                     switch(post.status) {
+                        case PUBLISH:
+                           entry.setStatus("published");
+                           break;
+                        case PENDING:
+                        case FUTURE:
+                           entry.setStatus("scheduled");
+                           break;
+                        default:
+                           entry.setStatus("draft");
+                           break;
+                     }
+
                      long featuredImageId = featuredImageId(post.metadata);
 
                      for(Post attachmentPost : post.children) {
