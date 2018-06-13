@@ -273,7 +273,7 @@ public class WPSupplier extends RDBSupplier {
          } else {
             logger.info(String.format("Initializing meta db, '%s'...", dbDir));
             File metaDir = new File(dbDir);
-            if(metaDir.exists()) {
+            if(!metaDir.exists()) {
                throw new Exception(String.format("The 'metadb.dir' must exist ('%s')", dbDir));
             }
             this.metaDB = new PostMetaDB(metaDir);
