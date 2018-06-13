@@ -38,6 +38,7 @@ public class PostMetaDB {
     */
    public final PostMeta write(final PostMeta meta) throws IOException {
       File file = file(meta.id);
+      file.mkdirs();
       Files.write(meta.toBytes().toByteArray(), file);
       return meta;
    }
