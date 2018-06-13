@@ -74,6 +74,22 @@ public class PostMeta {
    }
 
    /**
+    * @return Does this metadata hava a modified time in the future?
+    */
+   public final boolean isFutureModified() {
+      return lastModifiedMillis > System.currentTimeMillis();
+   }
+
+   /**
+    * Creates a copy of this post meta with the modified timestamp set
+    * to the current time.
+    * @return The new post meta.
+    */
+   public PostMeta withCurrentModifiedTime() {
+      return new PostMeta(id, System.currentTimeMillis(), fingerprint);
+   }
+
+   /**
     * The post id.
     */
    public final long id;

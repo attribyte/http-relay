@@ -45,10 +45,13 @@ import org.attribyte.wp.model.Site;
 import org.attribyte.wp.model.TaxonomyTerm;
 import org.attribyte.wp.model.User;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -123,6 +126,9 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>cleanShortcodes</dt>
  *    <dd>If {@code true}, shortcodes will be removed from content. Ignored
  *    if {@code contentTransfomer} is specified. Default is {@code true}.</dd>
+ *
+ *    <dt>metadb.dir</dt>
+ *    <dd>A directory used to store metadata for posts.</dd>
  *
  * </dl>
  */
@@ -261,6 +267,24 @@ public class WPSupplier extends RDBSupplier {
             this.postTransformer = null;
          }
 
+         String dbDir = props.getProperty("metadb.dir", "").trim();
+         if(dbDir.isEmpty()) {
+            this.metaDB = null;
+         } else {
+            logger.info(String.format("Initializing meta db, '%s'...", dbDir));
+            File metaDir = new File(dbDir);
+            if(metaDir.exists()) {
+               throw new Exception(String.format("The 'metadb.dir' must exist ('%s')", dbDir));
+            }
+            this.metaDB = new PostMetaDB(metaDir);
+         }
+
+         Long modifiedSelectOffsetHours = Longs.tryParse(props.getProperty("modifiedSelectOffsetHours", "0"));
+         this.modifiedSelectOffset = modifiedSelectOffsetHours != null ? modifiedSelectOffsetHours * 3600 * 1000L : 0L;
+         if(this.modifiedSelectOffset != 0L) {
+            logger.info(String.format("Set modified select offset to %d millis", this.modifiedSelectOffset));
+         }
+
          logger.info("Initialized WP supplier...");
 
       }
@@ -332,7 +356,7 @@ public class WPSupplier extends RDBSupplier {
                   lastModifiedMillis = currTime;
                }
 
-               nextPosts.addAll(db.selectModifiedPosts(type, lastModifiedMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
+               nextPosts.addAll(db.selectModifiedPosts(type, lastModifiedMillis + modifiedSelectOffset, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
             } else {
                nextPosts.addAll(db.selectPostsAfterId(type, startMeta.id, maxSelected, true));
             }
@@ -374,6 +398,31 @@ public class WPSupplier extends RDBSupplier {
                   if(post.author == null) {
                      logger.error(String.format("Skipping post with missing author (%d)", post.id));
                      continue;
+                  }
+
+                  if(post.modifiedTimestamp > System.currentTimeMillis()) {
+                     logger.info(String.format("Post has future modified time - writing the current time (%d)", post.id));
+                     post = post.modifiedNow();
+                  }
+
+                  if(metaDB != null) {
+                     try {
+                        PostMeta currMeta = new PostMeta(post);
+                        PostMeta prevMeta = metaDB.read(post.id);
+                        if(prevMeta != null) {
+                           if(currMeta.fingerprint.equals(prevMeta.fingerprint)) {
+                              logger.info(String.format("Skipping identical post (%d)", post.id));
+                              continue;
+                           } else {
+                              metaDB.write(currMeta);
+                           }
+                        } else {
+                           metaDB.write(currMeta);
+                        }
+
+                     } catch(IOException ioe) {
+                        logger.error("Problem reading/writing metadata", ioe);
+                     }
                   }
 
                   ClientProtos.WireMessage.Author author = fromUser(post.author);
@@ -509,12 +558,39 @@ public class WPSupplier extends RDBSupplier {
          }
 
          String messageId = this.startMeta.toBytes().toStringUtf8();
-         Post lastPost = nextPosts.get(nextPosts.size() - 1);
-         this.startMeta = new PostMeta(lastPost.id, lastPost.modifiedTimestamp);
+         Post lastPost = lastNonFutureModified(nextPosts);
+         if(lastPost != null) {
+            this.startMeta = new PostMeta(lastPost.id, lastPost.modifiedTimestamp);
+         } else {
+            logger.error("All modified timestamps were in the future! Resetting.");
+            this.startMeta = new PostMeta(lastPost.id, System.currentTimeMillis() - 60000L);
+         }
          return Optional.of(Message.publish(messageId, replicationMessage.build().toByteString()));
       } finally {
          ctx.stop();
       }
+   }
+
+   /**
+    * Gets the last post in the list with a modified time that is not in the future.
+    * @param posts The list of posts.
+    * @return The post or {@code null}.
+    */
+   private Post lastNonFutureModified(final List<Post> posts) {
+      if(posts.isEmpty()) {
+         return null;
+      }
+
+      long now = System.currentTimeMillis();
+      ListIterator<Post> iter = posts.listIterator(posts.size());
+      while(iter.hasPrevious()) {
+         Post curr = iter.previous();
+         if(curr.modifiedTimestamp < now) {
+            return curr;
+         }
+      }
+
+      return null;
    }
 
    @Override
@@ -667,6 +743,16 @@ public class WPSupplier extends RDBSupplier {
     * An optional post transformer.
     */
    private PostTransformer postTransformer;
+
+   /**
+    * The post meta DB, if configured.
+    */
+   private PostMetaDB metaDB;
+
+   /**
+    * An offset (milliseconds) to add when selecting modified posts.
+    */
+   private long modifiedSelectOffset;
 
    /**
     * Time to build published messages.
