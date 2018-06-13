@@ -564,6 +564,7 @@ public class WPSupplier extends RDBSupplier {
             this.startMeta = new PostMeta(lastPost.id, lastPost.modifiedTimestamp);
          } else {
             logger.error("All modified timestamps were in the future! Resetting.");
+            lastPost = nextPosts.get(nextPosts.size() - 1);
             this.startMeta = new PostMeta(lastPost.id, System.currentTimeMillis() - 60000L);
          }
          return Optional.of(Message.publish(messageId, replicationMessage.build().toByteString()));
