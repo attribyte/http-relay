@@ -279,10 +279,10 @@ public class WPSupplier extends RDBSupplier {
             this.metaDB = new PostMetaDB(metaDir);
          }
 
-         Long modifiedSelectOffsetHours = Longs.tryParse(props.getProperty("modifiedSelectOffsetHours", "0"));
-         this.modifiedSelectOffset = modifiedSelectOffsetHours != null ? modifiedSelectOffsetHours * 3600 * 1000L : 0L;
-         if(this.modifiedSelectOffset != 0L) {
-            logger.info(String.format("Set modified select offset to %d millis", this.modifiedSelectOffset));
+         Long modifiedOffsetHours = Longs.tryParse(props.getProperty("modifiedOffsetHours", "0"));
+         this.modifiedOffsetMillis = modifiedOffsetHours != null ? modifiedOffsetHours * 3600 * 1000L : 0L;
+         if(this.modifiedOffsetMillis != 0L) {
+            logger.info(String.format("Set modified select offset to %d millis", this.modifiedOffsetMillis));
          }
 
          logger.info("Initialized WP supplier...");
@@ -356,7 +356,7 @@ public class WPSupplier extends RDBSupplier {
                   lastModifiedMillis = currTime;
                }
 
-               nextPosts.addAll(db.selectModifiedPosts(type, lastModifiedMillis + modifiedSelectOffset, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
+               nextPosts.addAll(db.selectModifiedPosts(type, lastModifiedMillis + modifiedOffsetMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
             } else {
                nextPosts.addAll(db.selectPostsAfterId(type, startMeta.id, maxSelected, true));
             }
@@ -752,7 +752,7 @@ public class WPSupplier extends RDBSupplier {
    /**
     * An offset (milliseconds) to add when selecting modified posts.
     */
-   private long modifiedSelectOffset;
+   private long modifiedOffsetMillis;
 
    /**
     * Time to build published messages.
