@@ -165,18 +165,19 @@ public class PostMeta {
     * @return The fingerprint.
     */
    public static final HashCode fingerprint(final Post post) {
-      return fingerprint(post, hashFunction.newHasher());
+      Hasher hasher = hashFunction.newHasher();
+      fingerprint(post, hasher);
+      return hasher.hash();
    }
 
    /**
     * Creates a unique fingerprint for a post.
     * @param post The post.
-    * @param hasher A hasher.
-    * @return The fingerprint.
+    * @param hasher The hasher.
     */
-   public static final HashCode fingerprint(final Post post, final Hasher hasher) {
+   public static final void fingerprint(final Post post, final Hasher hasher) {
       if(post == null) {
-         return null;
+         return;
       }
 
       hasher.putString(Strings.nullToEmpty(post.slug), Charsets.UTF_8);
@@ -199,7 +200,6 @@ public class PostMeta {
          hasher.putString(term.term.name, Charsets.UTF_8);
       });
       post.children.forEach(childPost -> fingerprint(childPost, hasher));
-      return hasher.hash();
    }
 
    /**
