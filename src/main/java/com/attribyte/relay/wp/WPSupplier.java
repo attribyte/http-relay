@@ -401,7 +401,8 @@ public class WPSupplier extends RDBSupplier {
                   }
 
                   if(post.modifiedTimestamp > System.currentTimeMillis()) {
-                     logger.info(String.format("Post has future modified time - writing the current time (%d)", post.id));
+                     long offsetHours = (post.modifiedTimestamp - System.currentTimeMillis()) / 3600L /1000L;
+                     logger.info(String.format("Post has future modified time: offset hours: %d - writing the current time (%d)", offsetHours, post.id));
                      post = post.modifiedNow();
                   }
 
