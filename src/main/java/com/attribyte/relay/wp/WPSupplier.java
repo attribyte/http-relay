@@ -123,6 +123,11 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    Must have a default constructor.
  *    </dd>
  *
+ *    <dt>postFilter</dt>
+ *    <dd>A class that implements {@code PostFilter}.
+ *    Must have a default constructor.
+ *    </dd>
+ *
  *    <dt>cleanShortcodes</dt>
  *    <dd>If {@code true}, shortcodes will be removed from content. Ignored
  *    if {@code contentTransfomer} is specified. Default is {@code true}.</dd>
@@ -267,6 +272,13 @@ public class WPSupplier extends RDBSupplier {
             this.postTransformer = null;
          }
 
+         if(!props.getProperty("postFilter", "").trim().isEmpty()) {
+            this.postFilter = (PostFilter)(Class.forName(props.getProperty("postFilter")).newInstance());
+            this.postFilter.init(props);
+         } else {
+            this.postFilter = null;
+         }
+
          String dbDir = props.getProperty("metadb.dir", "").trim();
          if(dbDir.isEmpty()) {
             this.metaDB = null;
@@ -333,11 +345,12 @@ public class WPSupplier extends RDBSupplier {
    }
 
    /**
-    * Builds the replication message.
-    * @return The message or {@code absent} if no new entries.
-    * @throws SQLException on database error.
+    * Selects the next posts for processing.
+    * @param startMeta The starting metadata.
+    * @return The list of posts.
+    * @throws SQLException on select error.
     */
-   protected Optional<Message> buildMessage() throws SQLException {
+   protected List<Post> selectNextPosts(final PostMeta startMeta) throws SQLException {
 
       List<Post> nextPosts = Lists.newArrayListWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
 
@@ -355,7 +368,6 @@ public class WPSupplier extends RDBSupplier {
                   System.out.println("Meta last modified > current time!");
                   lastModifiedMillis = currTime;
                }
-
                nextPosts.addAll(db.selectModifiedPosts(type, lastModifiedMillis + modifiedOffsetMillis, startMeta.id, maxSelected, true));  //Resolves users, meta, etc.
             } else {
                nextPosts.addAll(db.selectPostsAfterId(type, startMeta.id, maxSelected, true));
@@ -365,12 +377,24 @@ public class WPSupplier extends RDBSupplier {
          }
       }
 
+      return nextPosts;
+   }
+
+   /**
+    * Builds the replication message.
+    * @return The message or {@code absent} if no new entries.
+    * @throws SQLException on database error.
+    */
+   protected Optional<Message> buildMessage() throws SQLException {
+
+      List<Post> nextPosts = postFilter == null ?
+              selectNextPosts(startMeta) : postFilter.filter(selectNextPosts(startMeta));
+
       logger.info(String.format("Selected %d modified posts", nextPosts.size()));
 
       if(nextPosts.isEmpty()) {
          return Optional.absent();
       }
-
 
       final Timer.Context ctx = messageBuilds.time();
 
@@ -745,6 +769,11 @@ public class WPSupplier extends RDBSupplier {
     * An optional post transformer.
     */
    private PostTransformer postTransformer;
+
+   /**
+    * An optional post (list) filter.
+    */
+   private PostFilter postFilter;
 
    /**
     * The post meta DB, if configured.
