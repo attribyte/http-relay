@@ -387,8 +387,7 @@ public class WPSupplier extends RDBSupplier {
     */
    protected Optional<Message> buildMessage() throws SQLException {
 
-      List<Post> nextPosts = postFilter == null ?
-              selectNextPosts(startMeta) : postFilter.filter(selectNextPosts(startMeta));
+      List<Post> nextPosts = selectNextPosts(startMeta);
 
       logger.info(String.format("Selected %d modified posts", nextPosts.size()));
 
@@ -418,6 +417,11 @@ public class WPSupplier extends RDBSupplier {
          for(Post post : nextPosts) {
             if(!allEntries.contains(post.id)) {
                allEntries.add(post.id);
+
+               if(postFilter != null && !postFilter.accept(post)) {
+                  continue;
+               }
+
                if(allowedStatus.contains(post.status)) {
                   if(post.author == null) {
                      logger.error(String.format("Skipping post with missing author (%d)", post.id));

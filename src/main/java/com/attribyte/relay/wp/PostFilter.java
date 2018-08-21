@@ -26,11 +26,11 @@ import java.util.Properties;
 public interface PostFilter {
 
    /**
-    * Filter a list of posts.
-    * @param posts The posts.
-    * @return The filtered post list.
+    * Filter a post.
+    * @param post The post.
+    * @return Is the post accepted?
     */
-   public List<Post> filter(final List<Post> posts);
+   public boolean accept(final Post post);
 
    /**
     * Initialize the filter.
