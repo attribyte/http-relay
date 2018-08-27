@@ -135,6 +135,9 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>metadb.dir</dt>
  *    <dd>A directory used to store metadata for posts.</dd>
  *
+ *    <dt>replicateScheduledState</dt>
+ *    <dd>If {@code true}, keeps scheduled, pending state, otherwise replicated as published.</dd>
+ *
  * </dl>
  */
 public class WPSupplier extends RDBSupplier {
@@ -296,6 +299,8 @@ public class WPSupplier extends RDBSupplier {
          if(this.modifiedOffsetMillis != 0L) {
             logger.info(String.format("Set modified select offset to %d millis", this.modifiedOffsetMillis));
          }
+
+         this.replicateScheduledState = props.getProperty("replicateScheduledState", "true").equalsIgnoreCase("true");
 
          logger.info("Initialized WP supplier...");
 
@@ -501,7 +506,11 @@ public class WPSupplier extends RDBSupplier {
                         break;
                      case PENDING:
                      case FUTURE:
-                        entry.setStatus("scheduled");
+                        if(replicateScheduledState) {
+                           entry.setStatus("scheduled");
+                        } else {
+                           entry.setStatus("published");
+                        }
                         break;
                      default:
                         entry.setStatus("draft");
@@ -724,6 +733,13 @@ public class WPSupplier extends RDBSupplier {
     * Should replication be stopped if any lost message is detected?
     */
    private boolean stopOnLostMessage;
+
+
+   /**
+    * If {@code true}, replicates as "scheduled" otherwise replicates
+    * scheduled posts as "published".
+    */
+   private boolean replicateScheduledState;
 
    /**
     * The duster client, if configured.
