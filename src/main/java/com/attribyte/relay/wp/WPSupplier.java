@@ -138,6 +138,9 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>replicateScheduledState</dt>
  *    <dd>If {@code true}, keeps scheduled, pending state, otherwise replicated as published.</dd>
  *
+ *    <dt>replicatePendingState</dt>
+ *    <dd>If {@code true}, keeps pending, otherwise replicated as future.</dd>
+ *
  * </dl>
  */
 public class WPSupplier extends RDBSupplier {
@@ -301,6 +304,7 @@ public class WPSupplier extends RDBSupplier {
          }
 
          this.replicateScheduledState = props.getProperty("replicateScheduledState", "true").equalsIgnoreCase("true");
+         this.replicatePendingState = props.getProperty("replicatePendingState", "false").equalsIgnoreCase("true");
 
          logger.info("Initialized WP supplier...");
 
@@ -505,6 +509,14 @@ public class WPSupplier extends RDBSupplier {
                         entry.setStatus("published");
                         break;
                      case PENDING:
+                        if(replicatePendingState) {
+                           entry.setStatus("pending");
+                        } else if(replicateScheduledState) {
+                           entry.setStatus("scheduled");
+                        } else {
+                           entry.setStatus("published");
+                        }
+                        break;
                      case FUTURE:
                         if(replicateScheduledState) {
                            entry.setStatus("scheduled");
@@ -740,6 +752,11 @@ public class WPSupplier extends RDBSupplier {
     * scheduled posts as "published".
     */
    private boolean replicateScheduledState;
+
+   /**
+    * If {@code true}, replicates as "pending" otherwise treated as "future".
+    */
+   private boolean replicatePendingState;
 
    /**
     * The duster client, if configured.
