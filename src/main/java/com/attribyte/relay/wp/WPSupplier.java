@@ -139,7 +139,7 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dd>If {@code true}, keeps scheduled, pending state, otherwise replicated as published.</dd>
  *
  *    <dt>replicatePendingState</dt>
- *    <dd>If {@code true}, keeps pending, otherwise replicated as future.</dd>
+ *    <dd>If {@code true}, replicates pending as "draft", otherwise replicated as future.</dd>
  *
  * </dl>
  */
@@ -510,7 +510,7 @@ public class WPSupplier extends RDBSupplier {
                         break;
                      case PENDING:
                         if(replicatePendingState) {
-                           entry.setStatus("pending");
+                           entry.setStatus("draft");
                         } else if(replicateScheduledState) {
                            entry.setStatus("scheduled");
                         } else {
@@ -754,7 +754,7 @@ public class WPSupplier extends RDBSupplier {
    private boolean replicateScheduledState;
 
    /**
-    * If {@code true}, replicates as "pending" otherwise treated as "future".
+    * If {@code true}, replicates as "draft" otherwise treated as "future".
     */
    private boolean replicatePendingState;
 
