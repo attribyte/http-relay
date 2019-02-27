@@ -19,6 +19,7 @@ import com.attribyte.relay.DusterClient;
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Metric;
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -27,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.io.Files;
 import com.google.common.primitives.Longs;
 import com.google.protobuf.ByteString;
 import org.attribyte.api.Logger;
@@ -141,6 +143,9 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>replicatePendingState</dt>
  *    <dd>If {@code true}, replicates pending as "draft", otherwise replicated as future.</dd>
  *
+ *    <dt>supplyIdsFile</dt>
+ *    <dd>A file that indicates specific ids to be replicated, one per line with empty lines and those beginning with
+ *    '#' ignored.</dd>
  * </dl>
  */
 public class WPSupplier extends RDBSupplier {
@@ -186,6 +191,29 @@ public class WPSupplier extends RDBSupplier {
             this.stopId = this.db.selectMaxPostId();
          } else {
             this.stopId = 0L;
+         }
+
+         String supplyIdsFileStr = props.getProperty("supplyIdsFile", "");
+         if(!supplyIdsFileStr.isEmpty()) {
+            this.selectAll = true;
+            File supplyIdsFile = new File(supplyIdsFileStr);
+            logger.info(String.format("Using 'supplyIdsFile', '%s'", supplyIdsFile.getAbsolutePath()));
+            this.supplyIds = Lists.newArrayListWithExpectedSize(1024);
+            List<String> lines = Files.readLines(supplyIdsFile, Charsets.UTF_8);
+            for(String line : lines) {
+               line = line.trim();
+               if(line.isEmpty() || line.startsWith("#")) {
+                  continue;
+               }
+               Long id = Longs.tryParse(line);
+               if(id != null) {
+                  this.supplyIds.add(id);
+                  logger.info(String.format("Adding supplied id, '%d'", id));
+               }
+            }
+
+         } else {
+            this.supplyIds = null;
          }
 
          this.maxSelected = Integer.parseInt(props.getProperty("maxSelected", "500"));
@@ -362,6 +390,19 @@ public class WPSupplier extends RDBSupplier {
    protected List<Post> selectNextPosts(final PostMeta startMeta) throws SQLException {
 
       List<Post> nextPosts = Lists.newArrayListWithExpectedSize(maxSelected > 1024 ? 1024 : maxSelected);
+      if(supplyIds != null) {
+         for(long postId : supplyIds) {
+            Post.Builder builder = db.selectPost(postId);
+            if(builder != null) {
+               nextPosts.add(builder.build());
+            } else {
+               logger.info(String.format("Post %d not found. Skipping.", postId));
+            }
+         }
+
+         supplyIds.clear();
+         return nextPosts;
+      }
 
       //TODO: Selecting modified posts will be incorrect if there are multiple types specified
       //To make it work correctly - add multiple types to the select!
@@ -670,6 +711,11 @@ public class WPSupplier extends RDBSupplier {
     * Iterating through all posts?
     */
    private boolean selectAll;
+
+   /**
+    * A list of specific ids to be supplied.
+    */
+   private List<Long> supplyIds;
 
    /**
     * When iterating through all, stop at this id.
