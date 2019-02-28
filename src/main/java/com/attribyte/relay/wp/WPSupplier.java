@@ -394,7 +394,7 @@ public class WPSupplier extends RDBSupplier {
          for(long postId : supplyIds) {
             Post.Builder builder = db.selectPost(postId);
             if(builder != null) {
-               nextPosts.add(builder.build());
+               nextPosts.add(db.resolve(builder).build());
             } else {
                logger.info(String.format("Post %d not found. Skipping.", postId));
             }
