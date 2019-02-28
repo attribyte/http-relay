@@ -540,8 +540,10 @@ public class WPSupplier extends RDBSupplier {
                      }
                   }
 
-                  if(post.content != null) {
+                  if(!Strings.isNullOrEmpty(post.content)) {
                      entry.setContent(contentTransformer == null ? post.content : contentTransformer.transform(post.content));
+                  } else {
+                     entry.setContent(String.format(NO_CONTENT_TEMPLATE, post.id));
                   }
 
                   if(post.publishTimestamp > 0L) {
@@ -1024,4 +1026,9 @@ public class WPSupplier extends RDBSupplier {
            "image/png",
            "image/gif"
    );
+
+   /**
+    * A template to be used to add some content (to avoid hash clash) for posts with no content.
+    */
+   private static final String NO_CONTENT_TEMPLATE = "<!-- %d -->";
 }
