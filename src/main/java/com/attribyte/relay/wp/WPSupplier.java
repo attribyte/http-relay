@@ -31,6 +31,7 @@ import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.google.common.primitives.Longs;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.TextFormat;
 import org.attribyte.api.Logger;
 import org.attribyte.api.http.AsyncClient;
 import org.attribyte.api.http.impl.jetty.JettyClient;
@@ -146,6 +147,10 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>supplyIdsFile</dt>
  *    <dd>A file that indicates specific ids to be replicated, one per line with empty lines and those beginning with
  *    '#' ignored.</dd>
+ *
+ *    <dt>logReplicationMessage</dt>
+ *    <dd>Logs the full replication message for debugging.</dd>
+ *
  * </dl>
  */
 public class WPSupplier extends RDBSupplier {
@@ -280,6 +285,9 @@ public class WPSupplier extends RDBSupplier {
          this.excerptOutputField = props.getProperty("excerptOutputField", "summary").toLowerCase().trim();
 
          this.stopOnLostMessage = props.getProperty("stopOnLostMessage", "false").equalsIgnoreCase("true");
+
+         this.logReplicationMessage = props.getProperty("logReplicationMessage", "false").equalsIgnoreCase("true");
+
          this.originId = props.getProperty("originId", "");
 
          Properties dusterProps = new InitUtil("duster.", props, false).getProperties();
@@ -656,6 +664,13 @@ public class WPSupplier extends RDBSupplier {
             lastPost = nextPosts.get(nextPosts.size() - 1);
             this.startMeta = new PostMeta(lastPost.id, System.currentTimeMillis() - 60000L);
          }
+
+         if(logReplicationMessage) {
+            logger.info("Replication Message");
+            logger.info("-------------------");
+            logger.info(TextFormat.printToString(replicationMessage.build()));
+         }
+
          return Optional.of(Message.publish(messageId, replicationMessage.build().toByteString()));
       } finally {
          ctx.stop();
@@ -791,6 +806,10 @@ public class WPSupplier extends RDBSupplier {
     */
    private boolean stopOnLostMessage;
 
+   /**
+    * Should the full replication message be logged?
+    */
+   private boolean logReplicationMessage;
 
    /**
     * If {@code true}, replicates as "scheduled" otherwise replicates
