@@ -1030,5 +1030,5 @@ public class WPSupplier extends RDBSupplier {
    /**
     * A template to be used to add some content (to avoid hash clash) for posts with no content.
     */
-   private static final String NO_CONTENT_TEMPLATE = "<!-- %d -->";
+   private static final String NO_CONTENT_TEMPLATE = "<p id='%d'></p>";
 }
