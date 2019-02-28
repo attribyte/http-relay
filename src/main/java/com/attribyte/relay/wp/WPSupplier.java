@@ -146,6 +146,10 @@ import static org.attribyte.wp.Util.CATEGORY_TAXONOMY;
  *    <dt>supplyIdsFile</dt>
  *    <dd>A file that indicates specific ids to be replicated, one per line with empty lines and those beginning with
  *    '#' ignored.</dd>
+ *
+ *    <dt>otherSiteIds</dt>
+ *    <dd>A comma-separated list of other known site ids. Used with {@code supplyIdsFile}.</dd>
+ *
  * </dl>
  */
 public class WPSupplier extends RDBSupplier {
@@ -214,6 +218,20 @@ public class WPSupplier extends RDBSupplier {
 
          } else {
             this.supplyIds = null;
+         }
+
+         String otherSiteIds = props.getProperty("otherSiteIds", "").trim();
+         if(!otherSiteIds.isEmpty()) {
+            this.otherSiteIds = Lists.newArrayList();
+            for(String idStr : Splitter.on(',').omitEmptyStrings().trimResults().split(otherSiteIds)) {
+               Long id = Longs.tryParse(idStr);
+               if(id != null) {
+                  logger.info(String.format("Adding other site id, '%d'", id));
+                  this.otherSiteIds.add(id);
+               }
+            }
+         } else {
+            this.otherSiteIds = ImmutableList.of();
          }
 
          this.maxSelected = Integer.parseInt(props.getProperty("maxSelected", "500"));
@@ -395,9 +413,21 @@ public class WPSupplier extends RDBSupplier {
             Post.Builder builder = db.selectPost(postId);
             if(builder != null) {
                nextPosts.add(builder.build());
-            } else {
+            } else if(!otherSiteIds.isEmpty()) {
+               for(long siteId : otherSiteIds) {
+                  builder = db.forSite(siteId).selectPost(postId);
+                  if(builder != null) {
+                     logger.info(String.format("Post %d found for other site (%d). Skipping.", postId, siteId));
+                     nextPosts.add(builder.build());
+                     break;
+                  }
+               }
+            }
+
+            if(builder == null) {
                logger.info(String.format("Post %d not found. Skipping.", postId));
             }
+
          }
 
          supplyIds.clear();
@@ -728,9 +758,14 @@ public class WPSupplier extends RDBSupplier {
    private int maxSelected;
 
    /**
-    * The WP DB.
+    * The primary WP DB.
     */
    private DB db;
+
+   /**
+    * Other known site ids in addition to the primary.
+    */
+   private List<Long> otherSiteIds;
 
    /**
     * The parent site for all posts.
