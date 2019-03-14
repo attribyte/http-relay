@@ -47,6 +47,7 @@ import org.attribyte.wp.model.Post;
 import org.attribyte.wp.model.Site;
 import org.attribyte.wp.model.TaxonomyTerm;
 import org.attribyte.wp.model.User;
+import org.jsoup.nodes.Entities;
 
 import java.io.File;
 import java.io.IOException;
@@ -625,10 +626,11 @@ public class WPSupplier extends RDBSupplier {
 
 
                   for(TaxonomyTerm tag : post.tags()) {
-                     entry.addTag(tag.term.name);
+                     entry.addTag(unescapeHTML(tag.term.name));
                   }
+
                   for(TaxonomyTerm category : post.categories()) {
-                     entry.addTopic(category.term.name);
+                     entry.addTopic(unescapeHTML(category.term.name));
                   }
 
                   if(!allowedPostMeta.isEmpty() && !post.metadata.isEmpty()) {
@@ -1031,4 +1033,13 @@ public class WPSupplier extends RDBSupplier {
     * A template to be used to add some content (to avoid hash clash) for posts with no content.
     */
    private static final String NO_CONTENT_TEMPLATE = "<!-- %d -->";
+
+   /**
+    * Unescape HTML entities.
+    * @param str The string.
+    * @return The unescaped string.
+    */
+   private static final String unescapeHTML(final String str) {
+      return Entities.unescape(str);
+   }
 }
