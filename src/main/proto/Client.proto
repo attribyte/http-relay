@@ -508,6 +508,18 @@ message WireMessage {
 
       /* A list of post status that must match */
       repeated string status = 31;
+
+      /* Boost matches in a specific range. */
+      message RangeBoost {
+
+         /* The boost value. */
+         optional float boost = 1;
+
+         /* The boost range. */
+         optional Range range = 2;
+      }
+
+      repeated RangeBoost rangeBoost = 32;
    }
 
    message QueryUnion {

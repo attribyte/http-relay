@@ -23314,6 +23314,30 @@ public final class ClientProtos {
        */
       com.google.protobuf.ByteString
           getStatusBytes(int index);
+
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      java.util.List<com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost> 
+          getRangeBoostList();
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost getRangeBoost(int index);
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      int getRangeBoostCount();
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder> 
+          getRangeBoostOrBuilderList();
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder getRangeBoostOrBuilder(
+          int index);
     }
     /**
      * Protobuf type {@code com.attribyte.client.WireMessage.Query}
@@ -23653,6 +23677,14 @@ public final class ClientProtos {
                 status_.add(bs);
                 break;
               }
+              case 258: {
+                if (!((mutable_bitField0_ & 0x80000000) == 0x80000000)) {
+                  rangeBoost_ = new java.util.ArrayList<com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost>();
+                  mutable_bitField0_ |= 0x80000000;
+                }
+                rangeBoost_.add(input.readMessage(com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.PARSER, extensionRegistry));
+                break;
+              }
             }
           }
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -23732,6 +23764,9 @@ public final class ClientProtos {
           }
           if (((mutable_bitField0_ & 0x40000000) == 0x40000000)) {
             status_ = status_.getUnmodifiableView();
+          }
+          if (((mutable_bitField0_ & 0x80000000) == 0x80000000)) {
+            rangeBoost_ = java.util.Collections.unmodifiableList(rangeBoost_);
           }
           this.unknownFields = unknownFields.build();
           makeExtensionsImmutable();
@@ -23911,6 +23946,562 @@ public final class ClientProtos {
         }
 
         // @@protoc_insertion_point(enum_scope:com.attribyte.client.WireMessage.Query.Range)
+      }
+
+      public interface RangeBoostOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:com.attribyte.client.WireMessage.Query.RangeBoost)
+          com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>optional float boost = 1;</code>
+         *
+         * <pre>
+         * The boost value. 
+         * </pre>
+         */
+        boolean hasBoost();
+        /**
+         * <code>optional float boost = 1;</code>
+         *
+         * <pre>
+         * The boost value. 
+         * </pre>
+         */
+        float getBoost();
+
+        /**
+         * <code>optional .com.attribyte.client.WireMessage.Query.Range range = 2;</code>
+         *
+         * <pre>
+         * The boost range. 
+         * </pre>
+         */
+        boolean hasRange();
+        /**
+         * <code>optional .com.attribyte.client.WireMessage.Query.Range range = 2;</code>
+         *
+         * <pre>
+         * The boost range. 
+         * </pre>
+         */
+        com.attribyte.client.ClientProtos.WireMessage.Query.Range getRange();
+      }
+      /**
+       * Protobuf type {@code com.attribyte.client.WireMessage.Query.RangeBoost}
+       *
+       * <pre>
+       * Boost matches in a specific range. 
+       * </pre>
+       */
+      public static final class RangeBoost extends
+          com.google.protobuf.GeneratedMessage implements
+          // @@protoc_insertion_point(message_implements:com.attribyte.client.WireMessage.Query.RangeBoost)
+          RangeBoostOrBuilder {
+        // Use RangeBoost.newBuilder() to construct.
+        private RangeBoost(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+          super(builder);
+          this.unknownFields = builder.getUnknownFields();
+        }
+        private RangeBoost(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+        private static final RangeBoost defaultInstance;
+        public static RangeBoost getDefaultInstance() {
+          return defaultInstance;
+        }
+
+        public RangeBoost getDefaultInstanceForType() {
+          return defaultInstance;
+        }
+
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet
+            getUnknownFields() {
+          return this.unknownFields;
+        }
+        private RangeBoost(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          initFields();
+          int mutable_bitField0_ = 0;
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!parseUnknownField(input, unknownFields,
+                                         extensionRegistry, tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 13: {
+                  bitField0_ |= 0x00000001;
+                  boost_ = input.readFloat();
+                  break;
+                }
+                case 16: {
+                  int rawValue = input.readEnum();
+                  com.attribyte.client.ClientProtos.WireMessage.Query.Range value = com.attribyte.client.ClientProtos.WireMessage.Query.Range.valueOf(rawValue);
+                  if (value == null) {
+                    unknownFields.mergeVarintField(2, rawValue);
+                  } else {
+                    bitField0_ |= 0x00000002;
+                    range_ = value;
+                  }
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this);
+          } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+          }
+        }
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.class, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder.class);
+        }
+
+        public static com.google.protobuf.Parser<RangeBoost> PARSER =
+            new com.google.protobuf.AbstractParser<RangeBoost>() {
+          public RangeBoost parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RangeBoost(input, extensionRegistry);
+          }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<RangeBoost> getParserForType() {
+          return PARSER;
+        }
+
+        private int bitField0_;
+        public static final int BOOST_FIELD_NUMBER = 1;
+        private float boost_;
+        /**
+         * <code>optional float boost = 1;</code>
+         *
+         * <pre>
+         * The boost value. 
+         * </pre>
+         */
+        public boolean hasBoost() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>optional float boost = 1;</code>
+         *
+         * <pre>
+         * The boost value. 
+         * </pre>
+         */
+        public float getBoost() {
+          return boost_;
+        }
+
+        public static final int RANGE_FIELD_NUMBER = 2;
+        private com.attribyte.client.ClientProtos.WireMessage.Query.Range range_;
+        /**
+         * <code>optional .com.attribyte.client.WireMessage.Query.Range range = 2;</code>
+         *
+         * <pre>
+         * The boost range. 
+         * </pre>
+         */
+        public boolean hasRange() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>optional .com.attribyte.client.WireMessage.Query.Range range = 2;</code>
+         *
+         * <pre>
+         * The boost range. 
+         * </pre>
+         */
+        public com.attribyte.client.ClientProtos.WireMessage.Query.Range getRange() {
+          return range_;
+        }
+
+        private void initFields() {
+          boost_ = 0F;
+          range_ = com.attribyte.client.ClientProtos.WireMessage.Query.Range.DAY;
+        }
+        private byte memoizedIsInitialized = -1;
+        public final boolean isInitialized() {
+          byte isInitialized = memoizedIsInitialized;
+          if (isInitialized == 1) return true;
+          if (isInitialized == 0) return false;
+
+          memoizedIsInitialized = 1;
+          return true;
+        }
+
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                            throws java.io.IOException {
+          getSerializedSize();
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            output.writeFloat(1, boost_);
+          }
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            output.writeEnum(2, range_.getNumber());
+          }
+          getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+        public int getSerializedSize() {
+          int size = memoizedSerializedSize;
+          if (size != -1) return size;
+
+          size = 0;
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeFloatSize(1, boost_);
+          }
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeEnumSize(2, range_.getNumber());
+          }
+          size += getUnknownFields().getSerializedSize();
+          memoizedSerializedSize = size;
+          return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+        @java.lang.Override
+        protected java.lang.Object writeReplace()
+            throws java.io.ObjectStreamException {
+          return super.writeReplace();
+        }
+
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input);
+        }
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input, extensionRegistry);
+        }
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return PARSER.parseDelimitedFrom(input);
+        }
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input);
+        }
+        public static com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() { return Builder.create(); }
+        public Builder newBuilderForType() { return newBuilder(); }
+        public static Builder newBuilder(com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost prototype) {
+          return newBuilder().mergeFrom(prototype);
+        }
+        public Builder toBuilder() { return newBuilder(this); }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          Builder builder = new Builder(parent);
+          return builder;
+        }
+        /**
+         * Protobuf type {@code com.attribyte.client.WireMessage.Query.RangeBoost}
+         *
+         * <pre>
+         * Boost matches in a specific range. 
+         * </pre>
+         */
+        public static final class Builder extends
+            com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:com.attribyte.client.WireMessage.Query.RangeBoost)
+            com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder {
+          public static final com.google.protobuf.Descriptors.Descriptor
+              getDescriptor() {
+            return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_descriptor;
+          }
+
+          protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+              internalGetFieldAccessorTable() {
+            return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                    com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.class, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder.class);
+          }
+
+          // Construct using com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.newBuilder()
+          private Builder() {
+            maybeForceBuilderInitialization();
+          }
+
+          private Builder(
+              com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+          }
+          private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            }
+          }
+          private static Builder create() {
+            return new Builder();
+          }
+
+          public Builder clear() {
+            super.clear();
+            boost_ = 0F;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            range_ = com.attribyte.client.ClientProtos.WireMessage.Query.Range.DAY;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            return this;
+          }
+
+          public Builder clone() {
+            return create().mergeFrom(buildPartial());
+          }
+
+          public com.google.protobuf.Descriptors.Descriptor
+              getDescriptorForType() {
+            return com.attribyte.client.ClientProtos.internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_descriptor;
+          }
+
+          public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost getDefaultInstanceForType() {
+            return com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.getDefaultInstance();
+          }
+
+          public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost build() {
+            com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost result = buildPartial();
+            if (!result.isInitialized()) {
+              throw newUninitializedMessageException(result);
+            }
+            return result;
+          }
+
+          public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost buildPartial() {
+            com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost result = new com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+              to_bitField0_ |= 0x00000001;
+            }
+            result.boost_ = boost_;
+            if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+              to_bitField0_ |= 0x00000002;
+            }
+            result.range_ = range_;
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+          }
+
+          public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (other instanceof com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost) {
+              return mergeFrom((com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost)other);
+            } else {
+              super.mergeFrom(other);
+              return this;
+            }
+          }
+
+          public Builder mergeFrom(com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost other) {
+            if (other == com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.getDefaultInstance()) return this;
+            if (other.hasBoost()) {
+              setBoost(other.getBoost());
+            }
+            if (other.hasRange()) {
+              setRange(other.getRange());
+            }
+            this.mergeUnknownFields(other.getUnknownFields());
+            return this;
+          }
+
+          public final boolean isInitialized() {
+            return true;
+          }
+
+          public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+            com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost parsedMessage = null;
+            try {
+              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+              parsedMessage = (com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost) e.getUnfinishedMessage();
+              throw e;
+            } finally {
+              if (parsedMessage != null) {
+                mergeFrom(parsedMessage);
+              }
+            }
+            return this;
+          }
+          private int bitField0_;
+
+          private float boost_ ;
+          /**
+           * <code>optional float boost = 1;</code>
+           *
+           * <pre>
+           * The boost value. 
+           * </pre>
+           */
+          public boolean hasBoost() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+          }
+          /**
+           * <code>optional float boost = 1;</code>
+           *
+           * <pre>
+           * The boost value. 
+           * </pre>
+           */
+          public float getBoost() {
+            return boost_;
+          }
+          /**
+           * <code>optional float boost = 1;</code>
+           *
+           * <pre>
+           * The boost value. 
+           * </pre>
+           */
+          public Builder setBoost(float value) {
+            bitField0_ |= 0x00000001;
+            boost_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional float boost = 1;</code>
+           *
+           * <pre>
+           * The boost value. 
+           * </pre>
+           */
+          public Builder clearBoost() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            boost_ = 0F;
+            onChanged();
+            return this;
+          }
+
+          private com.attribyte.client.ClientProtos.WireMessage.Query.Range range_ = com.attribyte.client.ClientProtos.WireMessage.Query.Range.DAY;
+          /**
+           * <code>optional .com.attribyte.client.WireMessage.Query.Range range = 2;</code>
+           *
+           * <pre>
+           * The boost range. 
+           * </pre>
+           */
+          public boolean hasRange() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+          }
+          /**
+           * <code>optional .com.attribyte.client.WireMessage.Query.Range range = 2;</code>
+           *
+           * <pre>
+           * The boost range. 
+           * </pre>
+           */
+          public com.attribyte.client.ClientProtos.WireMessage.Query.Range getRange() {
+            return range_;
+          }
+          /**
+           * <code>optional .com.attribyte.client.WireMessage.Query.Range range = 2;</code>
+           *
+           * <pre>
+           * The boost range. 
+           * </pre>
+           */
+          public Builder setRange(com.attribyte.client.ClientProtos.WireMessage.Query.Range value) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            bitField0_ |= 0x00000002;
+            range_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional .com.attribyte.client.WireMessage.Query.Range range = 2;</code>
+           *
+           * <pre>
+           * The boost range. 
+           * </pre>
+           */
+          public Builder clearRange() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            range_ = com.attribyte.client.ClientProtos.WireMessage.Query.Range.DAY;
+            onChanged();
+            return this;
+          }
+
+          // @@protoc_insertion_point(builder_scope:com.attribyte.client.WireMessage.Query.RangeBoost)
+        }
+
+        static {
+          defaultInstance = new RangeBoost(true);
+          defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:com.attribyte.client.WireMessage.Query.RangeBoost)
       }
 
       private int bitField0_;
@@ -25296,6 +25887,41 @@ public final class ClientProtos {
         return status_.getByteString(index);
       }
 
+      public static final int RANGEBOOST_FIELD_NUMBER = 32;
+      private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost> rangeBoost_;
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost> getRangeBoostList() {
+        return rangeBoost_;
+      }
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder> 
+          getRangeBoostOrBuilderList() {
+        return rangeBoost_;
+      }
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      public int getRangeBoostCount() {
+        return rangeBoost_.size();
+      }
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost getRangeBoost(int index) {
+        return rangeBoost_.get(index);
+      }
+      /**
+       * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+       */
+      public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder getRangeBoostOrBuilder(
+          int index) {
+        return rangeBoost_.get(index);
+      }
+
       private void initFields() {
         queryString_ = "";
         range_ = com.attribyte.client.ClientProtos.WireMessage.Query.Range.NONE;
@@ -25328,6 +25954,7 @@ public final class ClientProtos {
         sourceTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         editorTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         status_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        rangeBoost_ = java.util.Collections.emptyList();
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -25434,6 +26061,9 @@ public final class ClientProtos {
         }
         for (int i = 0; i < status_.size(); i++) {
           output.writeBytes(31, status_.getByteString(i));
+        }
+        for (int i = 0; i < rangeBoost_.size(); i++) {
+          output.writeMessage(32, rangeBoost_.get(i));
         }
         getUnknownFields().writeTo(output);
       }
@@ -25658,6 +26288,10 @@ public final class ClientProtos {
           size += dataSize;
           size += 2 * getStatusList().size();
         }
+        for (int i = 0; i < rangeBoost_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(32, rangeBoost_.get(i));
+        }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
         return size;
@@ -25774,6 +26408,7 @@ public final class ClientProtos {
             getAnyMetaFieldBuilder();
             getAllMetaFieldBuilder();
             getExcludeMetaFieldBuilder();
+            getRangeBoostFieldBuilder();
           }
         }
         private static Builder create() {
@@ -25872,6 +26507,12 @@ public final class ClientProtos {
           bitField0_ = (bitField0_ & ~0x20000000);
           status_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           bitField0_ = (bitField0_ & ~0x40000000);
+          if (rangeBoostBuilder_ == null) {
+            rangeBoost_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x80000000);
+          } else {
+            rangeBoostBuilder_.clear();
+          }
           return this;
         }
 
@@ -26076,6 +26717,15 @@ public final class ClientProtos {
             bitField0_ = (bitField0_ & ~0x40000000);
           }
           result.status_ = status_;
+          if (rangeBoostBuilder_ == null) {
+            if (((bitField0_ & 0x80000000) == 0x80000000)) {
+              rangeBoost_ = java.util.Collections.unmodifiableList(rangeBoost_);
+              bitField0_ = (bitField0_ & ~0x80000000);
+            }
+            result.rangeBoost_ = rangeBoost_;
+          } else {
+            result.rangeBoost_ = rangeBoostBuilder_.build();
+          }
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -26454,6 +27104,32 @@ public final class ClientProtos {
               status_.addAll(other.status_);
             }
             onChanged();
+          }
+          if (rangeBoostBuilder_ == null) {
+            if (!other.rangeBoost_.isEmpty()) {
+              if (rangeBoost_.isEmpty()) {
+                rangeBoost_ = other.rangeBoost_;
+                bitField0_ = (bitField0_ & ~0x80000000);
+              } else {
+                ensureRangeBoostIsMutable();
+                rangeBoost_.addAll(other.rangeBoost_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.rangeBoost_.isEmpty()) {
+              if (rangeBoostBuilder_.isEmpty()) {
+                rangeBoostBuilder_.dispose();
+                rangeBoostBuilder_ = null;
+                rangeBoost_ = other.rangeBoost_;
+                bitField0_ = (bitField0_ & ~0x80000000);
+                rangeBoostBuilder_ = 
+                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                     getRangeBoostFieldBuilder() : null;
+              } else {
+                rangeBoostBuilder_.addAllMessages(other.rangeBoost_);
+              }
+            }
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -31203,6 +31879,246 @@ public final class ClientProtos {
           status_.add(value);
           onChanged();
           return this;
+        }
+
+        private java.util.List<com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost> rangeBoost_ =
+          java.util.Collections.emptyList();
+        private void ensureRangeBoostIsMutable() {
+          if (!((bitField0_ & 0x80000000) == 0x80000000)) {
+            rangeBoost_ = new java.util.ArrayList<com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost>(rangeBoost_);
+            bitField0_ |= 0x80000000;
+           }
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder> rangeBoostBuilder_;
+
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost> getRangeBoostList() {
+          if (rangeBoostBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(rangeBoost_);
+          } else {
+            return rangeBoostBuilder_.getMessageList();
+          }
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public int getRangeBoostCount() {
+          if (rangeBoostBuilder_ == null) {
+            return rangeBoost_.size();
+          } else {
+            return rangeBoostBuilder_.getCount();
+          }
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost getRangeBoost(int index) {
+          if (rangeBoostBuilder_ == null) {
+            return rangeBoost_.get(index);
+          } else {
+            return rangeBoostBuilder_.getMessage(index);
+          }
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public Builder setRangeBoost(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost value) {
+          if (rangeBoostBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureRangeBoostIsMutable();
+            rangeBoost_.set(index, value);
+            onChanged();
+          } else {
+            rangeBoostBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public Builder setRangeBoost(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder builderForValue) {
+          if (rangeBoostBuilder_ == null) {
+            ensureRangeBoostIsMutable();
+            rangeBoost_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            rangeBoostBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public Builder addRangeBoost(com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost value) {
+          if (rangeBoostBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureRangeBoostIsMutable();
+            rangeBoost_.add(value);
+            onChanged();
+          } else {
+            rangeBoostBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public Builder addRangeBoost(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost value) {
+          if (rangeBoostBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureRangeBoostIsMutable();
+            rangeBoost_.add(index, value);
+            onChanged();
+          } else {
+            rangeBoostBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public Builder addRangeBoost(
+            com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder builderForValue) {
+          if (rangeBoostBuilder_ == null) {
+            ensureRangeBoostIsMutable();
+            rangeBoost_.add(builderForValue.build());
+            onChanged();
+          } else {
+            rangeBoostBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public Builder addRangeBoost(
+            int index, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder builderForValue) {
+          if (rangeBoostBuilder_ == null) {
+            ensureRangeBoostIsMutable();
+            rangeBoost_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            rangeBoostBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public Builder addAllRangeBoost(
+            java.lang.Iterable<? extends com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost> values) {
+          if (rangeBoostBuilder_ == null) {
+            ensureRangeBoostIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                values, rangeBoost_);
+            onChanged();
+          } else {
+            rangeBoostBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public Builder clearRangeBoost() {
+          if (rangeBoostBuilder_ == null) {
+            rangeBoost_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x80000000);
+            onChanged();
+          } else {
+            rangeBoostBuilder_.clear();
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public Builder removeRangeBoost(int index) {
+          if (rangeBoostBuilder_ == null) {
+            ensureRangeBoostIsMutable();
+            rangeBoost_.remove(index);
+            onChanged();
+          } else {
+            rangeBoostBuilder_.remove(index);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder getRangeBoostBuilder(
+            int index) {
+          return getRangeBoostFieldBuilder().getBuilder(index);
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder getRangeBoostOrBuilder(
+            int index) {
+          if (rangeBoostBuilder_ == null) {
+            return rangeBoost_.get(index);  } else {
+            return rangeBoostBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public java.util.List<? extends com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder> 
+             getRangeBoostOrBuilderList() {
+          if (rangeBoostBuilder_ != null) {
+            return rangeBoostBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(rangeBoost_);
+          }
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder addRangeBoostBuilder() {
+          return getRangeBoostFieldBuilder().addBuilder(
+              com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder addRangeBoostBuilder(
+            int index) {
+          return getRangeBoostFieldBuilder().addBuilder(
+              index, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .com.attribyte.client.WireMessage.Query.RangeBoost rangeBoost = 32;</code>
+         */
+        public java.util.List<com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder> 
+             getRangeBoostBuilderList() {
+          return getRangeBoostFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder> 
+            getRangeBoostFieldBuilder() {
+          if (rangeBoostBuilder_ == null) {
+            rangeBoostBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoost.Builder, com.attribyte.client.ClientProtos.WireMessage.Query.RangeBoostOrBuilder>(
+                    rangeBoost_,
+                    ((bitField0_ & 0x80000000) == 0x80000000),
+                    getParentForChildren(),
+                    isClean());
+            rangeBoost_ = null;
+          }
+          return rangeBoostBuilder_;
         }
 
         // @@protoc_insertion_point(builder_scope:com.attribyte.client.WireMessage.Query)
@@ -58149,6 +59065,11 @@ public final class ClientProtos {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_attribyte_client_WireMessage_Query_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_attribyte_client_WireMessage_QueryUnion_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -58242,7 +59163,7 @@ public final class ClientProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014Client.proto\022\024com.attribyte.client\"\3619\n" +
+      "\n\014Client.proto\022\024com.attribyte.client\"\224;\n" +
       "\013WireMessage\0228\n\006paging\030\001 \001(\0132(.com.attri" +
       "byte.client.WireMessage.Paging\0224\n\004sort\030\002" +
       " \001(\0132&.com.attribyte.client.WireMessage." +
@@ -58339,7 +59260,7 @@ public final class ClientProtos {
       "ASC\020\001\022\007\n\003TOP\020\002\032\206\001\n\rExcludeFilter\022\021\n\tauth" +
       "orIds\030\001 \003(\004\022\023\n\013sourceHosts\030\002 \003(\t\022\023\n\013auth" +
       "orNames\030\003 \003(\t\0228\n\nauthorUIDs\030\004 \003(\0132$.com." +
-      "attribyte.client.WireMessage.Id\032\345\007\n\005Quer" +
+      "attribyte.client.WireMessage.Id\032\210\t\n\005Quer" +
       "y\022\023\n\013queryString\030\001 \001(\t\022B\n\005range\030\002 \001(\0162-." +
       "com.attribyte.client.WireMessage.Query.R",
       "ange:\004NONE\022\021\n\tsourceIds\030\003 \003(\004\022\021\n\tauthorI" +
@@ -58363,72 +59284,76 @@ public final class ClientProtos {
       "ireMessage.Meta\022\021\n\tanyTopics\030\032 \003(\t\022\021\n\tal" +
       "lTopics\030\033 \003(\t\022\025\n\rexcludeTopics\030\034 \003(\t\022\022\n\n",
       "sourceTags\030\035 \003(\t\022\022\n\neditorTags\030\036 \003(\t\022\016\n\006" +
-      "status\030\037 \003(\t\"9\n\005Range\022\007\n\003DAY\020\000\022\010\n\004WEEK\020\001" +
-      "\022\t\n\005MONTH\020\002\022\010\n\004YEAR\020\003\022\010\n\004NONE\020\004\032F\n\nQuery" +
-      "Union\0228\n\007queries\030\001 \003(\0132\'.com.attribyte.c" +
-      "lient.WireMessage.Query\032\246\001\n\006Paging\022\020\n\010cu" +
-      "rrPage\030\001 \002(\r\022\017\n\007perPage\030\002 \002(\r\022\022\n\ntotalIt" +
-      "ems\030\003 \001(\r\022\022\n\ntotalPages\030\004 \001(\r\022\026\n\016startTi" +
-      "mestamp\030\005 \001(\004\022\017\n\007baseURL\030\006 \001(\t\022\023\n\013hasPre" +
-      "vPage\030\007 \001(\010\022\023\n\013hasNextPage\030\010 \001(\010\032\317\001\n\006Ori" +
-      "gin\022\030\n\020currentTimestamp\030\001 \001(\004\022\020\n\010timezon",
-      "e\030\002 \001(\t\022\022\n\ndateFormat\030\003 \001(\t\022\022\n\ntimeForma" +
-      "t\030\004 \001(\t\022\026\n\016dateTimeFormat\030\005 \001(\t\022\016\n\006local" +
-      "e\030\006 \001(\t\022\014\n\004lang\030\007 \001(\t\022\020\n\010serverId\030\010 \001(\t\022" +
-      "\024\n\014imageBaseURL\030\t \001(\t\022\023\n\013iconBaseURL\030\n \001" +
-      "(\t\032C\n\nStaticPage\022\023\n\013contentType\030\001 \001(\t\022\017\n" +
-      "\007content\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\032V\n\005Error" +
-      "\022\014\n\004code\030\001 \001(\r\022\025\n\rpublicMessage\030\002 \001(\t\022\027\n" +
-      "\017internalMessage\030\003 \001(\t\022\017\n\007errorId\030\004 \001(\t\032" +
-      "4\n\014TokenRequest\022\020\n\010username\030\001 \001(\t\022\022\n\npas" +
-      "sphrase\030\002 \001(\t\032G\n\rTokenResponse\022\016\n\006userId",
-      "\030\001 \001(\004\022\r\n\005token\030\002 \001(\t\022\027\n\017expireTimestamp" +
-      "\030\003 \001(\004\032*\n\tTokenPing\022\016\n\006userId\030\001 \001(\004\022\r\n\005t" +
-      "oken\030\002 \001(\t\032\273\002\n\014Subscription\022\013\n\003url\030\001 \001(\t" +
-      "\022\n\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013descripti" +
-      "on\030\004 \001(\t\022\020\n\010iconPath\030\005 \001(\t\022A\n\004type\030\006 \001(\016" +
-      "23.com.attribyte.client.WireMessage.Subs" +
-      "cription.Type\022\016\n\006altUrl\030\007 \003(\t\0221\n\003UID\030\010 \001" +
-      "(\0132$.com.attribyte.client.WireMessage.Id" +
-      "\"V\n\004Type\022\010\n\004FEED\020\001\022\n\n\006SEARCH\020\002\022\013\n\007TWITTE" +
-      "R\020\003\022\014\n\010FACEBOOK\020\004\022\035\n\031UNKNOWN_SUBSCRIPTIO",
-      "N_TYPE\020\005\032\235\002\n\006Source\022\013\n\003url\030\001 \001(\t\022\n\n\002id\030\002" +
-      " \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013description\030\004 \001(\t" +
-      "\022\016\n\006altUrl\030\005 \003(\t\022:\n\nparentSite\030\006 \001(\0132&.c" +
-      "om.attribyte.client.WireMessage.Site\022J\n\022" +
-      "parentSubscription\030\007 \001(\0132..com.attribyte" +
-      ".client.WireMessage.Subscription\022\013\n\003tag\030" +
-      "\010 \003(\t\0221\n\003UID\030\t \001(\0132$.com.attribyte.clien" +
-      "t.WireMessage.Id\032\255\003\n\013Replication\0229\n\007auth" +
-      "ors\030\001 \003(\0132(.com.attribyte.client.WireMes" +
-      "sage.Author\0225\n\005sites\030\002 \003(\0132&.com.attriby",
-      "te.client.WireMessage.Site\022E\n\rsubscripti" +
-      "ons\030\003 \003(\0132..com.attribyte.client.WireMes" +
-      "sage.Subscription\0229\n\007sources\030\004 \003(\0132(.com" +
-      ".attribyte.client.WireMessage.Source\0228\n\007" +
-      "entries\030\005 \003(\0132\'.com.attribyte.client.Wir" +
-      "eMessage.Entry\0228\n\006origin\030\006 \001(\0132(.com.att" +
-      "ribyte.client.WireMessage.Origin\0226\n\005erro" +
-      "r\030\007 \001(\0132\'.com.attribyte.client.WireMessa" +
-      "ge.Error\032#\n\002Id\022\n\n\002id\030\001 \001(\t\022\021\n\tnamespace\030" +
-      "\002 \001(\t\032\253\001\n\tTermStats\022\014\n\004term\030\001 \001(\t\022\021\n\twor",
-      "dCount\030\002 \001(\004\022\025\n\rwordFrequency\030\003 \001(\001\022\020\n\010d" +
-      "ocCount\030\004 \001(\004\022\024\n\014docFrequency\030\005 \001(\001\022\013\n\003i" +
-      "df\030\006 \001(\001\022\030\n\020wordFrequencyIDF\030\007 \001(\001\022\027\n\017do" +
-      "cFrequencyIDF\030\010 \001(\001\032\252\001\n\rTermFrequency\022\r\n" +
-      "\005field\030\001 \001(\t\022\017\n\007explain\030\002 \001(\t\022\026\n\016totalIn" +
-      "dexDocs\030\003 \001(\004\022\021\n\ttotalDocs\030\004 \001(\004\022\022\n\ntota" +
-      "lWords\030\005 \001(\004\022:\n\005stats\030\006 \003(\0132+.com.attrib" +
-      "yte.client.WireMessage.TermStats\032y\n\016Time" +
-      "stampRange\022\026\n\016startTimestamp\030\001 \001(\004\022\024\n\014en" +
-      "dTimestamp\030\002 \001(\004\022\025\n\rincludesStart\030\003 \001(\010\022",
-      "\023\n\013includesEnd\030\004 \001(\010\022\r\n\005field\030\005 \001(\t\0328\n\004M" +
-      "eta\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\022\023\n\013disp" +
-      "layName\030\003 \001(\t\032Z\n\010GeoPoint\022\013\n\003lon\030\001 \001(\002\022\013" +
-      "\n\003lat\030\002 \001(\002\0224\n\004meta\030\003 \001(\0132&.com.attribyt" +
-      "e.client.WireMessage.Meta\"=\n\tImageType\022\007" +
-      "\n\003PNG\020\001\022\007\n\003JPG\020\002\022\007\n\003GIF\020\003\022\007\n\003BMP\020\004\022\014\n\007UN" +
-      "KNOWN\020\200\001B\016B\014ClientProtos"
+      "status\030\037 \003(\t\022F\n\nrangeBoost\030  \003(\01322.com.a" +
+      "ttribyte.client.WireMessage.Query.RangeB" +
+      "oost\032Y\n\nRangeBoost\022\r\n\005boost\030\001 \001(\002\022<\n\005ran" +
+      "ge\030\002 \001(\0162-.com.attribyte.client.WireMess" +
+      "age.Query.Range\"9\n\005Range\022\007\n\003DAY\020\000\022\010\n\004WEE" +
+      "K\020\001\022\t\n\005MONTH\020\002\022\010\n\004YEAR\020\003\022\010\n\004NONE\020\004\032F\n\nQu" +
+      "eryUnion\0228\n\007queries\030\001 \003(\0132\'.com.attribyt" +
+      "e.client.WireMessage.Query\032\246\001\n\006Paging\022\020\n" +
+      "\010currPage\030\001 \002(\r\022\017\n\007perPage\030\002 \002(\r\022\022\n\ntota",
+      "lItems\030\003 \001(\r\022\022\n\ntotalPages\030\004 \001(\r\022\026\n\016star" +
+      "tTimestamp\030\005 \001(\004\022\017\n\007baseURL\030\006 \001(\t\022\023\n\013has" +
+      "PrevPage\030\007 \001(\010\022\023\n\013hasNextPage\030\010 \001(\010\032\317\001\n\006" +
+      "Origin\022\030\n\020currentTimestamp\030\001 \001(\004\022\020\n\010time" +
+      "zone\030\002 \001(\t\022\022\n\ndateFormat\030\003 \001(\t\022\022\n\ntimeFo" +
+      "rmat\030\004 \001(\t\022\026\n\016dateTimeFormat\030\005 \001(\t\022\016\n\006lo" +
+      "cale\030\006 \001(\t\022\014\n\004lang\030\007 \001(\t\022\020\n\010serverId\030\010 \001" +
+      "(\t\022\024\n\014imageBaseURL\030\t \001(\t\022\023\n\013iconBaseURL\030" +
+      "\n \001(\t\032C\n\nStaticPage\022\023\n\013contentType\030\001 \001(\t" +
+      "\022\017\n\007content\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\032V\n\005Er",
+      "ror\022\014\n\004code\030\001 \001(\r\022\025\n\rpublicMessage\030\002 \001(\t" +
+      "\022\027\n\017internalMessage\030\003 \001(\t\022\017\n\007errorId\030\004 \001" +
+      "(\t\0324\n\014TokenRequest\022\020\n\010username\030\001 \001(\t\022\022\n\n" +
+      "passphrase\030\002 \001(\t\032G\n\rTokenResponse\022\016\n\006use" +
+      "rId\030\001 \001(\004\022\r\n\005token\030\002 \001(\t\022\027\n\017expireTimest" +
+      "amp\030\003 \001(\004\032*\n\tTokenPing\022\016\n\006userId\030\001 \001(\004\022\r" +
+      "\n\005token\030\002 \001(\t\032\273\002\n\014Subscription\022\013\n\003url\030\001 " +
+      "\001(\t\022\n\n\002id\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013descri" +
+      "ption\030\004 \001(\t\022\020\n\010iconPath\030\005 \001(\t\022A\n\004type\030\006 " +
+      "\001(\01623.com.attribyte.client.WireMessage.S",
+      "ubscription.Type\022\016\n\006altUrl\030\007 \003(\t\0221\n\003UID\030" +
+      "\010 \001(\0132$.com.attribyte.client.WireMessage" +
+      ".Id\"V\n\004Type\022\010\n\004FEED\020\001\022\n\n\006SEARCH\020\002\022\013\n\007TWI" +
+      "TTER\020\003\022\014\n\010FACEBOOK\020\004\022\035\n\031UNKNOWN_SUBSCRIP" +
+      "TION_TYPE\020\005\032\235\002\n\006Source\022\013\n\003url\030\001 \001(\t\022\n\n\002i" +
+      "d\030\002 \001(\004\022\r\n\005title\030\003 \001(\t\022\023\n\013description\030\004 " +
+      "\001(\t\022\016\n\006altUrl\030\005 \003(\t\022:\n\nparentSite\030\006 \001(\0132" +
+      "&.com.attribyte.client.WireMessage.Site\022" +
+      "J\n\022parentSubscription\030\007 \001(\0132..com.attrib" +
+      "yte.client.WireMessage.Subscription\022\013\n\003t",
+      "ag\030\010 \003(\t\0221\n\003UID\030\t \001(\0132$.com.attribyte.cl" +
+      "ient.WireMessage.Id\032\255\003\n\013Replication\0229\n\007a" +
+      "uthors\030\001 \003(\0132(.com.attribyte.client.Wire" +
+      "Message.Author\0225\n\005sites\030\002 \003(\0132&.com.attr" +
+      "ibyte.client.WireMessage.Site\022E\n\rsubscri" +
+      "ptions\030\003 \003(\0132..com.attribyte.client.Wire" +
+      "Message.Subscription\0229\n\007sources\030\004 \003(\0132(." +
+      "com.attribyte.client.WireMessage.Source\022" +
+      "8\n\007entries\030\005 \003(\0132\'.com.attribyte.client." +
+      "WireMessage.Entry\0228\n\006origin\030\006 \001(\0132(.com.",
+      "attribyte.client.WireMessage.Origin\0226\n\005e" +
+      "rror\030\007 \001(\0132\'.com.attribyte.client.WireMe" +
+      "ssage.Error\032#\n\002Id\022\n\n\002id\030\001 \001(\t\022\021\n\tnamespa" +
+      "ce\030\002 \001(\t\032\253\001\n\tTermStats\022\014\n\004term\030\001 \001(\t\022\021\n\t" +
+      "wordCount\030\002 \001(\004\022\025\n\rwordFrequency\030\003 \001(\001\022\020" +
+      "\n\010docCount\030\004 \001(\004\022\024\n\014docFrequency\030\005 \001(\001\022\013" +
+      "\n\003idf\030\006 \001(\001\022\030\n\020wordFrequencyIDF\030\007 \001(\001\022\027\n" +
+      "\017docFrequencyIDF\030\010 \001(\001\032\252\001\n\rTermFrequency" +
+      "\022\r\n\005field\030\001 \001(\t\022\017\n\007explain\030\002 \001(\t\022\026\n\016tota" +
+      "lIndexDocs\030\003 \001(\004\022\021\n\ttotalDocs\030\004 \001(\004\022\022\n\nt",
+      "otalWords\030\005 \001(\004\022:\n\005stats\030\006 \003(\0132+.com.att" +
+      "ribyte.client.WireMessage.TermStats\032y\n\016T" +
+      "imestampRange\022\026\n\016startTimestamp\030\001 \001(\004\022\024\n" +
+      "\014endTimestamp\030\002 \001(\004\022\025\n\rincludesStart\030\003 \001" +
+      "(\010\022\023\n\013includesEnd\030\004 \001(\010\022\r\n\005field\030\005 \001(\t\0328" +
+      "\n\004Meta\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\022\023\n\013d" +
+      "isplayName\030\003 \001(\t\032Z\n\010GeoPoint\022\013\n\003lon\030\001 \001(" +
+      "\002\022\013\n\003lat\030\002 \001(\002\0224\n\004meta\030\003 \001(\0132&.com.attri" +
+      "byte.client.WireMessage.Meta\"=\n\tImageTyp" +
+      "e\022\007\n\003PNG\020\001\022\007\n\003JPG\020\002\022\007\n\003GIF\020\003\022\007\n\003BMP\020\004\022\014\n",
+      "\007UNKNOWN\020\200\001B\016B\014ClientProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -58507,7 +59432,13 @@ public final class ClientProtos {
     internal_static_com_attribyte_client_WireMessage_Query_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_attribyte_client_WireMessage_Query_descriptor,
-        new java.lang.String[] { "QueryString", "Range", "SourceIds", "AuthorIds", "AuthorNames", "EntryIds", "RangeStartTimestamp", "DefaultField", "AnyTerms", "AllTerms", "ExcludeTerms", "Name", "Active", "AnyTags", "AllTags", "ExcludeTags", "Hosts", "Domains", "SourceUIDs", "AuthorUIDs", "EntryUIDs", "TimestampRange", "AnyMeta", "AllMeta", "ExcludeMeta", "AnyTopics", "AllTopics", "ExcludeTopics", "SourceTags", "EditorTags", "Status", });
+        new java.lang.String[] { "QueryString", "Range", "SourceIds", "AuthorIds", "AuthorNames", "EntryIds", "RangeStartTimestamp", "DefaultField", "AnyTerms", "AllTerms", "ExcludeTerms", "Name", "Active", "AnyTags", "AllTags", "ExcludeTags", "Hosts", "Domains", "SourceUIDs", "AuthorUIDs", "EntryUIDs", "TimestampRange", "AnyMeta", "AllMeta", "ExcludeMeta", "AnyTopics", "AllTopics", "ExcludeTopics", "SourceTags", "EditorTags", "Status", "RangeBoost", });
+    internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_descriptor =
+      internal_static_com_attribyte_client_WireMessage_Query_descriptor.getNestedTypes().get(0);
+    internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_attribyte_client_WireMessage_Query_RangeBoost_descriptor,
+        new java.lang.String[] { "Boost", "Range", });
     internal_static_com_attribyte_client_WireMessage_QueryUnion_descriptor =
       internal_static_com_attribyte_client_WireMessage_descriptor.getNestedTypes().get(10);
     internal_static_com_attribyte_client_WireMessage_QueryUnion_fieldAccessorTable = new
