@@ -672,7 +672,7 @@ public class WPSupplier extends RDBSupplier {
          if(logReplicationMessage) {
             logger.info("Replication Message");
             logger.info("-------------------");
-            logger.info(TextFormat.printToString(replicationMessage.build()));
+            logger.info(TextFormat.printer().printToString(replicationMessage.build()));
          }
 
          return Optional.of(Message.publish(messageId, replicationMessage.build().toByteString()));
